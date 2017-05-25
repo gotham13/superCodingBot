@@ -1,0 +1,6 @@
+flask
+python-telegram-bot
+beautifulsoup4
+html5lib
+apscheduler
+xlsxwriter
