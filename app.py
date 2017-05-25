@@ -16,7 +16,7 @@ from xlsxwriter.workbook import Workbook
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
 logger = logging.getLogger(__name__)
-TOKEN = '389045704:AAHKz1izoc2WnGadhf3J3yF03zc2kLpepOs'
+TOKEN = 'YOUR-TOKEN-HERE'
 NAME, JUDGE, HANDLE= range(3)
 SELECTION, HOLO, SOLO, POLO, XOLO=range(5)
 REMOVER=range(1)
