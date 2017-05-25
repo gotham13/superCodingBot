@@ -735,7 +735,7 @@ def name(bot,update,user_data):
     user_data['name']=update.message.text.upper()
     keyboard = [[InlineKeyboardButton("Hackerearth", callback_data='HE'),InlineKeyboardButton("Hackerrank", callback_data='HR')],[InlineKeyboardButton("Codechef", callback_data='CC'),InlineKeyboardButton("Spoj", callback_data='SP')],[InlineKeyboardButton("Codeforces", callback_data='CF')]]
     reply_markup = InlineKeyboardMarkup(keyboard)
-    update.message.reply_text('please enter the code for the judge you want to register with the bot\nHE for hackerearth\nHR for hackerrank\nSP for spoj\nCF for codeforces\nCC for codechef',reply_markup=reply_markup)
+    update.message.reply_text('please enter the judge you want to register with the bot',reply_markup=reply_markup)
     return JUDGE
 
 
