@@ -35,8 +35,11 @@ conn.commit()
 conn.close()
 
 def start(bot, update):
-    update.message.reply_text('welcome enter the hackerearth id of the person')
+    update.message.reply_text('welcome!\nHere are the commands\nEnter /register to go to register menu to register your handle to the bot\nEnter /unregister to go to unregister menu to unregister from the bot\nEnter /ranklist to go to ranklist menu to get ranklist\nEnter /update to initialise updating of your info\n Automatic updation of all data will take place every day\n To see all the commands enter /help any time.')
 
+def help(bot,update):
+    update.message.reply_text(
+        'Here are the commands\nEnter /register to go to register menu to register your handle to the bot\nEnter /unregister to go to unregister menu to unregister from the bot\nEnter /ranklist to go to ranklist menu to get ranklist\nEnter /update to initialise updating of your info\n Automatic updation of all data will take place every day\n To see all the commands enter /help any time.')
 
 def error(bot, update, error):
     logger.warning('Update "%s" caused error "%s"' % (update, error))
@@ -1148,7 +1151,8 @@ def setup(webhook_url=None):
         dp.add_handler(conv_handler1)
         dp.add_handler(conv_handler2)
         dp.add_handler(conv_handler3)
-
+        dp.add_handler(CommandHandler('help',help))
+        dp.add_handler(CommandHandler('start',start))
         # log all errors
         dp.add_error_handler(error)
     # Add your handlers here
