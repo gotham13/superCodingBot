@@ -19,7 +19,7 @@ from xlsxwriter.workbook import Workbook
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
 logger = logging.getLogger(__name__)
-TOKEN = '393468636:AAFER7oJXYwieyZJpFT81ssCCNTcqo8ZLyY'
+TOKEN = '389045704:AAHKz1izoc2WnGadhf3J3yF03zc2kLpepOs'
 API_KEY = 'hackerrank|1912907-1461|164b036960899ba03b339f8dd543960bd4d21b1a'
 compiler = helper.HackerRankAPI(api_key = API_KEY)
 
