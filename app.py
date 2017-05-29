@@ -166,7 +166,7 @@ def other(bot,update,user_data):
 
 
 def ongoing(bot,update):
-    rawData = urllib.request.urlopen('http://challengehuntapp.appspot.com/v2').read()
+    rawData = urllib.request.urlopen('http://challengehuntapp.appspot.com/v2').read().decode('utf-8')
     jsonData = json.loads(rawData)
     searchResults = jsonData['active']
     s = ""
@@ -180,7 +180,7 @@ def ongoing(bot,update):
 
 
 def upcoming(bot,update):
-    rawData = urllib.request.urlopen('http://challengehuntapp.appspot.com/v2').read()
+    rawData = urllib.request.urlopen('http://challengehuntapp.appspot.com/v2').read().decode('utf-8')
     jsonData = json.loads(rawData)
     searchResults = jsonData['pending']
     i = 0
