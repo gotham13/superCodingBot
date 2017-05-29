@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="45c7c3a4-af9d-40a1-8380-9dffcd9316af" name="Default" comment="" />
+    <list default="true" id="45c7c3a4-af9d-40a1-8380-9dffcd9316af" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app.py" afterPath="$PROJECT_DIR$/app.py" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -9,66 +12,86 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="CoverageDataManager">
+    <SUITE FILE_PATH="coverage/superCodingBot$exp.coverage" NAME="exp Coverage Results" MODIFIED="1496024412671" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/superCodingBot$app.coverage" NAME="app Coverage Results" MODIFIED="1496077846804" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/superCodingBot$app__1_.coverage" NAME="app (1) Coverage Results" MODIFIED="1496038011197" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/../hackerearth_bot" />
+  </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="app.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2210">
-              <caret line="146" column="58" lean-forward="true" selection-start-line="146" selection-start-column="58" selection-end-line="146" selection-end-column="58" />
+            <state relative-caret-position="151">
+              <caret line="22" column="30" lean-forward="false" selection-start-line="22" selection-start-column="30" selection-end-line="22" selection-end-column="30" />
               <folding>
-                <marker date="1495717855427" expanded="true" signature="887:978" ph="CREATE TABLE... handles" />
-                <marker date="1495717855427" expanded="true" signature="998:1088" ph="CREATE TABLE... datas" />
-                <marker date="1495717855427" expanded="true" signature="3441:3483" ph="SELECT id, H... handles" />
-                <marker date="1495717855427" expanded="true" signature="9008:9076" ph="UPDATE datas... " />
-                <marker date="1495717855427" expanded="true" signature="9113:9139" ph="SELECT name,... datas" />
-                <marker date="1495717855427" expanded="true" signature="9331:9357" ph="SELECT name,... datas" />
-                <marker date="1495717855427" expanded="true" signature="9595:9621" ph="SELECT name,... datas" />
-                <marker date="1495717855427" expanded="true" signature="9813:9839" ph="SELECT name,... datas" />
-                <marker date="1495717855427" expanded="true" signature="10077:10103" ph="SELECT name,... datas" />
-                <marker date="1495717855427" expanded="true" signature="10295:10321" ph="SELECT name,... datas" />
-                <marker date="1495717855427" expanded="true" signature="10559:10585" ph="SELECT name,... datas" />
-                <marker date="1495717855427" expanded="true" signature="10777:10803" ph="SELECT name,... datas" />
-                <marker date="1495717855427" expanded="true" signature="11041:11067" ph="SELECT name,... datas" />
-                <marker date="1495717855427" expanded="true" signature="11259:11285" ph="SELECT name,... datas" />
-                <marker date="1495717855427" expanded="true" signature="11523:11565" ph="SELECT name,... datas" />
-                <marker date="1495717855427" expanded="true" signature="11758:11800" ph="SELECT name,... datas" />
-                <marker date="1495717855427" expanded="true" signature="12960:13015" ph="SELECT id, H... handles" />
-                <marker date="1495717855427" expanded="true" signature="19587:19655" ph="UPDATE datas... " />
-                <marker date="1495717855427" expanded="true" signature="19707:19733" ph="SELECT name,... datas" />
-                <marker date="1495717855427" expanded="true" signature="19949:19975" ph="SELECT name,... datas" />
-                <marker date="1495717855427" expanded="true" signature="20241:20267" ph="SELECT name,... datas" />
-                <marker date="1495717855427" expanded="true" signature="20483:20509" ph="SELECT name,... datas" />
-                <marker date="1495717855427" expanded="true" signature="20775:20801" ph="SELECT name,... datas" />
-                <marker date="1495717855427" expanded="true" signature="21017:21043" ph="SELECT name,... datas" />
-                <marker date="1495717855427" expanded="true" signature="21309:21335" ph="SELECT name,... datas" />
-                <marker date="1495717855427" expanded="true" signature="21551:21577" ph="SELECT name,... datas" />
-                <marker date="1495717855427" expanded="true" signature="21843:21869" ph="SELECT name,... datas" />
-                <marker date="1495717855427" expanded="true" signature="22085:22111" ph="SELECT name,... datas" />
-                <marker date="1495717855427" expanded="true" signature="29233:29275" ph="SELECT name,... datas" />
-                <marker date="1495717855427" expanded="true" signature="29468:29510" ph="SELECT name,... datas" />
-                <marker date="1495717855427" expanded="true" signature="30194:30226" ph="DELETE FROM " />
-                <marker date="1495717855427" expanded="true" signature="30253:30287" ph="DELETE FROM " />
-                <marker date="1495717855427" expanded="true" signature="30529:30555" ph="SELECT name,... datas" />
-                <marker date="1495717855427" expanded="true" signature="30771:30797" ph="SELECT name,... datas" />
-                <marker date="1495717855427" expanded="true" signature="31063:31089" ph="SELECT name,... datas" />
-                <marker date="1495717855427" expanded="true" signature="31305:31331" ph="SELECT name,... datas" />
-                <marker date="1495717855427" expanded="true" signature="31597:31623" ph="SELECT name,... datas" />
-                <marker date="1495717855427" expanded="true" signature="31839:31865" ph="SELECT name,... datas" />
-                <marker date="1495717855427" expanded="true" signature="32131:32157" ph="SELECT name,... datas" />
-                <marker date="1495717855427" expanded="true" signature="32373:32399" ph="SELECT name,... datas" />
-                <marker date="1495717855427" expanded="true" signature="32665:32691" ph="SELECT name,... datas" />
-                <marker date="1495717855427" expanded="true" signature="32907:32933" ph="SELECT name,... datas" />
-                <marker date="1495717855427" expanded="true" signature="34139:34181" ph="SELECT name,... datas" />
-                <marker date="1495717855427" expanded="true" signature="34374:34416" ph="SELECT name,... datas" />
-                <marker date="1495717855427" expanded="true" signature="36314:36366" ph="SELECT name,... datas" />
-                <marker date="1495717855427" expanded="true" signature="36770:36822" ph="SELECT name,... datas" />
-                <marker date="1495717855427" expanded="true" signature="39900:39939" ph="SELECT name handles" />
-                <marker date="1495717855427" expanded="true" signature="41015:41072" ph="SELECT name,... datas" />
-                <marker date="1495717855427" expanded="true" signature="41484:41541" ph="SELECT name,... datas" />
-                <marker date="1495717855427" expanded="true" signature="49640:49682" ph="SELECT name,... datas" />
-                <marker date="1495717855427" expanded="true" signature="49875:49917" ph="SELECT name,... datas" />
+                <element signature="e#0#14#0" expanded="true" />
+                <marker date="1496080057253" expanded="true" signature="1091:1182" ph="CREATE TABLE... handles" />
+                <marker date="1496080057253" expanded="true" signature="1202:1292" ph="CREATE TABLE... datas" />
+                <marker date="1496080057253" expanded="true" signature="9660:9702" ph="SELECT id, H... handles" />
+                <marker date="1496080057253" expanded="true" signature="15750:15818" ph="UPDATE datas... " />
+                <marker date="1496080057253" expanded="true" signature="15855:15881" ph="SELECT name,... datas" />
+                <marker date="1496080057253" expanded="true" signature="16073:16099" ph="SELECT name,... datas" />
+                <marker date="1496080057253" expanded="true" signature="16337:16363" ph="SELECT name,... datas" />
+                <marker date="1496080057253" expanded="true" signature="16555:16581" ph="SELECT name,... datas" />
+                <marker date="1496080057253" expanded="true" signature="16819:16845" ph="SELECT name,... datas" />
+                <marker date="1496080057253" expanded="true" signature="17037:17063" ph="SELECT name,... datas" />
+                <marker date="1496080057253" expanded="true" signature="17301:17327" ph="SELECT name,... datas" />
+                <marker date="1496080057253" expanded="true" signature="17519:17545" ph="SELECT name,... datas" />
+                <marker date="1496080057253" expanded="true" signature="17783:17809" ph="SELECT name,... datas" />
+                <marker date="1496080057253" expanded="true" signature="18001:18027" ph="SELECT name,... datas" />
+                <marker date="1496080057253" expanded="true" signature="18265:18307" ph="SELECT name,... datas" />
+                <marker date="1496080057253" expanded="true" signature="18500:18542" ph="SELECT name,... datas" />
+                <marker date="1496080057253" expanded="true" signature="18990:19011" ph="SELECT * FRO... handles" />
+                <marker date="1496080057253" expanded="true" signature="19206:19227" ph="SELECT name,... datas" />
+                <marker date="1496080057253" expanded="true" signature="20377:20432" ph="SELECT id, H... handles" />
+                <marker date="1496080057253" expanded="true" signature="27433:27501" ph="UPDATE datas... " />
+                <marker date="1496080057253" expanded="true" signature="27553:27579" ph="SELECT name,... datas" />
+                <marker date="1496080057253" expanded="true" signature="27795:27821" ph="SELECT name,... datas" />
+                <marker date="1496080057253" expanded="true" signature="28087:28113" ph="SELECT name,... datas" />
+                <marker date="1496080057253" expanded="true" signature="28329:28355" ph="SELECT name,... datas" />
+                <marker date="1496080057253" expanded="true" signature="28621:28647" ph="SELECT name,... datas" />
+                <marker date="1496080057253" expanded="true" signature="28863:28889" ph="SELECT name,... datas" />
+                <marker date="1496080057253" expanded="true" signature="29155:29181" ph="SELECT name,... datas" />
+                <marker date="1496080057253" expanded="true" signature="29397:29423" ph="SELECT name,... datas" />
+                <marker date="1496080057253" expanded="true" signature="29689:29715" ph="SELECT name,... datas" />
+                <marker date="1496080057253" expanded="true" signature="29931:29957" ph="SELECT name,... datas" />
+                <marker date="1496080057253" expanded="true" signature="37511:37553" ph="SELECT name,... datas" />
+                <marker date="1496080057253" expanded="true" signature="37746:37788" ph="SELECT name,... datas" />
+                <marker date="1496080057253" expanded="true" signature="38472:38504" ph="DELETE FROM " />
+                <marker date="1496080057253" expanded="true" signature="38531:38565" ph="DELETE FROM " />
+                <marker date="1496080057253" expanded="true" signature="38807:38833" ph="SELECT name,... datas" />
+                <marker date="1496080057253" expanded="true" signature="39049:39075" ph="SELECT name,... datas" />
+                <marker date="1496080057253" expanded="true" signature="39341:39367" ph="SELECT name,... datas" />
+                <marker date="1496080057253" expanded="true" signature="39583:39609" ph="SELECT name,... datas" />
+                <marker date="1496080057253" expanded="true" signature="39875:39901" ph="SELECT name,... datas" />
+                <marker date="1496080057253" expanded="true" signature="40117:40143" ph="SELECT name,... datas" />
+                <marker date="1496080057253" expanded="true" signature="40409:40435" ph="SELECT name,... datas" />
+                <marker date="1496080057253" expanded="true" signature="40651:40677" ph="SELECT name,... datas" />
+                <marker date="1496080057253" expanded="true" signature="40943:40969" ph="SELECT name,... datas" />
+                <marker date="1496080057253" expanded="true" signature="41185:41211" ph="SELECT name,... datas" />
+                <marker date="1496080057253" expanded="true" signature="42417:42459" ph="SELECT name,... datas" />
+                <marker date="1496080057253" expanded="true" signature="42652:42694" ph="SELECT name,... datas" />
+                <marker date="1496080057253" expanded="true" signature="44592:44644" ph="SELECT name,... datas" />
+                <marker date="1496080057253" expanded="true" signature="45048:45100" ph="SELECT name,... datas" />
+                <marker date="1496080057253" expanded="true" signature="48178:48217" ph="SELECT name handles" />
+                <marker date="1496080057253" expanded="true" signature="49293:49350" ph="SELECT name,... datas" />
+                <marker date="1496080057253" expanded="true" signature="49762:49819" ph="SELECT name,... datas" />
+                <marker date="1496080057253" expanded="true" signature="58411:58453" ph="SELECT name,... datas" />
+                <marker date="1496080057253" expanded="true" signature="58646:58688" ph="SELECT name,... datas" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="helper.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/helper.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#15#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -76,8 +99,32 @@
       </file>
     </leaf>
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>os</find>
+    </findStrings>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/exp.py" />
+        <option value="$PROJECT_DIR$/../hackerearth_bot/app.py" />
+        <option value="$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/hackerrank/HackerRankAPI.py" />
+        <option value="$PROJECT_DIR$/../hackerearth_bot/helper.py" />
+        <option value="$PROJECT_DIR$/helper.py" />
+        <option value="$PROJECT_DIR$/app.py" />
+      </list>
+    </option>
   </component>
   <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
   <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
@@ -86,8 +133,8 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-109" />
-    <option name="y" value="176" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
     <option name="width" value="1378" />
     <option name="height" value="780" />
   </component>
@@ -106,6 +153,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
@@ -121,12 +169,12 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="settings.editor.selected.configurable" value="configurable.group.tools" />
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../hackerearth_bot/app.py" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -139,6 +187,225 @@
         </RuleState>
       </list>
     </option>
+  </component>
+  <component name="RunManager" selected="Python.app">
+    <configuration default="false" name="exp" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="superCodingBot" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/exp.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="app" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="superCodingBot" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="app (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/../hackerearth_bot" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="superCodingBot" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/../hackerearth_bot/app.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="DjangoTestsConfigurationType" factoryName="Django tests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="superCodingBot" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="TARGET" value="" />
+      <option name="SETTINGS_FILE" value="" />
+      <option name="CUSTOM_SETTINGS" value="false" />
+      <option name="USE_OPTIONS" value="false" />
+      <option name="OPTIONS" value="" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerJest" factoryName="Jest">
+      <node-interpreter value="project" />
+      <working-dir value="" />
+      <envs />
+      <scope-kind value="ALL" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerProtractor" factoryName="Protractor">
+      <config-file value="" />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
+      <method />
+    </configuration>
+    <configuration default="true" type="PyBehaveRunConfigurationType" factoryName="Behave">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="superCodingBot" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="ADDITIONAL_ARGS" value="" />
+      <method />
+    </configuration>
+    <configuration default="true" type="PyLettuceRunConfigurationType" factoryName="Lettuce">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="superCodingBot" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="ADDITIONAL_ARGS" value="" />
+      <method />
+    </configuration>
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="superCodingBot" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="Tox" factoryName="Tox">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <module name="superCodingBot" />
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <gulpfile />
+      <tasks />
+      <arguments />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.npm" factoryName="npm">
+      <command value="run" />
+      <scripts />
+      <node-interpreter value="project" />
+      <envs />
+      <method />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Doctests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="superCodingBot" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Unittests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="superCodingBot" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;.&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method />
+    </configuration>
+    <list size="3">
+      <item index="0" class="java.lang.String" itemvalue="Python.exp" />
+      <item index="1" class="java.lang.String" itemvalue="Python.app" />
+      <item index="2" class="java.lang.String" itemvalue="Python.app (1)" />
+    </list>
+    <recent_temporary>
+      <list size="3">
+        <item index="0" class="java.lang.String" itemvalue="Python.app" />
+        <item index="1" class="java.lang.String" itemvalue="Python.app (1)" />
+        <item index="2" class="java.lang.String" itemvalue="Python.exp" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="ShelveChangesManager" show_recycled="false">
     <option name="remove_strategy" value="false" />
@@ -154,26 +421,26 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-109" y="176" width="1378" height="780" extended-state="0" />
+    <frame x="-8" y="-8" width="1378" height="780" extended-state="0" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25037935" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2693475" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1878882" sideWeight="0.14567527" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1878882" sideWeight="0.85432476" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3287037" sideWeight="0.4969743" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -184,66 +451,450 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <option name="time" value="1" />
+    </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/app.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2210">
-          <caret line="146" column="58" lean-forward="true" selection-start-line="146" selection-start-column="58" selection-end-line="146" selection-end-column="58" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1495717855427" expanded="true" signature="887:978" ph="CREATE TABLE... handles" />
-            <marker date="1495717855427" expanded="true" signature="998:1088" ph="CREATE TABLE... datas" />
-            <marker date="1495717855427" expanded="true" signature="3441:3483" ph="SELECT id, H... handles" />
-            <marker date="1495717855427" expanded="true" signature="9008:9076" ph="UPDATE datas... " />
-            <marker date="1495717855427" expanded="true" signature="9113:9139" ph="SELECT name,... datas" />
-            <marker date="1495717855427" expanded="true" signature="9331:9357" ph="SELECT name,... datas" />
-            <marker date="1495717855427" expanded="true" signature="9595:9621" ph="SELECT name,... datas" />
-            <marker date="1495717855427" expanded="true" signature="9813:9839" ph="SELECT name,... datas" />
-            <marker date="1495717855427" expanded="true" signature="10077:10103" ph="SELECT name,... datas" />
-            <marker date="1495717855427" expanded="true" signature="10295:10321" ph="SELECT name,... datas" />
-            <marker date="1495717855427" expanded="true" signature="10559:10585" ph="SELECT name,... datas" />
-            <marker date="1495717855427" expanded="true" signature="10777:10803" ph="SELECT name,... datas" />
-            <marker date="1495717855427" expanded="true" signature="11041:11067" ph="SELECT name,... datas" />
-            <marker date="1495717855427" expanded="true" signature="11259:11285" ph="SELECT name,... datas" />
-            <marker date="1495717855427" expanded="true" signature="11523:11565" ph="SELECT name,... datas" />
-            <marker date="1495717855427" expanded="true" signature="11758:11800" ph="SELECT name,... datas" />
-            <marker date="1495717855427" expanded="true" signature="12960:13015" ph="SELECT id, H... handles" />
-            <marker date="1495717855427" expanded="true" signature="19587:19655" ph="UPDATE datas... " />
-            <marker date="1495717855427" expanded="true" signature="19707:19733" ph="SELECT name,... datas" />
-            <marker date="1495717855427" expanded="true" signature="19949:19975" ph="SELECT name,... datas" />
-            <marker date="1495717855427" expanded="true" signature="20241:20267" ph="SELECT name,... datas" />
-            <marker date="1495717855427" expanded="true" signature="20483:20509" ph="SELECT name,... datas" />
-            <marker date="1495717855427" expanded="true" signature="20775:20801" ph="SELECT name,... datas" />
-            <marker date="1495717855427" expanded="true" signature="21017:21043" ph="SELECT name,... datas" />
-            <marker date="1495717855427" expanded="true" signature="21309:21335" ph="SELECT name,... datas" />
-            <marker date="1495717855427" expanded="true" signature="21551:21577" ph="SELECT name,... datas" />
-            <marker date="1495717855427" expanded="true" signature="21843:21869" ph="SELECT name,... datas" />
-            <marker date="1495717855427" expanded="true" signature="22085:22111" ph="SELECT name,... datas" />
-            <marker date="1495717855427" expanded="true" signature="29233:29275" ph="SELECT name,... datas" />
-            <marker date="1495717855427" expanded="true" signature="29468:29510" ph="SELECT name,... datas" />
-            <marker date="1495717855427" expanded="true" signature="30194:30226" ph="DELETE FROM " />
-            <marker date="1495717855427" expanded="true" signature="30253:30287" ph="DELETE FROM " />
-            <marker date="1495717855427" expanded="true" signature="30529:30555" ph="SELECT name,... datas" />
-            <marker date="1495717855427" expanded="true" signature="30771:30797" ph="SELECT name,... datas" />
-            <marker date="1495717855427" expanded="true" signature="31063:31089" ph="SELECT name,... datas" />
-            <marker date="1495717855427" expanded="true" signature="31305:31331" ph="SELECT name,... datas" />
-            <marker date="1495717855427" expanded="true" signature="31597:31623" ph="SELECT name,... datas" />
-            <marker date="1495717855427" expanded="true" signature="31839:31865" ph="SELECT name,... datas" />
-            <marker date="1495717855427" expanded="true" signature="32131:32157" ph="SELECT name,... datas" />
-            <marker date="1495717855427" expanded="true" signature="32373:32399" ph="SELECT name,... datas" />
-            <marker date="1495717855427" expanded="true" signature="32665:32691" ph="SELECT name,... datas" />
-            <marker date="1495717855427" expanded="true" signature="32907:32933" ph="SELECT name,... datas" />
-            <marker date="1495717855427" expanded="true" signature="34139:34181" ph="SELECT name,... datas" />
-            <marker date="1495717855427" expanded="true" signature="34374:34416" ph="SELECT name,... datas" />
-            <marker date="1495717855427" expanded="true" signature="36314:36366" ph="SELECT name,... datas" />
-            <marker date="1495717855427" expanded="true" signature="36770:36822" ph="SELECT name,... datas" />
-            <marker date="1495717855427" expanded="true" signature="39900:39939" ph="SELECT name handles" />
-            <marker date="1495717855427" expanded="true" signature="41015:41072" ph="SELECT name,... datas" />
-            <marker date="1495717855427" expanded="true" signature="41484:41541" ph="SELECT name,... datas" />
-            <marker date="1495717855427" expanded="true" signature="49640:49682" ph="SELECT name,... datas" />
-            <marker date="1495717855427" expanded="true" signature="49875:49917" ph="SELECT name,... datas" />
+            <element signature="e#0#14#0" expanded="true" />
+            <marker date="1496080057253" expanded="true" signature="1091:1182" ph="CREATE TABLE... handles" />
+            <marker date="1496080057253" expanded="true" signature="1202:1292" ph="CREATE TABLE... datas" />
+            <marker date="1496080057253" expanded="true" signature="9660:9702" ph="SELECT id, H... handles" />
+            <marker date="1496080057253" expanded="true" signature="15750:15818" ph="UPDATE datas... " />
+            <marker date="1496080057253" expanded="true" signature="15855:15881" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="16073:16099" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="16337:16363" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="16555:16581" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="16819:16845" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="17037:17063" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="17301:17327" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="17519:17545" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="17783:17809" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="18001:18027" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="18265:18307" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="18500:18542" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="18990:19011" ph="SELECT * FRO... handles" />
+            <marker date="1496080057253" expanded="true" signature="19206:19227" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="20377:20432" ph="SELECT id, H... handles" />
+            <marker date="1496080057253" expanded="true" signature="27433:27501" ph="UPDATE datas... " />
+            <marker date="1496080057253" expanded="true" signature="27553:27579" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="27795:27821" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="28087:28113" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="28329:28355" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="28621:28647" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="28863:28889" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="29155:29181" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="29397:29423" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="29689:29715" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="29931:29957" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="37511:37553" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="37746:37788" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="38472:38504" ph="DELETE FROM " />
+            <marker date="1496080057253" expanded="true" signature="38531:38565" ph="DELETE FROM " />
+            <marker date="1496080057253" expanded="true" signature="38807:38833" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="39049:39075" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="39341:39367" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="39583:39609" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="39875:39901" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="40117:40143" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="40409:40435" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="40651:40677" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="40943:40969" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="41185:41211" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="42417:42459" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="42652:42694" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="44592:44644" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="45048:45100" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="48178:48217" ph="SELECT name handles" />
+            <marker date="1496080057253" expanded="true" signature="49293:49350" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="49762:49819" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="58411:58453" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="58646:58688" ph="SELECT name,... datas" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/helper.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
+            <marker date="1496080057253" expanded="true" signature="1091:1182" ph="CREATE TABLE... handles" />
+            <marker date="1496080057253" expanded="true" signature="1202:1292" ph="CREATE TABLE... datas" />
+            <marker date="1496080057253" expanded="true" signature="9660:9702" ph="SELECT id, H... handles" />
+            <marker date="1496080057253" expanded="true" signature="15750:15818" ph="UPDATE datas... " />
+            <marker date="1496080057253" expanded="true" signature="15855:15881" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="16073:16099" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="16337:16363" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="16555:16581" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="16819:16845" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="17037:17063" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="17301:17327" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="17519:17545" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="17783:17809" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="18001:18027" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="18265:18307" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="18500:18542" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="18990:19011" ph="SELECT * FRO... handles" />
+            <marker date="1496080057253" expanded="true" signature="19206:19227" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="20377:20432" ph="SELECT id, H... handles" />
+            <marker date="1496080057253" expanded="true" signature="27433:27501" ph="UPDATE datas... " />
+            <marker date="1496080057253" expanded="true" signature="27553:27579" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="27795:27821" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="28087:28113" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="28329:28355" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="28621:28647" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="28863:28889" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="29155:29181" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="29397:29423" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="29689:29715" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="29931:29957" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="37511:37553" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="37746:37788" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="38472:38504" ph="DELETE FROM " />
+            <marker date="1496080057253" expanded="true" signature="38531:38565" ph="DELETE FROM " />
+            <marker date="1496080057253" expanded="true" signature="38807:38833" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="39049:39075" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="39341:39367" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="39583:39609" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="39875:39901" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="40117:40143" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="40409:40435" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="40651:40677" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="40943:40969" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="41185:41211" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="42417:42459" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="42652:42694" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="44592:44644" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="45048:45100" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="48178:48217" ph="SELECT name handles" />
+            <marker date="1496080057253" expanded="true" signature="49293:49350" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="49762:49819" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="58411:58453" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="58646:58688" ph="SELECT name,... datas" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/helper.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
+            <marker date="1496080057253" expanded="true" signature="1091:1182" ph="CREATE TABLE... handles" />
+            <marker date="1496080057253" expanded="true" signature="1202:1292" ph="CREATE TABLE... datas" />
+            <marker date="1496080057253" expanded="true" signature="9660:9702" ph="SELECT id, H... handles" />
+            <marker date="1496080057253" expanded="true" signature="15750:15818" ph="UPDATE datas... " />
+            <marker date="1496080057253" expanded="true" signature="15855:15881" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="16073:16099" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="16337:16363" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="16555:16581" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="16819:16845" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="17037:17063" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="17301:17327" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="17519:17545" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="17783:17809" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="18001:18027" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="18265:18307" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="18500:18542" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="18990:19011" ph="SELECT * FRO... handles" />
+            <marker date="1496080057253" expanded="true" signature="19206:19227" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="20377:20432" ph="SELECT id, H... handles" />
+            <marker date="1496080057253" expanded="true" signature="27433:27501" ph="UPDATE datas... " />
+            <marker date="1496080057253" expanded="true" signature="27553:27579" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="27795:27821" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="28087:28113" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="28329:28355" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="28621:28647" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="28863:28889" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="29155:29181" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="29397:29423" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="29689:29715" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="29931:29957" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="37511:37553" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="37746:37788" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="38472:38504" ph="DELETE FROM " />
+            <marker date="1496080057253" expanded="true" signature="38531:38565" ph="DELETE FROM " />
+            <marker date="1496080057253" expanded="true" signature="38807:38833" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="39049:39075" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="39341:39367" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="39583:39609" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="39875:39901" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="40117:40143" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="40409:40435" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="40651:40677" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="40943:40969" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="41185:41211" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="42417:42459" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="42652:42694" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="44592:44644" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="45048:45100" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="48178:48217" ph="SELECT name handles" />
+            <marker date="1496080057253" expanded="true" signature="49293:49350" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="49762:49819" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="58411:58453" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="58646:58688" ph="SELECT name,... datas" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/helper.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
+            <marker date="1496080057253" expanded="true" signature="1091:1182" ph="CREATE TABLE... handles" />
+            <marker date="1496080057253" expanded="true" signature="1202:1292" ph="CREATE TABLE... datas" />
+            <marker date="1496080057253" expanded="true" signature="9660:9702" ph="SELECT id, H... handles" />
+            <marker date="1496080057253" expanded="true" signature="15750:15818" ph="UPDATE datas... " />
+            <marker date="1496080057253" expanded="true" signature="15855:15881" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="16073:16099" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="16337:16363" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="16555:16581" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="16819:16845" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="17037:17063" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="17301:17327" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="17519:17545" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="17783:17809" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="18001:18027" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="18265:18307" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="18500:18542" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="18990:19011" ph="SELECT * FRO... handles" />
+            <marker date="1496080057253" expanded="true" signature="19206:19227" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="20377:20432" ph="SELECT id, H... handles" />
+            <marker date="1496080057253" expanded="true" signature="27433:27501" ph="UPDATE datas... " />
+            <marker date="1496080057253" expanded="true" signature="27553:27579" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="27795:27821" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="28087:28113" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="28329:28355" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="28621:28647" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="28863:28889" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="29155:29181" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="29397:29423" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="29689:29715" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="29931:29957" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="37511:37553" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="37746:37788" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="38472:38504" ph="DELETE FROM " />
+            <marker date="1496080057253" expanded="true" signature="38531:38565" ph="DELETE FROM " />
+            <marker date="1496080057253" expanded="true" signature="38807:38833" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="39049:39075" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="39341:39367" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="39583:39609" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="39875:39901" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="40117:40143" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="40409:40435" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="40651:40677" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="40943:40969" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="41185:41211" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="42417:42459" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="42652:42694" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="44592:44644" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="45048:45100" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="48178:48217" ph="SELECT name handles" />
+            <marker date="1496080057253" expanded="true" signature="49293:49350" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="49762:49819" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="58411:58453" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="58646:58688" ph="SELECT name,... datas" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
+            <marker date="1496080057253" expanded="true" signature="1091:1182" ph="CREATE TABLE... handles" />
+            <marker date="1496080057253" expanded="true" signature="1202:1292" ph="CREATE TABLE... datas" />
+            <marker date="1496080057253" expanded="true" signature="9660:9702" ph="SELECT id, H... handles" />
+            <marker date="1496080057253" expanded="true" signature="15750:15818" ph="UPDATE datas... " />
+            <marker date="1496080057253" expanded="true" signature="15855:15881" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="16073:16099" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="16337:16363" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="16555:16581" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="16819:16845" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="17037:17063" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="17301:17327" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="17519:17545" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="17783:17809" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="18001:18027" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="18265:18307" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="18500:18542" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="18990:19011" ph="SELECT * FRO... handles" />
+            <marker date="1496080057253" expanded="true" signature="19206:19227" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="20377:20432" ph="SELECT id, H... handles" />
+            <marker date="1496080057253" expanded="true" signature="27433:27501" ph="UPDATE datas... " />
+            <marker date="1496080057253" expanded="true" signature="27553:27579" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="27795:27821" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="28087:28113" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="28329:28355" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="28621:28647" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="28863:28889" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="29155:29181" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="29397:29423" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="29689:29715" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="29931:29957" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="37511:37553" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="37746:37788" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="38472:38504" ph="DELETE FROM " />
+            <marker date="1496080057253" expanded="true" signature="38531:38565" ph="DELETE FROM " />
+            <marker date="1496080057253" expanded="true" signature="38807:38833" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="39049:39075" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="39341:39367" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="39583:39609" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="39875:39901" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="40117:40143" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="40409:40435" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="40651:40677" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="40943:40969" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="41185:41211" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="42417:42459" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="42652:42694" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="44592:44644" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="45048:45100" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="48178:48217" ph="SELECT name handles" />
+            <marker date="1496080057253" expanded="true" signature="49293:49350" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="49762:49819" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="58411:58453" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="58646:58688" ph="SELECT name,... datas" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/abcd.txt" />
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/hackerrank/HackerRankAPI.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="235">
+          <caret line="63" column="47" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="63" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/exp.py" />
+    <entry file="file://$PROJECT_DIR$/../hackerearth_bot/app.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80">
+          <caret line="40" column="24" lean-forward="true" selection-start-line="40" selection-start-column="4" selection-end-line="40" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../hackerearth_bot/helper.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1139">
+          <caret line="67" column="47" lean-forward="false" selection-start-line="67" selection-start-column="47" selection-end-line="67" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/helper.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/abcd" />
+    <entry file="file://$PROJECT_DIR$/app.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="151">
+          <caret line="22" column="30" lean-forward="false" selection-start-line="22" selection-start-column="30" selection-end-line="22" selection-end-column="30" />
+          <folding>
+            <element signature="e#0#14#0" expanded="true" />
+            <marker date="1496080057253" expanded="true" signature="1091:1182" ph="CREATE TABLE... handles" />
+            <marker date="1496080057253" expanded="true" signature="1202:1292" ph="CREATE TABLE... datas" />
+            <marker date="1496080057253" expanded="true" signature="9660:9702" ph="SELECT id, H... handles" />
+            <marker date="1496080057253" expanded="true" signature="15750:15818" ph="UPDATE datas... " />
+            <marker date="1496080057253" expanded="true" signature="15855:15881" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="16073:16099" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="16337:16363" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="16555:16581" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="16819:16845" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="17037:17063" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="17301:17327" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="17519:17545" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="17783:17809" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="18001:18027" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="18265:18307" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="18500:18542" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="18990:19011" ph="SELECT * FRO... handles" />
+            <marker date="1496080057253" expanded="true" signature="19206:19227" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="20377:20432" ph="SELECT id, H... handles" />
+            <marker date="1496080057253" expanded="true" signature="27433:27501" ph="UPDATE datas... " />
+            <marker date="1496080057253" expanded="true" signature="27553:27579" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="27795:27821" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="28087:28113" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="28329:28355" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="28621:28647" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="28863:28889" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="29155:29181" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="29397:29423" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="29689:29715" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="29931:29957" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="37511:37553" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="37746:37788" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="38472:38504" ph="DELETE FROM " />
+            <marker date="1496080057253" expanded="true" signature="38531:38565" ph="DELETE FROM " />
+            <marker date="1496080057253" expanded="true" signature="38807:38833" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="39049:39075" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="39341:39367" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="39583:39609" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="39875:39901" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="40117:40143" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="40409:40435" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="40651:40677" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="40943:40969" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="41185:41211" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="42417:42459" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="42652:42694" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="44592:44644" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="45048:45100" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="48178:48217" ph="SELECT name handles" />
+            <marker date="1496080057253" expanded="true" signature="49293:49350" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="49762:49819" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="58411:58453" ph="SELECT name,... datas" />
+            <marker date="1496080057253" expanded="true" signature="58646:58688" ph="SELECT name,... datas" />
           </folding>
         </state>
       </provider>
