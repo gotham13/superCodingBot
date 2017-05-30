@@ -19,8 +19,8 @@ from xlsxwriter.workbook import Workbook
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
 logger = logging.getLogger(__name__)
-TOKEN = 'YOUR-telegram-bot-token-here'
-API_KEY = 'YOUR-HACKERRANK-API'
+TOKEN = 'Your-Telegram-bot-token'
+API_KEY = 'your-hackerrank-api-key'
 compiler = helper.HackerRankAPI(api_key = API_KEY)
 
 NAME, JUDGE, HANDLE= range(3)
