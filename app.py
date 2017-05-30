@@ -19,8 +19,8 @@ from xlsxwriter.workbook import Workbook
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
 logger = logging.getLogger(__name__)
-TOKEN = 'Your-Telegram-bot-token'
-API_KEY = 'your-hackerrank-api-key'
+TOKEN = 'YOUR-telegram-bot-token-here'
+API_KEY = 'YOUR-HACKERRANK-API'
 compiler = helper.HackerRankAPI(api_key = API_KEY)
 
 NAME, JUDGE, HANDLE= range(3)
@@ -251,6 +251,7 @@ def updaters():
                 opener.addheaders = [('User-agent', 'Mozilla/5.0')]
                 try:
                     sauce = opener.open('https://www.hackerrank.com/' + str(row[wo]) + '?hr_r=1')
+                    soup = bs.BeautifulSoup(sauce, 'html5lib')
                     try:
                         soup.find('script', {"id": "initialData"}).text
                         s = soup.find('script', {"id": "initialData"}).text
@@ -267,8 +268,6 @@ def updaters():
                         pass
                 except urllib.error.URLError as e:
                     pass
-                soup = bs.BeautifulSoup(sauce, 'html5lib')
-
             elif wo == 3 and (row[wo]!='' and row[wo] is not None):
                 opener = urllib.request.build_opener()
                 opener.addheaders = [('User-agent', 'Mozilla/5.0')]
@@ -493,6 +492,7 @@ def updasel(bot,update):
                     opener.addheaders = [('User-agent', 'Mozilla/5.0')]
                     try:
                         sauce = opener.open('https://www.hackerrank.com/' + str(row[wo]) + '?hr_r=1')
+                        soup = bs.BeautifulSoup(sauce, 'html5lib')
                         try:
                             soup.find('script', {"id": "initialData"}).text
                             s = soup.find('script', {"id": "initialData"}).text
@@ -510,8 +510,6 @@ def updasel(bot,update):
                             pass
                     except urllib.error.URLError as e:
                         pass
-                    soup = bs.BeautifulSoup(sauce, 'html5lib')
-
                 elif wo == 3 and (row[wo] != '' and row[wo] is not None):
                     opener = urllib.request.build_opener()
                     opener.addheaders = [('User-agent', 'Mozilla/5.0')]
