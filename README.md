@@ -10,7 +10,7 @@ HTML5LIB
 BEAUTIFUL SOUP  
 HACKERRANK API  
 APSCHEDULER  
-XLMX WRITER  
+XLSX WRITER  
 # USAGE
 You can use it by replacing the token in app.py with your telegram bot token wich you can get from telegrams official site by activating 
 bot father and api key by replacing the api key generated on hackerrank.com, you need to login to hackerrank to do that. You need to host the 

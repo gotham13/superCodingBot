@@ -128,6 +128,10 @@ def error(bot, update, error):
 
 
 def register(bot,update):
+    s=update.message.chat_id
+    if s<0:
+        update.message.reply_text("Sorry cant register through group, Please register through personal message")
+        return ConversationHandler.END
     update.message.reply_text('Hi,please enter your name ')
     return NAME
 
@@ -294,7 +298,7 @@ def unregister(bot,update):
 sched = BackgroundScheduler()
 
 
-@sched.scheduled_job('cron', day_of_week='sat-sun',hour=0, minute=00)
+@sched.scheduled_job('cron', day_of_week='sat-sun',hour=18, minute=30)
 def qupd():
     global reqccc,reqcce,reqcch,reqccm,reqccs,conccc,concce,concch,conccm,conccs,scce,s1cce,scch,s1cch,sccm,s1ccm,sccs,s1ccs,sccc,s1ccc,soupccc,soupcce,soupcch,soupccm,soupccs
     try:
@@ -330,7 +334,7 @@ def admqupd(bot,update):
     qupd()
 
 
-@sched.scheduled_job('cron', hour=0, minute=0)
+@sched.scheduled_job('cron', hour=18, minute=30)
 def updaters():
     conn = sqlite3.connect('coders1.db')
     c = conn.cursor()
