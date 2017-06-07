@@ -1,6 +1,7 @@
 import logging
 import helper
 import json
+from datetime import datetime, timedelta
 import os
 from apscheduler.schedulers.background import BackgroundScheduler
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
@@ -14,19 +15,21 @@ import urllib.error
 import urllib.request
 from urllib import parse
 import sqlite3
+import random
 from xlsxwriter.workbook import Workbook
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
 logger = logging.getLogger(__name__)
-TOKEN = 'YOUR-telegram-bot-token-here'
-API_KEY = 'YOUR-HACKERRANK-API'
+TOKEN = 'YOUR-TELEGRAM-BOT-TOKEN-HERE'
+API_KEY = 'YOUR-HACKERRANK-API-KEY-HERE'
 compiler = helper.HackerRankAPI(api_key = API_KEY)
 
 NAME, JUDGE, HANDLE= range(3)
 SELECTION, HOLO, SOLO, POLO, XOLO=range(5)
 REMOVER=range(1)
 UPDA=range(1)
+QSELCC=range(1)
 LANG, CODE, DECODE, TESTCASES, RESULT, OTHER, FILE= range(7)
 conn = sqlite3.connect('coders1.db')
 create_table_request_list = [
@@ -40,13 +43,85 @@ for create_table_request in create_table_request_list:
                     pass
 conn.commit()
 conn.close()
+i=0
+while(True):
+    if i==5:
+        break
+    try:
+        reqcce = urllib.request.Request("https://www.codechef.com/problems/easy/",headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"})
+        reqccs = urllib.request.Request("https://www.codechef.com/problems/school/",headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"})
+        reqccm = urllib.request.Request("https://www.codechef.com/problems/medium/",headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"})
+        reqcch = urllib.request.Request("https://www.codechef.com/problems/hard/",headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"})
+        reqccc = urllib.request.Request("https://www.codechef.com/problems/challenge/",headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"})
+        concce = urllib.request.urlopen( reqcce )
+        soupcce=bs.BeautifulSoup(concce,"html5lib")
+        scce=soupcce.find_all('div',{"class":"problemname"})
+        s1cce=soupcce.find_all('a',{"title":"Submit a solution to this problem."})
+        conccs = urllib.request.urlopen( reqccs )
+        soupccs=bs.BeautifulSoup(conccs,"html5lib")
+        sccs=soupccs.find_all('div',{"class":"problemname"})
+        s1ccs=soupccs.find_all('a',{"title":"Submit a solution to this problem."})
+        conccm = urllib.request.urlopen( reqccm )
+        soupccm=bs.BeautifulSoup(conccm,"html5lib")
+        sccm=soupccm.find_all('div',{"class":"problemname"})
+        s1ccm=soupccm.find_all('a',{"title":"Submit a solution to this problem."})
+        concch = urllib.request.urlopen( reqcch )
+        soupcch=bs.BeautifulSoup(concch,"html5lib")
+        scch=soupcch.find_all('div',{"class":"problemname"})
+        s1cch=soupcch.find_all('a',{"title":"Submit a solution to this problem."})
+        conccc = urllib.request.urlopen( reqccc )
+        soupccc=bs.BeautifulSoup(conccc,"html5lib")
+        sccc=soupccc.find_all('div',{"class":"problemname"})
+        s1ccc=soupccc.find_all('a',{"title":"Submit a solution to this problem."})
+        break
+    except urllib.error.URLError:
+        i=i+1
+        continue
+
+def randomcc(bot,update):
+    keyboard = [[InlineKeyboardButton("Beginner", callback_data='BEGINNER'),
+                 InlineKeyboardButton("Easy", callback_data='EASY')],
+                [InlineKeyboardButton("Medium", callback_data='MEDIUM'),
+                 InlineKeyboardButton("Hard", callback_data='HARD')],
+                [InlineKeyboardButton("Challenge", callback_data='CHALLENGE')]]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    update.message.reply_text('Please select the type of question',reply_markup=reply_markup)
+    return QSELCC
+
+def qselcc(bot,update):
+    global scce,s1cce,scch,s1cch,sccm,s1ccm,sccs,s1ccs,sccc,s1ccc
+    query=update.callback_query
+    val=query.data
+    if val=='BEGINNER':
+        n = random.randint(0, len(sccs) - 1)
+        strt=sccs[n].text.strip("\n\n ")
+        strn=s1ccs[n].text
+    if val=='EASY':
+        n = random.randint(0, len(scce) - 1)
+        strt=scce[n].text.strip("\n\n ")
+        strn=s1cce[n].text
+    if val=='MEDIUM':
+        n = random.randint(0, len(sccm) - 1)
+        strt=sccm[n].text.strip("\n\n ")
+        strn=s1ccm[n].text
+    if val=='HARD':
+        n = random.randint(0, len(scch) - 1)
+        strt=scch[n].text.strip("\n\n ")
+        strn=s1cch[n].text
+    if val=='CHALLENGE':
+        n = random.randint(0, len(sccc) - 1)
+        strt=sccc[n].text.strip("\n\n ")
+        strn=s1ccc[n].text
+    bot.edit_message_text(text="Random "+val+" question from codechef\n\n"+strt+"\n"+"https://www.codechef.com/problems/"+strn, chat_id=query.message.chat_id,
+                          message_id=query.message.message_id)
+    return ConversationHandler.END
 
 def start(bot, update):
-    update.message.reply_text('welcome!\nOnly one person can register through one telegram id\nHere are the commands\nEnter /cancel at any time to cancel operation\nEnter /register to go to register menu to register your handle to the bot\nEnter /unregister to go to unregister menu to unregister from the bot\nEnter /ranklist to go to ranklist menu to get ranklist\nEnter /ongoing to get a list of ongoing competitions\nEnter /upcoming to get a list of upcoming competitions\nEnter /compiler to compile and run\nEnter /update to initialise updating of your info\n Automatic updation of all data will take place every day\n To see all the commands enter /help any time.')
+    update.message.reply_text('welcome!\nOnly one person can register through one telegram id\nHere are the commands\nEnter /cancel at any time to cancel operation\nEnter /randomcc to get a random question from codechef\nEnter /register to go to register menu to register your handle to the bot\nEnter /unregister to go to unregister menu to unregister from the bot\nEnter /ranklist to go to ranklist menu to get ranklist\nEnter /ongoing to get a list of ongoing competitions\nEnter /upcoming to get a list of upcoming competitions\nEnter /compiler to compile and run\nEnter /update to initialise updating of your info\n Automatic updation of all data will take place every day\n To see all the commands enter /help any time.')
 
 def help(bot,update):
     update.message.reply_text(
-        'Only one person can register through one telegram id\nHere are the commands\nEnter /register to go to register menu to register your handle to the bot\nEnter /cancel at any time to cancel operation\nEnter /unregister to go to unregister menu to unregister from the bot\nEnter /ranklist to go to ranklist menu to get ranklist\nEnter /ongoing to get a list of ongoing competitions\nEnter /upcoming to get a list of upcoming competitions\nEnter /compiler to compile and run\nEnter /update to initialise updating of your info\n Automatic updation of all data will take place every day\n To see all the commands enter /help any time.')
+        'Only one person can register through one telegram id\nHere are the commands\nEnter /register to go to register menu to register your handle to the bot\nEnter /cancel at any time to cancel operation\nEnter /randomcc to get a random question from codechef\nEnter /unregister to go to unregister menu to unregister from the bot\nEnter /ranklist to go to ranklist menu to get ranklist\nEnter /ongoing to get a list of ongoing competitions\nEnter /upcoming to get a list of upcoming competitions\nEnter /compiler to compile and run\nEnter /update to initialise updating of your info\n Automatic updation of all data will take place every day\n To see all the commands enter /help any time.')
 
 def error(bot, update, error):
     logger.warning('Update "%s" caused error "%s"' % (update, error))
@@ -55,6 +130,7 @@ def error(bot, update, error):
 def register(bot,update):
     update.message.reply_text('Hi,please enter your name ')
     return NAME
+
 
 
 def compilers(bot,update):
@@ -178,6 +254,10 @@ def ongoing(bot,update):
         s = s + title + "\nDuration:" + duration + "\n" + host + "\n" + contest + "\n\n"
     update.message.reply_text(s)
 
+def time_converter(old_time, time_zone):
+    time_zone = float(time_zone[:3] + ('.5' if time_zone[3] == '3' else '.0'))
+    str_time = datetime.strptime(old_time, "%Y-%m-%dT%H:%M:%S")
+    return (str_time + timedelta(hours=time_zone)).strftime("%Y-%m-%dT%H:%M:%S")
 
 def upcoming(bot,update):
     rawData = urllib.request.urlopen('http://challengehuntapp.appspot.com/v2').read().decode('utf-8')
@@ -194,7 +274,8 @@ def upcoming(bot,update):
         duration = er['duration']
         host = er['host_name']
         contest = er['contest_url']
-        s = s + title + "\n" + "Start: " + start.replace("T"," ") + "\n" + "Duration: " + duration + "\n" + host + "\n" + contest + "\n\n"
+        start1=time_converter(start, '+0530')
+        s = s + title + "\n" + "Start:\n" + start.replace("T"," ") + " GMT\n" + str(start1).replace("T"," ")+" IST\n"+"Duration: " + duration + "\n" + host + "\n" + contest + "\n\n"
     update.message.reply_text(s)
 
 
@@ -210,8 +291,43 @@ def unregister(bot,update):
     return REMOVER
 
 
-
 sched = BackgroundScheduler()
+
+
+@sched.scheduled_job('cron', day_of_week='sat-sun',hour=0, minute=00)
+def qupd():
+    global reqccc,reqcce,reqcch,reqccm,reqccs,conccc,concce,concch,conccm,conccs,scce,s1cce,scch,s1cch,sccm,s1ccm,sccs,s1ccs,sccc,s1ccc,soupccc,soupcce,soupcch,soupccm,soupccs
+    try:
+        reqcce = urllib.request.Request("https://www.codechef.com/problems/easy/",headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"})
+        reqccs = urllib.request.Request("https://www.codechef.com/problems/school/",headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"})
+        reqccm = urllib.request.Request("https://www.codechef.com/problems/medium/",headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"})
+        reqcch = urllib.request.Request("https://www.codechef.com/problems/hard/",headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"})
+        reqccc = urllib.request.Request("https://www.codechef.com/problems/challenge/",headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/47.0.2526.106 Safari/537.36"})
+        concce = urllib.request.urlopen( reqcce )
+        soupcce=bs.BeautifulSoup(concce,"html5lib")
+        scce=soupcce.find_all('div',{"class":"problemname"})
+        s1cce=soupcce.find_all('a',{"title":"Submit a solution to this problem."})
+        conccs = urllib.request.urlopen( reqccs )
+        soupccs=bs.BeautifulSoup(conccs,"html5lib")
+        sccs=soupccs.find_all('div',{"class":"problemname"})
+        s1ccs=soupccs.find_all('a',{"title":"Submit a solution to this problem."})
+        conccm = urllib.request.urlopen( reqccm )
+        soupccm=bs.BeautifulSoup(conccm,"html5lib")
+        sccm=soupccm.find_all('div',{"class":"problemname"})
+        s1ccm=soupccm.find_all('a',{"title":"Submit a solution to this problem."})
+        concch = urllib.request.urlopen( reqcch )
+        soupcch=bs.BeautifulSoup(concch,"html5lib")
+        scch=soupcch.find_all('div',{"class":"problemname"})
+        s1cch=soupcch.find_all('a',{"title":"Submit a solution to this problem."})
+        conccc = urllib.request.urlopen( reqccc )
+        soupccc=bs.BeautifulSoup(conccc,"html5lib")
+        sccc=soupccc.find_all('div',{"class":"problemname"})
+        s1ccc=soupccc.find_all('a',{"title":"Submit a solution to this problem."})
+    except urllib.error.URLError:
+        pass
+
+def admqupd(bot,update):
+    qupd()
 
 
 @sched.scheduled_job('cron', hour=0, minute=0)
@@ -409,7 +525,6 @@ def updaters():
     workbook.close()
     conn.commit()
     conn.close()
-    print("updated")
 
 sched.start()
 
@@ -1349,17 +1464,31 @@ def setup(webhook_url=None):
 
             fallbacks=[CommandHandler('cancel', cancel, pass_user_data=True)]
         )
+
+        conv_handler5 = ConversationHandler(
+            entry_points=[CommandHandler('randomcc', randomcc)],
+
+            states={
+
+                QSELCC: [CallbackQueryHandler(qselcc)]
+
+            },
+
+            fallbacks=[CommandHandler('cancel', cancel, pass_user_data=True)]
+        )
         dp.add_handler(conv_handler)
         dp.add_handler(conv_handler1)
         dp.add_handler(conv_handler2)
         dp.add_handler(conv_handler3)
         dp.add_handler(conv_handler4)
+        dp.add_handler(conv_handler5)
         dp.add_handler(CommandHandler('help',help))
         dp.add_handler(CommandHandler('start',start))
         dp.add_handler(CommandHandler('ongoing',ongoing))
         dp.add_handler(CommandHandler('upcoming',upcoming))
         dp.add_handler(CommandHandler('adminhandle',adminhandle))
         dp.add_handler(CommandHandler('adminupdate', adminupdate))
+        dp.add_handler(CommandHandler('updateq',admqupd))
         # log all errors
         dp.add_error_handler(error)
     # Add your handlers here
