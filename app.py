@@ -471,20 +471,28 @@ def other(bot,update,user_data):
 # END OF CONVERSATION HANDLER FOR COMPILING AND RUNNING
 
 
+# GLOBAL VARIABLES STORE THE PREVIOUS DATA TEMPORARILY IN CASE THE WEBPAGE IS BEING MAINTAINED
+ong=""
+upc=""
 # COMMAND HANDLER FUNCTION TO SHOW LIST OF ONGOING COMPETITIONS
 def ongoing(bot,update):
+    global ong
     #PARSING JSON
     rawData = urllib.request.urlopen('http://challengehuntapp.appspot.com/v2').read().decode('utf-8')
-    jsonData = json.loads(rawData)
-    searchResults = jsonData['active']
-    s = ""
-    for er in searchResults:
-        title = er['contest_name']
-        duration = er['duration']
-        host = er['host_name']
-        contest = er['contest_url']
-        s = s + title + "\nDuration:" + duration + "\n" + host + "\n" + contest + "\n\n"
-    update.message.reply_text(s)
+    try:
+        jsonData = json.loads(rawData)
+        searchResults = jsonData['active']
+        s = ""
+        for er in searchResults:
+            title = er['contest_name']
+            duration = er['duration']
+            host = er['host_name']
+            contest = er['contest_url']
+            s = s + title + "\nDuration:" + duration + "\n" + host + "\n" + contest + "\n\n"
+        ong=s
+        update.message.reply_text(s)
+    except:
+        update.message.reply_text(ong)
 
 
 # FUNCTION TO CONVERT TIME FROM UTC TO OTHER TIME ZONE
@@ -496,25 +504,31 @@ def time_converter(old_time, time_zone):
 
 # COMMAND HANDLER FUNCTION TO SHOW A LIST OF UPCOMING COMPETITIONS
 def upcoming(bot,update):
+    global upc
     # PARSING JSON
     rawData = urllib.request.urlopen('http://challengehuntapp.appspot.com/v2').read().decode('utf-8')
-    jsonData = json.loads(rawData)
-    searchResults = jsonData['pending']
-    i = 0
-    s = ""
-    for er in searchResults:
-        i = i + 1
-        # LIMITING NO OF EVENTS TO 20
-        if i == 20:
-            break
-        title = er['contest_name']
-        start = er['start']
-        duration = er['duration']
-        host = er['host_name']
-        contest = er['contest_url']
-        start1=time_converter(start, '+0530')
-        s = s + title + "\n" + "Start:\n" + start.replace("T"," ") + " GMT\n" + str(start1).replace("T"," ")+" IST\n"+"Duration: " + duration + "\n" + host + "\n" + contest + "\n\n"
-    update.message.reply_text(s)
+    try:
+        jsonData = json.loads(rawData)
+        searchResults = jsonData['pending']
+        i = 0
+        s = ""
+        for er in searchResults:
+            i = i + 1
+            # LIMITING NO OF EVENTS TO 20
+            if i == 20:
+                break
+            title = er['contest_name']
+            start = er['start']
+            duration = er['duration']
+            host = er['host_name']
+            contest = er['contest_url']
+            start1 = time_converter(start, '+0530')
+            s = s + title + "\n" + "Start:\n" + start.replace("T", " ") + " GMT\n" + str(start1).replace("T",
+                                                                                                         " ") + " IST\n" + "Duration: " + duration + "\n" + host + "\n" + contest + "\n\n"
+        upc=s
+        update.message.reply_text(s)
+    except:
+        update.message.reply_text(upc)
 
 
 # START OF CONVERSATION HANDLER FOR UNREGISTERING
