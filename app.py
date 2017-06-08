@@ -24,13 +24,15 @@ logger = logging.getLogger(__name__)
 TOKEN = 'YOUR-TELEGRAM-BOT-TOKEN-HERE'
 API_KEY = 'YOUR-HACKERRANK-API-KEY-HERE'
 compiler = helper.HackerRankAPI(api_key = API_KEY)
-
+# FOR CONVERSATION HANDLERS
 NAME, JUDGE, HANDLE= range(3)
 SELECTION, HOLO, SOLO, POLO, XOLO=range(5)
 REMOVER=range(1)
 UPDA=range(1)
 QSELCC=range(1)
 LANG, CODE, DECODE, TESTCASES, RESULT, OTHER, FILE= range(7)
+
+# CONNECTING TO SQLITE DATABASE AND CREATING TABLES
 conn = sqlite3.connect('coders1.db')
 create_table_request_list = [
                 'CREATE TABLE handles(id TEXT PRIMARY KEY,name TEXT,HE TEXT,HR TEXT,CF TEXT,SP TEXT,CC TEXT)',
@@ -43,8 +45,13 @@ for create_table_request in create_table_request_list:
                     pass
 conn.commit()
 conn.close()
+
+# GETTING QUESTIONS FROM CODECHEF WEBSITE
+# STORING THEM ACCORDING TO THE TAG EASY,MEDIUM,HARD,BEGINNER,CHALLENGE
+# STORING TITLE OF QUESTIONS AND THEIR CODE IN SEPERATE LISTS
 i=0
 while(True):
+    # TRYING 5 TIMES AS SOMETIMES IT GIVES URL ERROR IN ONE GO
     if i==5:
         break
     try:
@@ -78,6 +85,21 @@ while(True):
         i=i+1
         continue
 
+# COMMAND HANDLER FUNCTION FOR /start COMMAND
+def start(bot, update):
+    update.message.reply_text('welcome!\nOnly one person can register through one telegram id\nHere are the commands\nEnter /cancel at any time to cancel operation\nEnter /randomcc to get a random question from codechef\nEnter /register to go to register menu to register your handle to the bot\nEnter /unregister to go to unregister menu to unregister from the bot\nEnter /ranklist to go to ranklist menu to get ranklist\nEnter /ongoing to get a list of ongoing competitions\nEnter /upcoming to get a list of upcoming competitions\nEnter /compiler to compile and run\nEnter /update to initialise updating of your info\n Automatic updation of all data will take place every day\n To see all the commands enter /help any time.')
+
+# COMMAND HANDLER FUNCTION FOR /help COMMAND
+def help(bot, update):
+    update.message.reply_text('Only one person can register through one telegram id\nHere are the commands\nEnter /register to go to register menu to register your handle to the bot\nEnter /cancel at any time to cancel operation\nEnter /randomcc to get a random question from codechef\nEnter /unregister to go to unregister menu to unregister from the bot\nEnter /ranklist to go to ranklist menu to get ranklist\nEnter /ongoing to get a list of ongoing competitions\nEnter /upcoming to get a list of upcoming competitions\nEnter /compiler to compile and run\nEnter /update to initialise updating of your info\n Automatic updation of all data will take place every day\n To see all the commands enter /help any time.')
+
+# FUNCTION FOR LOGGING ALL KINDS OF ERRORS
+def error(bot, update, error):
+    logger.warning('Update "%s" caused error "%s"' % (update, error))
+
+
+# START OF CONVERSATION HANDLER FOR GETTING RANDOM QUESTION FROM CODECHEF
+# FUNCTION TO GET INPUT ABOUT THE TYPE OF QUESTION FROM USER
 def randomcc(bot,update):
     keyboard = [[InlineKeyboardButton("Beginner", callback_data='BEGINNER'),
                  InlineKeyboardButton("Easy", callback_data='EASY')],
@@ -88,6 +110,7 @@ def randomcc(bot,update):
     update.message.reply_text('Please select the type of question',reply_markup=reply_markup)
     return QSELCC
 
+# FUNCTION FOR SENDING THE RANDOM QUESTION TO USER ACCORDING TO HIS CHOICE
 def qselcc(bot,update):
     global scce,s1cce,scch,s1cch,sccm,s1ccm,sccs,s1ccs,sccc,s1ccc
     query=update.callback_query
@@ -115,20 +138,13 @@ def qselcc(bot,update):
     bot.edit_message_text(text="Random "+val+" question from codechef\n\n"+strt+"\n"+"https://www.codechef.com/problems/"+strn, chat_id=query.message.chat_id,
                           message_id=query.message.message_id)
     return ConversationHandler.END
-
-def start(bot, update):
-    update.message.reply_text('welcome!\nOnly one person can register through one telegram id\nHere are the commands\nEnter /cancel at any time to cancel operation\nEnter /randomcc to get a random question from codechef\nEnter /register to go to register menu to register your handle to the bot\nEnter /unregister to go to unregister menu to unregister from the bot\nEnter /ranklist to go to ranklist menu to get ranklist\nEnter /ongoing to get a list of ongoing competitions\nEnter /upcoming to get a list of upcoming competitions\nEnter /compiler to compile and run\nEnter /update to initialise updating of your info\n Automatic updation of all data will take place every day\n To see all the commands enter /help any time.')
-
-def help(bot,update):
-    update.message.reply_text(
-        'Only one person can register through one telegram id\nHere are the commands\nEnter /register to go to register menu to register your handle to the bot\nEnter /cancel at any time to cancel operation\nEnter /randomcc to get a random question from codechef\nEnter /unregister to go to unregister menu to unregister from the bot\nEnter /ranklist to go to ranklist menu to get ranklist\nEnter /ongoing to get a list of ongoing competitions\nEnter /upcoming to get a list of upcoming competitions\nEnter /compiler to compile and run\nEnter /update to initialise updating of your info\n Automatic updation of all data will take place every day\n To see all the commands enter /help any time.')
-
-def error(bot, update, error):
-    logger.warning('Update "%s" caused error "%s"' % (update, error))
+# END OF CONVERSATION HANDLER FOR GETTING RANDOM QUESTION FROM CODECHEF
 
 
+# START OF CONVERSATION HANDLER FOR REGISTERING THE USERS HANDLES
 def register(bot,update):
     s=update.message.chat_id
+    # CHECKING IF THE CHAT ID IS CHAT ID OF GROUP (-VE) NOT SURE ABOUT THIS THOUGH
     if s<0:
         update.message.reply_text("Sorry cant register through group, Please register through personal message")
         return ConversationHandler.END
@@ -136,7 +152,205 @@ def register(bot,update):
     return NAME
 
 
+# FUNCTION FOR GETTING THE NAME AND ASKING ABOUT WHICH JUDGE USER WANTS TO REGISTER THEIR HANDLE FOR
+def name(bot,update,user_data):
+    user_data['name']=update.message.text.upper()
+    #THIS IS HOW AN INLINE KEYBOARD IS MADE AND USED
+    keyboard = [[InlineKeyboardButton("Hackerearth", callback_data='HE'),InlineKeyboardButton("Hackerrank", callback_data='HR')],[InlineKeyboardButton("Codechef", callback_data='CC'),InlineKeyboardButton("Spoj", callback_data='SP')],[InlineKeyboardButton("Codeforces", callback_data='CF')]]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    update.message.reply_text('please enter the online judge you want to setup with  the bot',reply_markup=reply_markup)
+    return JUDGE
 
+
+# FUNCTION FOR GETTING THE ONLINE JUDGE AND ASKING FOR HANDLE
+def judge(bot,update,user_data):
+    #AND THIS IS HOW WE GET THE CALLBACK DATA WHEN INLINE KEYBOARD KEY IS PRESSED
+    query = update.callback_query
+    user_data['code']=query.data
+    bot.edit_message_text(text='please enter your handle eg. gotham13121997',
+                              chat_id=query.message.chat_id,
+                              message_id=query.message.message_id)
+    return HANDLE
+
+
+# FUNCTION FOR GETTING THE HANDLE AND REGISTERING IT IN DATABASE
+# ALL THE MAGIC BEGINS HERE
+def handle(bot,update,user_data):
+    user=str(update.message.chat_id)
+    handle1=update.message.text
+    name1=user_data['name']
+    code1=user_data['code']
+    if code1=='HE':
+        # IF HACKEREARTH
+        opener = urllib.request.build_opener()
+        # SCRAPING DATA FROM WEBPAGE
+        opener.addheaders = [('User-agent', 'Mozilla/5.0')]
+        try:
+            sauce = opener.open('https://www.hackerearth.com/@' + handle1)
+            print('used')
+            soup = bs.BeautifulSoup(sauce, 'html5lib')
+            stri = "HACKEREARTH\n"
+            for i in soup.find_all('a', {"href": "/users/" + handle1 + "/activity/hackerearth/#user-rating-graph"}):
+                stri = stri + i.text + "\n"
+            for i in soup.find_all('a', {"href": "/@" + handle1 + "/followers/"}):
+                stri = stri + i.text + "\n"
+            for i in soup.find_all('a', {"href": "/@" + handle1 + "/following/"}):
+                stri = stri + i.text + "\n"
+            vals = stri
+        except urllib.error.URLError as e:
+            # IF URL NOT FOUND THE ID IS WRONG
+            update.message.reply_text('wrong id')
+            user_data.clear()
+            return ConversationHandler.END
+    elif code1=='HR':
+        # IF HACKERRANK
+        opener = urllib.request.build_opener()
+        opener.addheaders = [('User-agent', 'Mozilla/5.0')]
+        try:
+            sauce = opener.open('https://www.hackerrank.com/'+handle1+'?hr_r=1')
+            soup = bs.BeautifulSoup(sauce, 'html5lib')
+            try:
+                soup.find('script', {"id": "initialData"}).text
+            except AttributeError:
+                update.message.reply_text('wrong id')
+                user_data.clear()
+                return ConversationHandler.END
+            # I HAVE NO IDEA WHAT I HAVE DONE HERE
+            # BUT IT SEEMS TO WORK
+            s = soup.find('script', {"id": "initialData"}).text
+            i = s.find("hacker_id", s.find("hacker_id", s.find("hacker_id") + 1) + 1)
+            i = parse.unquote(s[i:i + 280]).replace(",", ">").replace(":", " ").replace("{", "").replace("}",
+                                                                                                         "").replace(
+                '"', "").split(">")
+            s1 = "HACKERRANK\n"
+            for j in range(1, 10):
+                s1 = s1 + i[j] + "\n"
+            vals = s1
+        except urllib.error.URLError as e:
+            update.message.reply_text('wrong id')
+            user_data.clear()
+            return ConversationHandler.END
+    elif code1=='CC':
+        # IF CODECHEF
+        opener = urllib.request.build_opener()
+        opener.addheaders = [('User-agent', 'Mozilla/5.0')]
+        try:
+            sauce = opener.open('https://www.codechef.com/users/'+handle1)
+            soup = bs.BeautifulSoup(sauce, 'html5lib')
+            try:
+                soup.find('a', {"href": "http://www.codechef.com/ratings/all"}).text
+            except AttributeError:
+                update.message.reply_text('wrong id')
+                user_data.clear()
+                return ConversationHandler.END
+            try:
+                s1 = soup.find('span', {"class": "rating"}).text + "\n"
+            except AttributeError:
+                s1 = ""
+            s = "CODECHEF" + "\n" + s1 + "rating: " + soup.find('a', {
+                "href": "http://www.codechef.com/ratings/all"}).text + "\n" + soup.find('div', {
+                "class": "rating-ranks"}).text.replace(" ", "").replace("\n\n", "").strip('\n')
+            vals = s
+        except urllib.error.URLError as e:
+            update.message.reply_text('wrong id')
+            user_data.clear()
+            return ConversationHandler.END
+    elif code1=='SP':
+        # IF SPOJ
+        opener = urllib.request.build_opener()
+        opener.addheaders = [('User-agent', 'Mozilla/5.0')]
+        try:
+            sauce = opener.open('http://www.spoj.com/users/'+handle1+'/')
+            soup = bs.BeautifulSoup(sauce, 'html5lib')
+            try:
+                soup.find('div', {"class": "col-md-3"}).text
+            except AttributeError:
+                update.message.reply_text('wrong id')
+                user_data.clear()
+                return ConversationHandler.END
+            s = soup.find('div', {"class": "col-md-3"}).text.strip('\n\n').replace("\t", "").split('\n')
+            s = s[3].strip().split(":")
+            s = "SPOJ\n" + s[0] + "\n" + s[1].strip(" ") + "\n" + soup.find('dl', {
+                "class": "dl-horizontal profile-info-data profile-info-data-stats"}).text.replace("\t", "").replace(
+                "\xa0", "").strip('\n')
+            vals = s
+        except urllib.error.URLError as e:
+            update.message.reply_text('wrong id')
+            user_data.clear()
+            return ConversationHandler.END
+    elif code1=='CF':
+        # IF CODEFORCES
+        opener = urllib.request.build_opener()
+        opener.addheaders = [('User-agent', 'Mozilla/5.0')]
+        try:
+            sauce = opener.open('http://codeforces.com/profile/'+handle1)
+            soup = bs.BeautifulSoup(sauce, 'html5lib')
+            try:
+                soup.find('span', {"style": "color:gray;font-weight:bold;"}).text
+            except AttributeError:
+                update.message.reply_text('wrong id')
+                user_data.clear()
+                return ConversationHandler.END
+            s = soup.find_all('span', {"style": "font-weight:bold;"})
+            if len(s) == 0:
+                s2 = ""
+            else:
+                s2 = "contest rating: " + s[0].text + "\n" + "max: " + s[1].text + s[2].text + "\n"
+            s1 = "CODEFORCES\n" + s2 + "contributions: " + soup.find('span',
+                                                                     {"style": "color:gray;font-weight:bold;"}).text
+            vals = s1
+        except urllib.error.URLError as e:
+            update.message.reply_text('wrong id')
+            user_data.clear()
+            return ConversationHandler.END
+    # CONNECTING TO DATABASE
+    conn=sqlite3.connect('coders1.db')
+    c = conn.cursor()
+    # STORING THE PROFILE INFO IN datas TABLE
+    # STORING HANDLES IN handles TABLE
+    c.execute("INSERT OR IGNORE INTO datas (id, name, "+code1+") VALUES (?, ?, ?)",(user,name1,vals))
+    c.execute("INSERT OR IGNORE INTO handles (id, name, "+code1+") VALUES (?, ?, ?)",(user,name1,handle1))
+    if c.rowcount==0:
+        c.execute("UPDATE datas SET "+code1+" = (?) , name= (?) WHERE id = (?) ",(vals,name1,user))
+        c.execute("UPDATE handles SET " + code1 + " = (?) , name= (?) WHERE id = (?) ", (handle1,name1,user))
+    conn.commit()
+    # BELOW LINES ARE USED TO CREATE XLMX FILES OF ALL SORTS OF RANKLIST
+    # SO WHEN USER ASKS FOR RANKLIST THERE IS NO DELAY
+    c.execute("SELECT name, HE, HR, SP, CF, CC FROM datas")
+    workbook = Workbook('all.xlsx')
+    worksheet = workbook.add_worksheet()
+    format = workbook.add_format()
+    format.set_align('top')
+    format.set_text_wrap()
+    mysel = c.execute("SELECT name, HE, HR, SP, CF, CC FROM datas")
+    for i, row in enumerate(mysel):
+        for j, value in enumerate(row):
+            worksheet.write(i, j, row[j],format)
+            worksheet.set_row(i,170)
+    worksheet.set_column(0,5,40)
+    workbook.close()
+    c.execute("SELECT name, "+code1+" FROM datas")
+    workbook = Workbook(code1+".xlsx")
+    worksheet = workbook.add_worksheet()
+    format = workbook.add_format()
+    format.set_align('top')
+    format.set_text_wrap()
+    mysel = c.execute("SELECT name, "+code1+" FROM datas")
+    for i, row in enumerate(mysel):
+        for j, value in enumerate(row):
+            worksheet.write(i, j, row[j], format)
+            worksheet.set_row(i, 170)
+    worksheet.set_column(0, 5, 40)
+    workbook.close()
+    conn.close()
+    update.message.reply_text("Succesfully Registered")
+    update.message.reply_text(name1+"    \n"+vals)
+    user_data.clear()
+    return ConversationHandler.END
+# END OF CONVERSATION HANDLER FOR REGISTERING THE USERS HANDLES
+
+
+# START OF CONVERSATION HANDLER FOR COMPILING AND RUNNING
 def compilers(bot,update):
     keyboard = [[InlineKeyboardButton("C++", callback_data='cpp'),
                  InlineKeyboardButton("Python", callback_data='python')],
@@ -149,11 +363,12 @@ def compilers(bot,update):
     update.message.reply_text('Please selet the language',reply_markup=reply_markup)
     return LANG
 
-
+# FUNCTION TO GET THE PROGRAMMING LANGUAGE
 def lang(bot,update,user_data):
     query=update.callback_query
     val=query.data
     if val=="other":
+        # IF USER CHOOSES OTHER
         s1=""
         for i in compiler.supportedlanguages():
             s1=s1+i+","
@@ -161,6 +376,7 @@ def lang(bot,update,user_data):
                               message_id=query.message.message_id)
         return OTHER
     else:
+        # ELSE ASKING WETHER HE WANTS TO SEND SOURCE CODE OR A .TXT FILE
         user_data['lang']=val
         keyboard = [[InlineKeyboardButton("Enter Source Code", callback_data='code'),
                      InlineKeyboardButton("Send a .txt file", callback_data='file')]]
@@ -168,7 +384,7 @@ def lang(bot,update,user_data):
         bot.edit_message_text(text="please select",reply_markup=reply_markup,chat_id=query.message.chat_id,message_id=query.message.message_id)
         return CODE
 
-
+# FUNCTION TO GET THE SOURCE CODE OR .TXT FILE AS INPUT
 def code(bot,update,user_data):
     query = update.callback_query
     val = query.data
@@ -179,7 +395,7 @@ def code(bot,update,user_data):
         bot.edit_message_text(text="please send your .txt file", chat_id=query.message.chat_id,message_id=query.message.message_id)
         return FILE
 
-
+# FUNCTION TO DOWNLOAD THE FILE SENT AND EXTRACT ITS CONTENTS
 def filer(bot,update,user_data):
     file_id=update.message.document.file_id
     newFile = bot.get_file(file_id)
@@ -188,21 +404,28 @@ def filer(bot,update,user_data):
         source = f.read()
     user_data['code']=source
     update.message.reply_text('Please send test cases together as you would do in online ide\nIf you dont want to provide test cases send "#null" without quotes')
+    # REMOVING THE FILE AFTER PROCESS IS COMPLETE
     os.remove('abcd.txt')
     return TESTCASES
 
+# FUNCTION TO GET THE SOURCE CODE SENT BY USER
 def decode(bot,update,user_data):
     user_data['code']=update.message.text
     update.message.reply_text('Please send test cases together as you would do in online ide\nIf you dont want to provide test cases send "#null" without quotes')
     return TESTCASES
 
+# FUNCTION TO GET THE TEST CASES FROM THE USER
 def testcases(bot,update,user_data):
     s = update.message.text
     if s=="#null":
+        # CONVERTING UNICODE CHARACTER TO DOUBLE GREATER THAN OR LESS THAN
+        # WEIRD
         s1 = (str(user_data['code'])).replace("«", "<<").replace("»", ">>")
+        # USING COMPILER FUNCTION FROM helper.py script
         result = compiler.run({'source': s1,
                                'lang': user_data['lang']
                                })
+        #GETTING OUTPUT FROM result CLASS in helper.py script
         output=result.output
         time1=result.time
         memory1=result.memory
@@ -215,6 +438,7 @@ def testcases(bot,update,user_data):
             output=output[0]
         update.message.reply_text("Output:\n"+str(output)+"\n"+"Time: "+str(time1)+"\nMemory: "+str(memory1)+"\nMessage: "+str(message1))
     else:
+        #AGAIN THE SAME DRILL
         s1=(str(user_data['code'])).replace("«","<<").replace("»",">>")
         result = compiler.run({'source': s1,
                                'lang': user_data['lang'],
@@ -235,6 +459,7 @@ def testcases(bot,update,user_data):
     user_data.clear()
     return ConversationHandler.END
 
+# FUNCTION FOR THE CASE WHERE USER HAD SELECTED OTHER
 def other(bot,update,user_data):
     s=update.message.text
     user_data['lang'] = s
@@ -243,9 +468,12 @@ def other(bot,update,user_data):
     reply_markup = InlineKeyboardMarkup(keyboard)
     update.message.reply_text("please select",reply_markup=reply_markup)
     return CODE
+# END OF CONVERSATION HANDLER FOR COMPILING AND RUNNING
 
 
+# COMMAND HANDLER FUNCTION TO SHOW LIST OF ONGOING COMPETITIONS
 def ongoing(bot,update):
+    #PARSING JSON
     rawData = urllib.request.urlopen('http://challengehuntapp.appspot.com/v2').read().decode('utf-8')
     jsonData = json.loads(rawData)
     searchResults = jsonData['active']
@@ -258,12 +486,17 @@ def ongoing(bot,update):
         s = s + title + "\nDuration:" + duration + "\n" + host + "\n" + contest + "\n\n"
     update.message.reply_text(s)
 
+
+# FUNCTION TO CONVERT TIME FROM UTC TO OTHER TIME ZONE
 def time_converter(old_time, time_zone):
     time_zone = float(time_zone[:3] + ('.5' if time_zone[3] == '3' else '.0'))
     str_time = datetime.strptime(old_time, "%Y-%m-%dT%H:%M:%S")
     return (str_time + timedelta(hours=time_zone)).strftime("%Y-%m-%dT%H:%M:%S")
 
+
+# COMMAND HANDLER FUNCTION TO SHOW A LIST OF UPCOMING COMPETITIONS
 def upcoming(bot,update):
+    # PARSING JSON
     rawData = urllib.request.urlopen('http://challengehuntapp.appspot.com/v2').read().decode('utf-8')
     jsonData = json.loads(rawData)
     searchResults = jsonData['pending']
@@ -271,6 +504,7 @@ def upcoming(bot,update):
     s = ""
     for er in searchResults:
         i = i + 1
+        # LIMITING NO OF EVENTS TO 20
         if i == 20:
             break
         title = er['contest_name']
@@ -283,6 +517,7 @@ def upcoming(bot,update):
     update.message.reply_text(s)
 
 
+# START OF CONVERSATION HANDLER FOR UNREGISTERING
 def unregister(bot,update):
     keyboard = [[InlineKeyboardButton("Hackerearth", callback_data='HE'),
                  InlineKeyboardButton("Hackerrank", callback_data='HR')],
@@ -295,9 +530,134 @@ def unregister(bot,update):
     return REMOVER
 
 
+# FUNCTION FOR REMOVING DATA FROM DATABASE ACCORDING TO USERS CHOICE
+def remover(bot,update):
+    query=update.callback_query
+    val=query.data
+    conn = sqlite3.connect('coders1.db')
+    c = conn.cursor()
+    a=str(query.message.chat_id)
+    if val == "ALL":
+        # IF USER CHOSE ALL THEN DELETING HIS ENTIRE ROW FROM TABLES
+        c.execute("DELETE FROM datas WHERE id = (?)",(a,))
+        c.execute("DELETE FROM handles WHERE id = (?)", (a,))
+        conn.commit()
+        bot.edit_message_text(text='Unregistering please wait',
+                              chat_id=query.message.chat_id,
+                              message_id=query.message.message_id)
+        c.execute("SELECT name, HE FROM datas")
+        # RECREATING ALL XLSX FILES
+        workbook = Workbook("HE.xlsx")
+        worksheet = workbook.add_worksheet()
+        format = workbook.add_format()
+        format.set_align('top')
+        format.set_text_wrap()
+        mysel = c.execute("SELECT name, HE FROM datas")
+        for i, row in enumerate(mysel):
+            for j, value in enumerate(row):
+                worksheet.write(i, j, row[j], format)
+                worksheet.set_row(i, 170)
+        worksheet.set_column(0, 5, 40)
+        workbook.close()
+        c.execute("SELECT name, HR FROM datas")
+        workbook = Workbook("HR.xlsx")
+        worksheet = workbook.add_worksheet()
+        format = workbook.add_format()
+        format.set_align('top')
+        format.set_text_wrap()
+        mysel = c.execute("SELECT name, HR FROM datas")
+        for i, row in enumerate(mysel):
+            for j, value in enumerate(row):
+                worksheet.write(i, j, row[j], format)
+                worksheet.set_row(i, 170)
+        worksheet.set_column(0, 5, 40)
+        workbook.close()
+        c.execute("SELECT name, SP FROM datas")
+        workbook = Workbook("SP.xlsx")
+        worksheet = workbook.add_worksheet()
+        format = workbook.add_format()
+        format.set_align('top')
+        format.set_text_wrap()
+        mysel = c.execute("SELECT name, SP FROM datas")
+        for i, row in enumerate(mysel):
+            for j, value in enumerate(row):
+                worksheet.write(i, j, row[j], format)
+                worksheet.set_row(i, 170)
+        worksheet.set_column(0, 5, 40)
+        workbook.close()
+        c.execute("SELECT name, CF FROM datas")
+        workbook = Workbook("CF.xlsx")
+        worksheet = workbook.add_worksheet()
+        format = workbook.add_format()
+        format.set_align('top')
+        format.set_text_wrap()
+        mysel = c.execute("SELECT name, CF FROM datas")
+        for i, row in enumerate(mysel):
+            for j, value in enumerate(row):
+                worksheet.write(i, j, row[j], format)
+                worksheet.set_row(i, 170)
+        worksheet.set_column(0, 5, 40)
+        workbook.close()
+        c.execute("SELECT name, CC FROM datas")
+        workbook = Workbook("CC.xlsx")
+        worksheet = workbook.add_worksheet()
+        format = workbook.add_format()
+        format.set_align('top')
+        format.set_text_wrap()
+        mysel = c.execute("SELECT name, CC FROM datas")
+        for i, row in enumerate(mysel):
+            for j, value in enumerate(row):
+                worksheet.write(i, j, row[j], format)
+                worksheet.set_row(i, 170)
+        worksheet.set_column(0, 5, 40)
+        workbook.close()
+    else:
+        # OTHER WISE REMOVING THE PARTICULAR ENTRY
+        c.execute("UPDATE datas SET " + val + " = (?)  WHERE id = (?) ", ("",a))
+        c.execute("UPDATE handles SET " + val + " = (?)  WHERE id = (?) ", ("",a))
+        conn.commit()
+        bot.edit_message_text(text='Unregistering please wait',
+                              chat_id=query.message.chat_id,
+                              message_id=query.message.message_id)
+        c.execute("SELECT name, " + val + " FROM datas")
+        # RECREATING XLSX FILE
+        workbook = Workbook(val + ".xlsx")
+        worksheet = workbook.add_worksheet()
+        format = workbook.add_format()
+        format.set_align('top')
+        format.set_text_wrap()
+        mysel = c.execute("SELECT name, " + val + " FROM datas")
+        for i, row in enumerate(mysel):
+            for j, value in enumerate(row):
+                worksheet.write(i, j, row[j], format)
+                worksheet.set_row(i, 170)
+        worksheet.set_column(0, 5, 40)
+        workbook.close()
+    c.execute("SELECT name, HE, HR, SP, CF, CC FROM datas")
+    workbook = Workbook('all.xlsx')
+    worksheet = workbook.add_worksheet()
+    format = workbook.add_format()
+    format.set_align('top')
+    format.set_text_wrap()
+    mysel = c.execute("SELECT name, HE, HR, SP, CF, CC FROM datas")
+    for i, row in enumerate(mysel):
+        for j, value in enumerate(row):
+            worksheet.write(i, j, row[j], format)
+            worksheet.set_row(i, 170)
+    worksheet.set_column(0, 5, 40)
+    workbook.close()
+    bot.send_message(chat_id=query.message.chat_id, text="Successfully unregistered")
+    conn.commit()
+    conn.close()
+    return ConversationHandler.END
+# END OF CONVERSATION HANDLER FOR UNREGISTERING
+
+
 sched = BackgroundScheduler()
 
 
+# FUNCTION FOR UPDATING ALL THE QUESTIONS FROM CODECHEF
+# SCHEDULED TO AUTOMATICALLY HAPPEN AT 18:30 GMT WHICH IS 0:0 IST
 @sched.scheduled_job('cron', day_of_week='sat-sun',hour=18, minute=30)
 def qupd():
     global reqccc,reqcce,reqcch,reqccm,reqccs,conccc,concce,concch,conccm,conccs,scce,s1cce,scch,s1cch,sccm,s1ccm,sccs,s1ccs,sccc,s1ccc,soupccc,soupcce,soupcch,soupccm,soupccs
@@ -330,10 +690,14 @@ def qupd():
     except urllib.error.URLError:
         pass
 
+
+# ADMIN COMMAND HANDLER FUNCTION TO UPDATE ALL THE QUESTIONS WHEN HE WANTS
 def admqupd(bot,update):
     qupd()
 
 
+# FUNCTION FOR UPDATING ALL THE DETAILS IN DATAS TABLE
+# SCHEDULED TO AUTOMATICALLY HAPPEN AT 18:30 GMT WHICH IS 0:0 IST
 @sched.scheduled_job('cron', hour=18, minute=30)
 def updaters():
     conn = sqlite3.connect('coders1.db')
@@ -449,6 +813,7 @@ def updaters():
                 except urllib.error.URLError as e:
                     pass
         c.execute("UPDATE datas SET HE=(?), HR=(?), CC=(?), SP=(?), CF=(?) WHERE id=(?)",(he,hr,cc,sp,cf,a))
+    #RECREATING ALL THE XLSX FILES
     c.execute("SELECT name, HE FROM datas")
     workbook = Workbook("HE.xlsx")
     worksheet = workbook.add_worksheet()
@@ -532,10 +897,11 @@ def updaters():
 
 sched.start()
 
+# ADMIN COMMAND HANDLER FUNCTION TO RUN UPDATE WHEN HE WANTS
 def adminupdate(bot,update):
     updaters()
 
-
+# ADMIN COMMAND HANDLER FUNCTION TO GET THE DETAILS OF HANDLES OF ALL THE USERS IN DATABASE
 def adminhandle(bot,update):
     conn = sqlite3.connect('coders1.db')
     c = conn.cursor()
@@ -554,6 +920,8 @@ def adminhandle(bot,update):
     os.remove('admin.xlsx')
     conn.close()
 
+
+# START OF CONVERSATION HANDLER FOR UPDATING USERS DATA ON HIS WISH
 def updatesel(bot,update):
     keyboard = [[InlineKeyboardButton("Hackerearth", callback_data='HE'),
                  InlineKeyboardButton("Hackerrank", callback_data='HR')],
@@ -565,6 +933,7 @@ def updatesel(bot,update):
     update.message.reply_text("PLEASE SELECT THE JUDGE FROM WHICH YOU WANT TO UPDATE YOUR PROFILE", reply_markup=reply_markup)
     return UPDA
 
+# FUNCTION TO UPDATE PARTICULR ENTRY USER SELECTED
 def updasel(bot,update):
     query = update.callback_query
     val = query.data
@@ -572,6 +941,7 @@ def updasel(bot,update):
     conn = sqlite3.connect('coders1.db')
     c = conn.cursor()
     if val=="ALL":
+        #IF USER SELECTED ALL UPDATING ALL HIS VALUES
         c.execute('SELECT id, HE, HR, CC, SP, CF FROM handles WHERE id=(?)',(a,))
         for row in c.fetchall():
             a = ""
@@ -690,6 +1060,7 @@ def updasel(bot,update):
                     except urllib.error.URLError as e:
                         pass
             c.execute("UPDATE datas SET HE=(?), HR=(?), CC=(?), SP=(?), CF=(?) WHERE id=(?)", (he, hr, cc, sp, cf, str(a)))
+        # RECREATING ALL XLSX FILES
         c.execute("SELECT name, HE FROM datas")
         workbook = Workbook("HE.xlsx")
         worksheet = workbook.add_worksheet()
@@ -756,6 +1127,7 @@ def updasel(bot,update):
         worksheet.set_column(0, 5, 40)
         workbook.close()
     else:
+        # ELSE ONLY UPDATING THE PARTICULAR ENTRY
         c.execute("SELECT "+val+" FROM handles WHERE id=(?)", (a,))
         for row in c.fetchall():
             if row[0] =="" or row[0] is None:
@@ -867,6 +1239,7 @@ def updasel(bot,update):
                     except urllib.error.URLError as e:
                         pass
                 c.execute("UPDATE datas SET " + val + " = (?)  WHERE id = (?) ", (ans, a))
+        # RECREATING ALL THE XLMX FILES
         c.execute("SELECT name, " + val + " FROM datas")
         workbook = Workbook(val + ".xlsx")
         worksheet = workbook.add_worksheet()
@@ -899,127 +1272,10 @@ def updasel(bot,update):
     conn.commit()
     conn.close()
     return ConversationHandler.END
+# END OF CONVERSATION HANDLER FOR UPDATING USERS DATA ON HIS WISH
 
 
-
-
-def remover(bot,update):
-    query=update.callback_query
-    val=query.data
-    conn = sqlite3.connect('coders1.db')
-    c = conn.cursor()
-    a=str(query.message.chat_id)
-    if val == "ALL":
-        c.execute("DELETE FROM datas WHERE id = (?)",(a,))
-        c.execute("DELETE FROM handles WHERE id = (?)", (a,))
-        conn.commit()
-        bot.edit_message_text(text='Unregistering please wait',
-                              chat_id=query.message.chat_id,
-                              message_id=query.message.message_id)
-        c.execute("SELECT name, HE FROM datas")
-        workbook = Workbook("HE.xlsx")
-        worksheet = workbook.add_worksheet()
-        format = workbook.add_format()
-        format.set_align('top')
-        format.set_text_wrap()
-        mysel = c.execute("SELECT name, HE FROM datas")
-        for i, row in enumerate(mysel):
-            for j, value in enumerate(row):
-                worksheet.write(i, j, row[j], format)
-                worksheet.set_row(i, 170)
-        worksheet.set_column(0, 5, 40)
-        workbook.close()
-        c.execute("SELECT name, HR FROM datas")
-        workbook = Workbook("HR.xlsx")
-        worksheet = workbook.add_worksheet()
-        format = workbook.add_format()
-        format.set_align('top')
-        format.set_text_wrap()
-        mysel = c.execute("SELECT name, HR FROM datas")
-        for i, row in enumerate(mysel):
-            for j, value in enumerate(row):
-                worksheet.write(i, j, row[j], format)
-                worksheet.set_row(i, 170)
-        worksheet.set_column(0, 5, 40)
-        workbook.close()
-        c.execute("SELECT name, SP FROM datas")
-        workbook = Workbook("SP.xlsx")
-        worksheet = workbook.add_worksheet()
-        format = workbook.add_format()
-        format.set_align('top')
-        format.set_text_wrap()
-        mysel = c.execute("SELECT name, SP FROM datas")
-        for i, row in enumerate(mysel):
-            for j, value in enumerate(row):
-                worksheet.write(i, j, row[j], format)
-                worksheet.set_row(i, 170)
-        worksheet.set_column(0, 5, 40)
-        workbook.close()
-        c.execute("SELECT name, CF FROM datas")
-        workbook = Workbook("CF.xlsx")
-        worksheet = workbook.add_worksheet()
-        format = workbook.add_format()
-        format.set_align('top')
-        format.set_text_wrap()
-        mysel = c.execute("SELECT name, CF FROM datas")
-        for i, row in enumerate(mysel):
-            for j, value in enumerate(row):
-                worksheet.write(i, j, row[j], format)
-                worksheet.set_row(i, 170)
-        worksheet.set_column(0, 5, 40)
-        workbook.close()
-        c.execute("SELECT name, CC FROM datas")
-        workbook = Workbook("CC.xlsx")
-        worksheet = workbook.add_worksheet()
-        format = workbook.add_format()
-        format.set_align('top')
-        format.set_text_wrap()
-        mysel = c.execute("SELECT name, CC FROM datas")
-        for i, row in enumerate(mysel):
-            for j, value in enumerate(row):
-                worksheet.write(i, j, row[j], format)
-                worksheet.set_row(i, 170)
-        worksheet.set_column(0, 5, 40)
-        workbook.close()
-    else:
-        c.execute("UPDATE datas SET " + val + " = (?)  WHERE id = (?) ", ("",a))
-        c.execute("UPDATE handles SET " + val + " = (?)  WHERE id = (?) ", ("",a))
-        conn.commit()
-        bot.edit_message_text(text='Unregistering please wait',
-                              chat_id=query.message.chat_id,
-                              message_id=query.message.message_id)
-        c.execute("SELECT name, " + val + " FROM datas")
-        workbook = Workbook(val + ".xlsx")
-        worksheet = workbook.add_worksheet()
-        format = workbook.add_format()
-        format.set_align('top')
-        format.set_text_wrap()
-        mysel = c.execute("SELECT name, " + val + " FROM datas")
-        for i, row in enumerate(mysel):
-            for j, value in enumerate(row):
-                worksheet.write(i, j, row[j], format)
-                worksheet.set_row(i, 170)
-        worksheet.set_column(0, 5, 40)
-        workbook.close()
-    c.execute("SELECT name, HE, HR, SP, CF, CC FROM datas")
-    workbook = Workbook('all.xlsx')
-    worksheet = workbook.add_worksheet()
-    format = workbook.add_format()
-    format.set_align('top')
-    format.set_text_wrap()
-    mysel = c.execute("SELECT name, HE, HR, SP, CF, CC FROM datas")
-    for i, row in enumerate(mysel):
-        for j, value in enumerate(row):
-            worksheet.write(i, j, row[j], format)
-            worksheet.set_row(i, 170)
-    worksheet.set_column(0, 5, 40)
-    workbook.close()
-    bot.send_message(chat_id=query.message.chat_id, text="Successfully unregistered")
-    conn.commit()
-    conn.close()
-    return ConversationHandler.END
-
-
+# START OF CONVERSATION HANDLER TO GET THE RANKLIST
 def ranklist(bot,update):
     keyboard = [[InlineKeyboardButton("EVERY ONE", callback_data='all'),
                  InlineKeyboardButton("MINE", callback_data='mine')],
@@ -1029,23 +1285,42 @@ def ranklist(bot,update):
     return SELECTION
 
 
-def name(bot,update,user_data):
-    user_data['name']=update.message.text.upper()
-    keyboard = [[InlineKeyboardButton("Hackerearth", callback_data='HE'),InlineKeyboardButton("Hackerrank", callback_data='HR')],[InlineKeyboardButton("Codechef", callback_data='CC'),InlineKeyboardButton("Spoj", callback_data='SP')],[InlineKeyboardButton("Codeforces", callback_data='CF')]]
-    reply_markup = InlineKeyboardMarkup(keyboard)
-    update.message.reply_text('please enter the online judge you want to setup with  the bot',reply_markup=reply_markup)
-    return JUDGE
-
-
-def judge(bot,update,user_data):
-    query = update.callback_query
-    user_data['code']=query.data
-    bot.edit_message_text(text='please enter your handle eg. gotham13121997',
+# FUNCTION TO GET THE USER REQUEST AND SHOW MENU OF RANKLISTS
+def selection(bot,update):
+    query=update.callback_query
+    val=query.data
+    if val=="all":
+        keyboard = [[InlineKeyboardButton("Hackerearth", callback_data='HE'),
+                     InlineKeyboardButton("Hackerrank", callback_data='HR')],
+                    [InlineKeyboardButton("Codechef", callback_data='CC'),
+                     InlineKeyboardButton("Spoj", callback_data='SP')],
+                    [InlineKeyboardButton("Codeforces", callback_data='CF'),
+                     InlineKeyboardButton("ALL", callback_data='ALL')]]
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        bot.edit_message_text(text='please select the judge or select all for showing all',reply_markup=reply_markup,
                               chat_id=query.message.chat_id,
                               message_id=query.message.message_id)
-    return HANDLE
+        return HOLO
+    elif val=="mine":
+        keyboard = [[InlineKeyboardButton("Hackerearth", callback_data='HE'),
+                     InlineKeyboardButton("Hackerrank", callback_data='HR')],
+                    [InlineKeyboardButton("Codechef", callback_data='CC'),
+                     InlineKeyboardButton("Spoj", callback_data='SP')],
+                    [InlineKeyboardButton("Codeforces", callback_data='CF'),
+                     InlineKeyboardButton("ALL", callback_data='ALL')]]
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        bot.edit_message_text(text='please select the judge or select all for showing all', reply_markup=reply_markup,
+                              chat_id=query.message.chat_id,
+                              message_id=query.message.message_id)
+        return SOLO
+    elif val=="getName":
+        bot.edit_message_text(text='please enter the name',
+                              chat_id=query.message.chat_id,
+                              message_id=query.message.message_id)
+        return POLO
 
 
+# FUNCTION TO GET THE USERS RANKLIST
 def solo(bot,update):
     query=update.callback_query
     val=query.data
@@ -1088,41 +1363,7 @@ def solo(bot,update):
     return ConversationHandler.END
 
 
-
-def selection(bot,update):
-    query=update.callback_query
-    val=query.data
-    if val=="all":
-        keyboard = [[InlineKeyboardButton("Hackerearth", callback_data='HE'),
-                     InlineKeyboardButton("Hackerrank", callback_data='HR')],
-                    [InlineKeyboardButton("Codechef", callback_data='CC'),
-                     InlineKeyboardButton("Spoj", callback_data='SP')],
-                    [InlineKeyboardButton("Codeforces", callback_data='CF'),
-                     InlineKeyboardButton("ALL", callback_data='ALL')]]
-        reply_markup = InlineKeyboardMarkup(keyboard)
-        bot.edit_message_text(text='please select the judge or select all for showing all',reply_markup=reply_markup,
-                              chat_id=query.message.chat_id,
-                              message_id=query.message.message_id)
-        return HOLO
-    elif val=="mine":
-        keyboard = [[InlineKeyboardButton("Hackerearth", callback_data='HE'),
-                     InlineKeyboardButton("Hackerrank", callback_data='HR')],
-                    [InlineKeyboardButton("Codechef", callback_data='CC'),
-                     InlineKeyboardButton("Spoj", callback_data='SP')],
-                    [InlineKeyboardButton("Codeforces", callback_data='CF'),
-                     InlineKeyboardButton("ALL", callback_data='ALL')]]
-        reply_markup = InlineKeyboardMarkup(keyboard)
-        bot.edit_message_text(text='please select the judge or select all for showing all', reply_markup=reply_markup,
-                              chat_id=query.message.chat_id,
-                              message_id=query.message.message_id)
-        return SOLO
-    elif val=="getName":
-        bot.edit_message_text(text='please enter the name',
-                              chat_id=query.message.chat_id,
-                              message_id=query.message.message_id)
-        return POLO
-
-
+# FUNCTION TO GET THE RANKLIST MENU OF THE USER BY SEARCHING IS NAME
 def polo(bot,update,user_data):
     msg=update.message.text.upper()
     conn = sqlite3.connect('coders1.db')
@@ -1146,6 +1387,7 @@ def polo(bot,update,user_data):
         return ConversationHandler.END
 
 
+# FUNCTION TO SHOW THE KIND OF RANKLIST USER WANTS
 def xolo(bot,update,user_data):
     query=update.callback_query
     val=query.data
@@ -1187,7 +1429,7 @@ def xolo(bot,update,user_data):
     return ConversationHandler.END
 
 
-
+# FUNCTION TO SHOW THE RANKLIST OF ALL THE PEOPLE
 def holo(bot,update):
     query = update.callback_query
     val = query.data
@@ -1214,168 +1456,10 @@ def holo(bot,update):
                                   message_id=query.message.message_id)
             return ConversationHandler.END
     return ConversationHandler.END
+# END OF CONVERSATION HANDLER TO GET THE RANKLIST
 
 
-def handle(bot,update,user_data):
-    user=str(update.message.chat_id)
-    handle1=update.message.text
-    name1=user_data['name']
-    code1=user_data['code']
-    if code1=='HE':
-        opener = urllib.request.build_opener()
-        opener.addheaders = [('User-agent', 'Mozilla/5.0')]
-        try:
-            sauce = opener.open('https://www.hackerearth.com/@' + handle1)
-            print('used')
-            soup = bs.BeautifulSoup(sauce, 'html5lib')
-            stri = "HACKEREARTH\n"
-            for i in soup.find_all('a', {"href": "/users/" + handle1 + "/activity/hackerearth/#user-rating-graph"}):
-                stri = stri + i.text + "\n"
-            for i in soup.find_all('a', {"href": "/@" + handle1 + "/followers/"}):
-                stri = stri + i.text + "\n"
-            for i in soup.find_all('a', {"href": "/@" + handle1 + "/following/"}):
-                stri = stri + i.text + "\n"
-            vals = stri
-        except urllib.error.URLError as e:
-            update.message.reply_text('wrong id')
-            user_data.clear()
-            return ConversationHandler.END
-    elif code1=='HR':
-        opener = urllib.request.build_opener()
-        opener.addheaders = [('User-agent', 'Mozilla/5.0')]
-        try:
-            sauce = opener.open('https://www.hackerrank.com/'+handle1+'?hr_r=1')
-            soup = bs.BeautifulSoup(sauce, 'html5lib')
-            try:
-                soup.find('script', {"id": "initialData"}).text
-            except AttributeError:
-                update.message.reply_text('wrong id')
-                user_data.clear()
-                return ConversationHandler.END
-            s = soup.find('script', {"id": "initialData"}).text
-            i = s.find("hacker_id", s.find("hacker_id", s.find("hacker_id") + 1) + 1)
-            i = parse.unquote(s[i:i + 280]).replace(",", ">").replace(":", " ").replace("{", "").replace("}",
-                                                                                                         "").replace(
-                '"', "").split(">")
-            s1 = "HACKERRANK\n"
-            for j in range(1, 10):
-                s1 = s1 + i[j] + "\n"
-            vals = s1
-        except urllib.error.URLError as e:
-            update.message.reply_text('wrong id')
-            user_data.clear()
-            return ConversationHandler.END
-    elif code1=='CC':
-        opener = urllib.request.build_opener()
-        opener.addheaders = [('User-agent', 'Mozilla/5.0')]
-        try:
-            sauce = opener.open('https://www.codechef.com/users/'+handle1)
-            soup = bs.BeautifulSoup(sauce, 'html5lib')
-            try:
-                soup.find('a', {"href": "http://www.codechef.com/ratings/all"}).text
-            except AttributeError:
-                update.message.reply_text('wrong id')
-                user_data.clear()
-                return ConversationHandler.END
-            try:
-                s1 = soup.find('span', {"class": "rating"}).text + "\n"
-            except AttributeError:
-                s1 = ""
-            s = "CODECHEF" + "\n" + s1 + "rating: " + soup.find('a', {
-                "href": "http://www.codechef.com/ratings/all"}).text + "\n" + soup.find('div', {
-                "class": "rating-ranks"}).text.replace(" ", "").replace("\n\n", "").strip('\n')
-            vals = s
-        except urllib.error.URLError as e:
-            update.message.reply_text('wrong id')
-            user_data.clear()
-            return ConversationHandler.END
-    elif code1=='SP':
-        opener = urllib.request.build_opener()
-        opener.addheaders = [('User-agent', 'Mozilla/5.0')]
-        try:
-            sauce = opener.open('http://www.spoj.com/users/'+handle1+'/')
-            soup = bs.BeautifulSoup(sauce, 'html5lib')
-            try:
-                soup.find('div', {"class": "col-md-3"}).text
-            except AttributeError:
-                update.message.reply_text('wrong id')
-                user_data.clear()
-                return ConversationHandler.END
-            s = soup.find('div', {"class": "col-md-3"}).text.strip('\n\n').replace("\t", "").split('\n')
-            s = s[3].strip().split(":")
-            s = "SPOJ\n" + s[0] + "\n" + s[1].strip(" ") + "\n" + soup.find('dl', {
-                "class": "dl-horizontal profile-info-data profile-info-data-stats"}).text.replace("\t", "").replace(
-                "\xa0", "").strip('\n')
-            vals = s
-        except urllib.error.URLError as e:
-            update.message.reply_text('wrong id')
-            user_data.clear()
-            return ConversationHandler.END
-    elif code1=='CF':
-        opener = urllib.request.build_opener()
-        opener.addheaders = [('User-agent', 'Mozilla/5.0')]
-        try:
-            sauce = opener.open('http://codeforces.com/profile/'+handle1)
-            soup = bs.BeautifulSoup(sauce, 'html5lib')
-            try:
-                soup.find('span', {"style": "color:gray;font-weight:bold;"}).text
-            except AttributeError:
-                update.message.reply_text('wrong id')
-                user_data.clear()
-                return ConversationHandler.END
-            s = soup.find_all('span', {"style": "font-weight:bold;"})
-            if len(s) == 0:
-                s2 = ""
-            else:
-                s2 = "contest rating: " + s[0].text + "\n" + "max: " + s[1].text + s[2].text + "\n"
-            s1 = "CODEFORCES\n" + s2 + "contributions: " + soup.find('span',
-                                                                     {"style": "color:gray;font-weight:bold;"}).text
-            vals = s1
-        except urllib.error.URLError as e:
-            update.message.reply_text('wrong id')
-            user_data.clear()
-            return ConversationHandler.END
-    conn=sqlite3.connect('coders1.db')
-    c = conn.cursor()
-    c.execute("INSERT OR IGNORE INTO datas (id, name, "+code1+") VALUES (?, ?, ?)",(user,name1,vals))
-    c.execute("INSERT OR IGNORE INTO handles (id, name, "+code1+") VALUES (?, ?, ?)",(user,name1,handle1))
-    if c.rowcount==0:
-        c.execute("UPDATE datas SET "+code1+" = (?) , name= (?) WHERE id = (?) ",(vals,name1,user))
-        c.execute("UPDATE handles SET " + code1 + " = (?) , name= (?) WHERE id = (?) ", (handle1,name1,user))
-    conn.commit()
-    c.execute("SELECT name, HE, HR, SP, CF, CC FROM datas")
-    workbook = Workbook('all.xlsx')
-    worksheet = workbook.add_worksheet()
-    format = workbook.add_format()
-    format.set_align('top')
-    format.set_text_wrap()
-    mysel = c.execute("SELECT name, HE, HR, SP, CF, CC FROM datas")
-    for i, row in enumerate(mysel):
-        for j, value in enumerate(row):
-            worksheet.write(i, j, row[j],format)
-            worksheet.set_row(i,170)
-    worksheet.set_column(0,5,40)
-    workbook.close()
-    c.execute("SELECT name, "+code1+" FROM datas")
-    workbook = Workbook(code1+".xlsx")
-    worksheet = workbook.add_worksheet()
-    format = workbook.add_format()
-    format.set_align('top')
-    format.set_text_wrap()
-    mysel = c.execute("SELECT name, "+code1+" FROM datas")
-    for i, row in enumerate(mysel):
-        for j, value in enumerate(row):
-            worksheet.write(i, j, row[j], format)
-            worksheet.set_row(i, 170)
-    worksheet.set_column(0, 5, 40)
-    workbook.close()
-    conn.close()
-    update.message.reply_text("Succesfully Registered")
-    update.message.reply_text(name1+"    \n"+vals)
-    user_data.clear()
-    return ConversationHandler.END
-
-
+# COMMAND HANDLER FUNCTION FO CANCELLING
 def cancel(bot, update,user_data):
     update.message.reply_text('Cancelled')
     user_data.clear()
@@ -1393,6 +1477,7 @@ def setup(webhook_url=None):
         updater = Updater(TOKEN)
         bot = updater.bot
         dp = updater.dispatcher
+        # CONVERSATION HANDLER FOR REGISTERING
         conv_handler = ConversationHandler(
             entry_points=[CommandHandler('register', register)],
 
@@ -1408,7 +1493,7 @@ def setup(webhook_url=None):
 
             fallbacks=[CommandHandler('cancel', cancel,pass_user_data=True)]
         )
-
+        # CONVERSATION HANDLER FOR GETTING RANKLIST
         conv_handler1=ConversationHandler(
             entry_points=[CommandHandler('ranklist', ranklist)],
 
@@ -1427,7 +1512,7 @@ def setup(webhook_url=None):
 
             fallbacks=[CommandHandler('cancel', cancel,pass_user_data=True)]
         )
-
+        # CONVERSATION HANDLER FOR UNREGISTERING
         conv_handler2 = ConversationHandler(
             entry_points=[CommandHandler('unregister', unregister)],
 
@@ -1439,7 +1524,7 @@ def setup(webhook_url=None):
 
             fallbacks=[CommandHandler('cancel', cancel, pass_user_data=True)]
         )
-
+        # CONVERSATION HANDLER FOR UPDATING
         conv_handler3=ConversationHandler(
             entry_points=[CommandHandler('update', updatesel)],
 
@@ -1451,7 +1536,7 @@ def setup(webhook_url=None):
 
             fallbacks=[CommandHandler('cancel', cancel, pass_user_data=True)]
         )
-
+        # CONVERSATION HANDLER FOR COMPILING AND RUNNING
         conv_handler4=ConversationHandler(
             entry_points=[CommandHandler('compiler', compilers)],
 
@@ -1468,7 +1553,7 @@ def setup(webhook_url=None):
 
             fallbacks=[CommandHandler('cancel', cancel, pass_user_data=True)]
         )
-
+        # CONVERSATION HANDLER FOR GETTING A RANDOM QUESTION FROM CODECHEF
         conv_handler5 = ConversationHandler(
             entry_points=[CommandHandler('randomcc', randomcc)],
 
@@ -1495,7 +1580,6 @@ def setup(webhook_url=None):
         dp.add_handler(CommandHandler('updateq',admqupd))
         # log all errors
         dp.add_error_handler(error)
-    # Add your handlers here
     if webhook_url:
         bot.set_webhook(webhook_url=webhook_url)
         thread = Thread(target=dp.start, name='dispatcher')
