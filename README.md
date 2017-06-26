@@ -23,12 +23,18 @@ create a project, choose python version 3.5 and put the path of your repository 
 ![alt text](https://github.com/Gotham13121997/superCodingBot/blob/master/register.gif)
 /unregister - unregister your handle from the bot  
 /geeksforgeeks - to get topics from geeksforgeeks.com  
+![alt text](https://github.com/Gotham13121997/superCodingBot/blob/master/geeksforgeeks.gif)
 /randomcc - get a random question from codechef according to choice  
+![alt text](https://github.com/Gotham13121997/superCodingBot/blob/master/randomcc.gif)
 /update - initialise the updation of your info  
 Automatic update takes place every day at 0:00 by APScheduler  
 /ranklist - to get a ranklist  
+![alt text](https://github.com/Gotham13121997/superCodingBot/blob/master/ranklist.jpeg)
 /upcoming - to see a list of upcoming competitions  
+![alt text](https://github.com/Gotham13121997/superCodingBot/blob/master/upcoming.gif)
 /ongoing - to see a list of ongoing competitions  
+![alt text](https://github.com/Gotham13121997/superCodingBot/blob/master/ongoing.gif)
 /compiler - to compile and run program  
+![alt text](https://github.com/Gotham13121997/superCodingBot/blob/master/compiler.gif)
 /adminhandle - to get a list of all handles  
 /adminupdate - to update all info  
