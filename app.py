@@ -8,6 +8,7 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from queue import Queue
 from threading import Thread
 from telegram import Bot
+from  telegram import ParseMode
 from telegram.ext import Dispatcher, CommandHandler, ConversationHandler, MessageHandler, RegexHandler, Updater, Filters, CallbackQueryHandler
 import bs4 as bs
 import html5lib
@@ -21,7 +22,7 @@ from xlsxwriter.workbook import Workbook
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO)
 logger = logging.getLogger(__name__)
-TOKEN = 'YOUR-TELEGRAM-BOT-TOKEN-HERE'
+TOKEN = 'YOUR_TELEGRAM-BOT-TOKEN-HERE'
 API_KEY = 'YOUR-HACKERRANK-API-KEY-HERE'
 compiler = helper.HackerRankAPI(api_key = API_KEY)
 # FOR CONVERSATION HANDLERS
@@ -31,6 +32,7 @@ REMOVER=range(1)
 UPDA=range(1)
 QSELCC=range(1)
 LANG, CODE, DECODE, TESTCASES, RESULT, OTHER, FILE= range(7)
+GFG1,GFG2,GFG3=range(3)
 
 # CONNECTING TO SQLITE DATABASE AND CREATING TABLES
 conn = sqlite3.connect('coders1.db')
@@ -469,6 +471,152 @@ def other(bot,update,user_data):
     update.message.reply_text("please select",reply_markup=reply_markup)
     return CODE
 # END OF CONVERSATION HANDLER FOR COMPILING AND RUNNING
+
+
+# START OF CONVERSATION HANDLER FOR GEEKS FOR GEEKS
+def gfg(bot,update):
+    keyboard = [[InlineKeyboardButton("ALGORITHMS", callback_data='Algorithms.json'),
+                 InlineKeyboardButton("DATA STRUCTURES", callback_data='DS.json')],
+                [InlineKeyboardButton("GATE", callback_data='GATE.json'),
+                 InlineKeyboardButton("INTERVIEW", callback_data='Interview.json')]]
+    reply_markup=InlineKeyboardMarkup(keyboard)
+    update.message.reply_text("please select", reply_markup=reply_markup)
+    return GFG1
+
+
+# FUNCTION TO SHOW SUBMENU 1
+def gfg1(bot,update,user_data):
+    query=update.callback_query
+    val=query.data
+    user_data['gfg']=val
+    if(val=="Algorithms.json"):
+        keyboard = [[InlineKeyboardButton("Analysis of Algorithms", callback_data='Analysis of Algorithms'),
+                     InlineKeyboardButton("Searching and Sorting", callback_data='Searching and Sorting')],
+                    [InlineKeyboardButton("Greedy Algorithms", callback_data='Greedy Algorithms'),
+                     InlineKeyboardButton("Dynamic Programming", callback_data='Dynamic Programming')],
+                    [InlineKeyboardButton("Strings and Pattern Searching", callback_data='Strings and Pattern Searching'),
+                     InlineKeyboardButton("Backtracking", callback_data='Backtracking')],
+                    [InlineKeyboardButton("Geometric Algorithms", callback_data='Geometric Algorithms'),
+                     InlineKeyboardButton("Mathematical Algorithms", callback_data='Mathematical Algorithms')],
+                    [InlineKeyboardButton("Bit Algorithms", callback_data='Bit Algorithms'),
+                     InlineKeyboardButton("Randomized Algorithms", callback_data='Randomized Algorithms')],
+                    [InlineKeyboardButton("Misc Algorithms", callback_data='Misc Algorithms'),
+                     InlineKeyboardButton("Recursion", callback_data='Recursion')],
+                    [InlineKeyboardButton("Divide and Conquer", callback_data='Divide and Conquer')]]
+    elif(val=="DS.json"):
+        keyboard = [[InlineKeyboardButton("Linked Lists", callback_data='Linked Lists'),
+                     InlineKeyboardButton("Stacks", callback_data='Stacks')],
+                    [InlineKeyboardButton("Queue", callback_data='Queue'),
+                     InlineKeyboardButton("Binary Trees", callback_data='Binary Trees')],
+                    [InlineKeyboardButton("Binary Search Trees",
+                                          callback_data='Binary Search Trees'),
+                     InlineKeyboardButton("Heaps", callback_data='Heaps')],
+                    [InlineKeyboardButton("Hashing", callback_data='Hashing'),
+                     InlineKeyboardButton("Graphs", callback_data='Graphs')],
+                    [InlineKeyboardButton("Advanced Data Structures", callback_data='Advanced Data Structures'),
+                     InlineKeyboardButton("Arrays", callback_data='Arrays')],
+                    [InlineKeyboardButton("Matrix", callback_data='Matrix')]]
+    elif(val=="GATE.json"):
+        keyboard = [[InlineKeyboardButton("Operating Systems", callback_data='Operating Systems'),
+                     InlineKeyboardButton("Database Management Systems", callback_data='Database Management Systems')],
+                    [InlineKeyboardButton("Automata Theory", callback_data='Automata Theory'),
+                     InlineKeyboardButton("Compilers", callback_data='Compilers')],
+                    [InlineKeyboardButton("Computer Networks",
+                                          callback_data='Computer Networks'),
+                     InlineKeyboardButton("GATE Data Structures and Algorithms", callback_data='GATE Data Structures and Algorithms')]]
+    elif(val=="Interview.json"):
+        keyboard = [[InlineKeyboardButton("Payu", callback_data='Payu'),
+                     InlineKeyboardButton("Adobe", callback_data='Adobe')],
+                    [InlineKeyboardButton("Amazon", callback_data='Amazon'),
+                     InlineKeyboardButton("Flipkart", callback_data='Flipkart')],
+                    [InlineKeyboardButton("Google",
+                                          callback_data='Google'),
+                     InlineKeyboardButton("Microsoft", callback_data='Microsoft')],
+                    [InlineKeyboardButton("Snapdeal", callback_data='Snapdeal'),
+                     InlineKeyboardButton("Zopper-Com", callback_data='Zopper-Com')],
+                    [InlineKeyboardButton("Yahoo", callback_data='Yahoo'),
+                     InlineKeyboardButton("Cisco", callback_data='Cisco')],
+                    [InlineKeyboardButton("Facebook", callback_data='Facebook'),
+                     InlineKeyboardButton("Yatra.Com", callback_data='Yatra.Com')],
+                    [InlineKeyboardButton("Symantec", callback_data='Symantec'),
+                     InlineKeyboardButton("Myntra", callback_data='Myntra')],
+                    [InlineKeyboardButton("Groupon", callback_data='Groupon'),
+                     InlineKeyboardButton("Belzabar", callback_data='Belzabar')],
+                    [InlineKeyboardButton("Paypal", callback_data='Paypal'),
+                     InlineKeyboardButton("Akosha", callback_data='Akosha')],
+                    [InlineKeyboardButton("Linkedin", callback_data='Linkedin'),
+                     InlineKeyboardButton("Browserstack", callback_data='Browserstack')],
+                    [InlineKeyboardButton("Makemytrip", callback_data='Makemytrip'),
+                     InlineKeyboardButton("Infoedge", callback_data='Infoedge')],
+                    [InlineKeyboardButton("Practo", callback_data='Practo'),
+                     InlineKeyboardButton("Housing-Com", callback_data='Housing-Com')],
+                    [InlineKeyboardButton("Ola-Cabs", callback_data='Ola-Cabs'),
+                     InlineKeyboardButton("Grofers", callback_data='Grofers')],
+                    [InlineKeyboardButton("Thoughtworks", callback_data='Thoughtworks'),
+                     InlineKeyboardButton("Delhivery", callback_data='Delhivery')],
+                    [InlineKeyboardButton("Taxi4Sure", callback_data='Taxi4Sure'),
+                     InlineKeyboardButton("Lenskart", callback_data='Lenskart')]]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    bot.edit_message_text(text="Please select",reply_markup=reply_markup,chat_id=query.message.chat_id,message_id=query.message.message_id)
+    return GFG2
+
+
+# FUNCTION TO SHOW SUBMENU 2
+def gfg2(bot,update,user_data):
+    query=update.callback_query
+    val=query.data
+    if(val=="Advanced Data Structures"):
+        keyboard = [[InlineKeyboardButton("Advanced Lists", callback_data='Advanced Lists'),
+                     InlineKeyboardButton("Trie", callback_data='Trie')],
+                    [InlineKeyboardButton("Suffix Array and Suffix Tree", callback_data='Suffix Array and Suffix Tree'),
+                     InlineKeyboardButton("AVL Tree", callback_data='AVL Tree')],
+                    [InlineKeyboardButton("Splay Tree",
+                                          callback_data='Splay Tree'),
+                     InlineKeyboardButton("B Tree", callback_data='B Tree')],
+                    [InlineKeyboardButton("Segment Tree", callback_data='Segment Tree'),
+                     InlineKeyboardButton("Red Black Tree", callback_data='Red Black Tree')],
+                    [InlineKeyboardButton("K Dimensional Tree", callback_data='K Dimensional Tree'),
+                     InlineKeyboardButton("Others", callback_data='Others')]]
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        bot.edit_message_text(text="Please select", reply_markup=reply_markup, chat_id=query.message.chat_id,
+                              message_id=query.message.message_id)
+        return GFG3
+    else:
+        with open(user_data['gfg'], encoding='utf-8') as data_file:
+            data = json.load(data_file)
+        se = data[val]
+        s = ""
+        s1=""
+        a=0
+        for i in se:
+            a=a+1
+            if(a<=50):
+                s = s + '<a href="' + se[i] + '">' + i + '</a>\n\n'
+            else:
+                s1=s1+'<a href="' + se[i] + '">' + i + '</a>\n\n'
+        bot.edit_message_text(text=val+"\n\n"+s, chat_id=query.message.chat_id,
+                              message_id=query.message.message_id,parse_mode=ParseMode.HTML)
+        if(len(s1)!=0):
+            bot.send_message(text=val+"\n\n"+s1, chat_id=query.message.chat_id,parse_mode=ParseMode.HTML)
+        user_data.clear()
+        return ConversationHandler.END
+
+
+# FUNCTION TO SHOW SUBMENU 3
+def gfg3(bot,update,user_data):
+    query = update.callback_query
+    val = query.data
+    with open(user_data['gfg'], encoding='utf-8') as data_file:
+        data = json.load(data_file)
+    se = data["Advanced Data Structures"][val]
+    s = ""
+    for i in se:
+        s = s + '<a href="' + se[i] + '">' + i + '</a>\n\n'
+    bot.edit_message_text(text=val + "\n\n" + s, chat_id=query.message.chat_id,
+                          message_id=query.message.message_id, parse_mode=ParseMode.HTML)
+    user_data.clear()
+    return  ConversationHandler.END
+# END OF CONVERSATION HANDLER FOR GEEKS FOR GEEKS
 
 
 # GLOBAL VARIABLES STORE THE PREVIOUS DATA TEMPORARILY IN CASE THE WEBPAGE IS BEING MAINTAINED
@@ -1494,7 +1642,7 @@ def setup(webhook_url=None):
         # CONVERSATION HANDLER FOR REGISTERING
         conv_handler = ConversationHandler(
             entry_points=[CommandHandler('register', register)],
-
+            allow_reentry=True,
             states={
 
 
@@ -1510,7 +1658,7 @@ def setup(webhook_url=None):
         # CONVERSATION HANDLER FOR GETTING RANKLIST
         conv_handler1=ConversationHandler(
             entry_points=[CommandHandler('ranklist', ranklist)],
-
+            allow_reentry=True,
             states={
 
                 SELECTION:[CallbackQueryHandler(selection)],
@@ -1529,7 +1677,7 @@ def setup(webhook_url=None):
         # CONVERSATION HANDLER FOR UNREGISTERING
         conv_handler2 = ConversationHandler(
             entry_points=[CommandHandler('unregister', unregister)],
-
+            allow_reentry=True,
             states={
 
                 REMOVER: [CallbackQueryHandler(remover)]
@@ -1541,7 +1689,7 @@ def setup(webhook_url=None):
         # CONVERSATION HANDLER FOR UPDATING
         conv_handler3=ConversationHandler(
             entry_points=[CommandHandler('update', updatesel)],
-
+            allow_reentry=True,
             states={
 
                 UPDA: [CallbackQueryHandler(updasel)]
@@ -1553,7 +1701,7 @@ def setup(webhook_url=None):
         # CONVERSATION HANDLER FOR COMPILING AND RUNNING
         conv_handler4=ConversationHandler(
             entry_points=[CommandHandler('compiler', compilers)],
-
+            allow_reentry=True,
             states={
 
                 LANG: [CallbackQueryHandler(lang,pass_user_data=True)],
@@ -1570,11 +1718,26 @@ def setup(webhook_url=None):
         # CONVERSATION HANDLER FOR GETTING A RANDOM QUESTION FROM CODECHEF
         conv_handler5 = ConversationHandler(
             entry_points=[CommandHandler('randomcc', randomcc)],
-
+            allow_reentry=True,
             states={
 
                 QSELCC: [CallbackQueryHandler(qselcc)]
 
+            },
+
+            fallbacks=[CommandHandler('cancel', cancel, pass_user_data=True)]
+        )
+        # CONVERSATION HANDLER FOR GEEKS FOR GEEKS
+        conv_handler6 = ConversationHandler(
+            entry_points=[CommandHandler('geeksforgeeks', gfg)],
+            allow_reentry=True,
+            states={
+
+                GFG1: [CallbackQueryHandler(gfg1,pass_user_data=True)],
+
+                GFG2: [CallbackQueryHandler(gfg2,pass_user_data=True)],
+
+                GFG3: [CallbackQueryHandler(gfg3,pass_user_data=True)]
             },
 
             fallbacks=[CommandHandler('cancel', cancel, pass_user_data=True)]
@@ -1585,6 +1748,7 @@ def setup(webhook_url=None):
         dp.add_handler(conv_handler3)
         dp.add_handler(conv_handler4)
         dp.add_handler(conv_handler5)
+        dp.add_handler(conv_handler6)
         dp.add_handler(CommandHandler('help',help))
         dp.add_handler(CommandHandler('start',start))
         dp.add_handler(CommandHandler('ongoing',ongoing))
