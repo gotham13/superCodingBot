@@ -20,6 +20,7 @@ create a project, choose python version 3.5 and put the path of your repository 
 # COMMANDS
 /help- to get a list of commands used  
 /register - to register your handle to the bot  
+![alt text](https://github.com/Gotham13121997/superCodingBot/blob/master/register.gif)
 /unregister - unregister your handle from the bot  
 /geeksforgeeks - to get topics from geeksforgeeks.com  
 /randomcc - get a random question from codechef according to choice  
