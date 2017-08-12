@@ -11,6 +11,7 @@ BEAUTIFUL SOUP
 HACKERRANK API  
 APSCHEDULER  
 XLSX WRITER  
+SQLAlchemy  
 # USAGE
 You can use it by replacing the token in app.py with your telegram bot token wich you can get from telegrams official site by activating 
 bot father and api key by replacing the api key generated on hackerrank.com, you need to login to hackerrank to do that.  
@@ -56,3 +57,5 @@ Automatic update takes place every day at 0:00 by APScheduler
 /adminhandle - to get a list of all handles  
   
 /adminupdate - to update all info  
+
+/dontremindme - to cancel reminders  
