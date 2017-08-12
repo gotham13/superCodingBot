@@ -1,6 +1,6 @@
 import requests
 import json
-
+from requests.adapters import HTTPAdapter
 # Hackerrank API endpoint
 RUN_API_ENDPOINT = 'http://api.hackerrank.com/checker/submission.json'
 
@@ -39,7 +39,10 @@ class HackerRankAPI():
     # send API request
     def __request(self, url, params):
         try:
-            response = requests.post(url, data=params)
+            s=requests.Session()
+            a=HTTPAdapter(max_retries=20)
+            s.mount('http://',a)
+            response = s.post(url, data=params)
             return response
         except Exception as e:
             print(e)
