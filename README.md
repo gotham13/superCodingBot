@@ -76,7 +76,7 @@ when you want to rebuild your project
 *  **IMPORTANT** go to deployment configuration and detach the storage. A deployment will start, let it finish
 * Go to builds, select name and click on start build
 * After finishing build a deployment will start, let it finish
-* Go back to deployment configuration and add storage with same mount poin as previous and wait for a new deployment
+* Go back to deployment configuration and add storage with same mount point as previous and wait for a new deployment
 * After deployment finishes, go to deployments. Select latest and scale the pod to 1.  
 
 * **YOU CAN REMOVE YOUR GITHUB REPOSITORY BUT MAKE SURE TO RECREATE IT WHEN REBUILDING YOUR PROJECT**
