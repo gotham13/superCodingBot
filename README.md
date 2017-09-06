@@ -1,5 +1,4 @@
-[![](https://img.shields.io/badge/Telegram-Bot-blue.svg)](https://t.me/SuperCodeBot)
-
+[![Telegram](https://img.shields.io/badge/Telegram-Bot-blue.svg)](https://t.me/SuperCodeBot)  [![HitCount](http://hits.dwyl.com/{username}/{project-name}.svg)](http://hits.dwyl.com/{username}/{project-name})
 
 # superCodingBot  
 
