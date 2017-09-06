@@ -82,6 +82,8 @@ when you want to rebuild your project
 ## COMMANDS
 ### PUBLIC COMMANDS
 * /help - get a list of all the commands
+* /compiler - compile and run code  
+![alt text](https://github.com/Gotham13121997/superCodingBot/blob/master/gifs/compiler.gif)  
 * /register - to register your handle with the bot  
 ![alt text](https://github.com/Gotham13121997/superCodingBot/blob/master/gifs/register.gif)  
 * /unregister - to unregister your handle from the bot
