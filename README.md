@@ -62,10 +62,10 @@ the id of the chat object is your chat id
   * change the name of all files you want to save in persistent storage eg. if your mount point is /df
 in place of 'coders1.db' put '/df/coders1.db' in app.py
   * open the openshift console
-  * go to storage and create a storage
+  * go to storage and create a persistent storage
   * Go to deployments
   * then in deployment configuration attach the persistent storage along with a mount point you thought of
-  * wait for the app to redeploy
+  * wait for the app to re-deploy
   * enjoy
 
 #### REBUILDING PROJECT ON OPENSHIFT ONLINE  
@@ -73,9 +73,11 @@ when you want to rebuild your project
 
 * first of all go to deployments and select the latest deployment
 * downscale the no of pods to 0 and wait for it to happen
-*  **IMPORTANT** go to deployment configuration and detach the storage. A deployment will start let it finish
+*  **IMPORTANT** go to deployment configuration and detach the storage. A deployment will start, let it finish
 * Go to builds, select name and click on start build
-* After building and deployment finishes, go to deployments. Select latest and scale the pod to 1.  
+* After finishing build a deployment will start, let it finish
+* Go back to deployment configuration and add storage with same mount poin as previous and wait for a new deployment
+* After deployment finishes, go to deployments. Select latest and scale the pod to 1.  
 
 * **YOU CAN REMOVE YOUR GITHUB REPOSITORY BUT MAKE SURE TO RECREATE IT WHEN REBUILDING YOUR PROJECT**
 
