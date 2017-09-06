@@ -1,3 +1,6 @@
+[![](https://img.shields.io/badge/Telegram-Bot-blue.svg)](https://t.me/SuperCodeBot)
+
+
 # superCodingBot  
 
 THE TELEGRAM BOT FOR COMPETITIVE PROGRAMMERS  
