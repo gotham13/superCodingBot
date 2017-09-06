@@ -1,4 +1,4 @@
-[![Telegram](https://img.shields.io/badge/Telegram-Bot-blue.svg)](https://t.me/SuperCodeBot)  [![HitCount](http://hits.dwyl.com/{username}/{project-name}.svg)](http://hits.dwyl.com/{username}/{project-name})
+[![Telegram](https://img.shields.io/badge/Telegram-Bot-blue.svg)](https://t.me/SuperCodeBot) [![releases](https://img.shields.io/github/release/Gotham13121997/superCodingBot.svg)](https://github.com/Gotham13121997/superCodingBot/releases/tag/v2) [![license](https://img.shields.io/cocoapods/l/AFNetworking.svg)](https://github.com/Gotham13121997/superCodingBot/blob/master/LICENSE)
 
 # superCodingBot  
 
