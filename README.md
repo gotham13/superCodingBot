@@ -1,5 +1,3 @@
-[![Telegram](https://img.shields.io/badge/Telegram-Bot-blue.svg)](https://t.me/SuperCodeBot) [![releases](https://img.shields.io/github/release/Gotham13121997/superCodingBot.svg)](https://github.com/Gotham13121997/superCodingBot/releases/tag/v2) [![license](https://img.shields.io/cocoapods/l/AFNetworking.svg)](https://github.com/Gotham13121997/superCodingBot/blob/master/LICENSE)
-
 # superCodingBot  
 
 THE TELEGRAM BOT FOR COMPETITIVE PROGRAMMERS  
@@ -34,7 +32,7 @@ superCodingBot is a telegram bot built in python 3 using python-telegram-bot wra
 * Create your bot and Get your telegram bot token from [BotFather](https://core.telegram.org/bots#botfather)
 * Get your hackerrank api key from [Hackerrank](https://www.hackerrank.com/api)
 * Get your telegram chat id
-   * You can get your chat id by first messaging to the bot and then checking the url https://api.telegram.org/bot<YourBOTToken>/getUpdates  
+   * You can get your chat id by first messaging to the bot and then checking the url https://api.telegram.org/botYourBOTToken/getUpdates  
 It will look somewhat like this  
 {"update_id":8393,"message":{"message_id":3,"from":{"id":7474,"first_name":"AAA"},"chat":{"id":,"title":""},"date":25497,"new_chat_participant":{"id":71,"first_name":"NAME","username":"YOUR_BOT_NAME"}}}  
 the id of the chat object is your chat id  
