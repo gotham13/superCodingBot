@@ -11,7 +11,7 @@ superCodingBot is a telegram bot built in python 3 using python-telegram-bot wra
 * Getting upcoming competitions and setting reminder for them
 * Getting ongoing competitions
 * Compiling and running code from the bot itself
-* Getting questions rom codechef and codeforces according to choice
+* Getting questions from codechef and codeforces according to choice
 * Getting topics from geeksforgeeks.com
 * Subscribing to get Question of the day 
 
