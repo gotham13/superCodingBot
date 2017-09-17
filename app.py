@@ -32,23 +32,11 @@ config = ConfigParser()
 config.read('config.ini')
 TOKEN = config.get('telegram','bot_token')
 API_KEY = config.get('hackerrank','api_key')
+mount_point=config.get('openshift','persistent_mount_point')
 compiler = helper.HackerRankAPI(api_key=API_KEY)
 adminlist=str(config.get('telegram','admin_chat_id')).split(',')
 # FOR CONVERSATION HANDLERS
-NAME, JUDGE, HANDLE = range(3)
-SELECTION, HOLO, SOLO, POLO, XOLO = range(5)
-REMOVER = range(1)
-UPDA = range(1)
-QSELCC = range(1)
-LANG, CODE, DECODE, TESTCASES, RESULT, OTHER, FILE, FILETEST = range(8)
-GFG1, GFG2, GFG3 = range(3)
-DB = range(1)
-CF =range(1)
-SCHED = range(1)
-REMNOTI = (1)
-QSELCF = range(1)
-SUBSEL, SUBCC, SUBCF = range(3)
-UNSUB=range(1)
+NAME,JUDGE,HANDLE,SELECTION,HOLO,SOLO,POLO,XOLO,REMOVER,UPDA,QSELCC,LANG,CODE,DECODE,TESTCASES,RESULT,OTHER,FILE,FILETEST,GFG1,GFG2,GFG3,DB,CF,SCHED,REMNOTI,QSELCF,SUBSEL,SUBCC,SUBCF,UNSUB=range(31)
 # CLASS FOR FLOOD PROTECTION
 class Spam_settings:
     def __init__(self):
@@ -86,18 +74,18 @@ class Spam_settings:
 
     def wrapper(self, func):  # only works on functions, not on instancemethods
         def func_wrapper(bot, update, *args2):
-            timeout = self.new_message(update.message.chat_id)
+            timeout = self.new_message(update.effective_chat.id)
             if not timeout:
                return func(bot, update, *args2)
             elif isinstance(timeout, str):
                 print("timeout")
                 # Only works for messages (+Commands) and callback_queries (Inline Buttons)
                 if update.callback_query:
-                    bot.edit_message_text(chat_id=update.message.chat_id,
-                                          message_id=update.message.message_id,
+                    bot.edit_message_text(chat_id=update.effective_chat.id,
+                                          message_id=update.effective_message.message_id,
                                           text=timeout)
                 elif update.message:
-                    bot.send_message(chat_id=update.message.chat_id, text=timeout)
+                    bot.send_message(chat_id=update.effective_chat.id, text=timeout)
 
         return func_wrapper
 
@@ -106,7 +94,7 @@ timeouts = Spam_settings()
 
 
 # CONNECTING TO SQLITE DATABASE AND CREATING TABLES
-conn = sqlite3.connect('coders1.db')
+conn = sqlite3.connect(mount_point+'coders1.db')
 create_table_request_list = [
     'CREATE TABLE handles(id TEXT PRIMARY KEY,name TEXT,HE TEXT,HR TEXT,CF TEXT,SP TEXT,CC TEXT)',
     'CREATE TABLE  datas(id TEXT PRIMARY KEY,name TEXT,HE TEXT,HR TEXT,CF TEXT,SP TEXT,CC TEXT)',
@@ -120,8 +108,8 @@ for create_table_request in create_table_request_list:
 conn.commit()
 conn.close()
 
-if  os.path.exists('codeforces.json'):
-  with open('codeforces.json', 'r') as codeforces:
+if  os.path.exists(mount_point+'codeforces.json'):
+  with open(mount_point+'codeforces.json', 'r') as codeforces:
      qcf = json.load(codeforces)
 
 # GETTING QUESTIONS FROM CODECHEF WEBSITE
@@ -192,11 +180,11 @@ def error(bot, update, error):
 # FUNCTION TO GET INPUT ABOUT THE TYPE OF QUESTION FROM USER
 @timeouts.wrapper
 def randomcf(bot, update):
-    keyboard = [[InlineKeyboardButton("A", callback_data='A'),
-                 InlineKeyboardButton("B", callback_data='B'), InlineKeyboardButton("C", callback_data='C')],
-                [InlineKeyboardButton("D", callback_data='D'),
-                 InlineKeyboardButton("E", callback_data='E'), InlineKeyboardButton("F", callback_data='F')],
-                [InlineKeyboardButton("OTHERS", callback_data='OTHERS')]]
+    keyboard = [[InlineKeyboardButton("A", callback_data='Acf1'),
+                 InlineKeyboardButton("B", callback_data='Bcf1'), InlineKeyboardButton("C", callback_data='Cf1')],
+                [InlineKeyboardButton("D", callback_data='Dcf1'),
+                 InlineKeyboardButton("E", callback_data='Ecf1'), InlineKeyboardButton("F", callback_data='Fcf1')],
+                [InlineKeyboardButton("OTHERS", callback_data='OTHERScf1')]]
     reply_markup = InlineKeyboardMarkup(keyboard)
     update.message.reply_text('Please select the type of question', reply_markup=reply_markup)
     return QSELCF
@@ -204,30 +192,30 @@ def randomcf(bot, update):
 
 # FUNCTION FOR SENDING THE RANDOM QUESTION TO USER ACCORDING TO HIS CHOICE
 def qselcf(bot, update):
-    global qcf
     query = update.callback_query
     val = query.data
-    if val == 'A':
+    if val == 'Acf1':
         n = random.randint(0, len(qcf['A']) - 1)
         strn = qcf['A'][n]
-    elif val == 'B':
+    elif val == 'Bcf1':
         n = random.randint(0, len(qcf['B']) - 1)
         strn = qcf['B'][n]
-    elif val == 'C':
+    elif val == 'Ccf1':
         n = random.randint(0, len(qcf['C']) - 1)
         strn = qcf['C'][n]
-    elif val == 'D':
+    elif val == 'Dcf1':
         n = random.randint(0, len(qcf['D']) - 1)
         strn = qcf['D'][n]
-    elif val == 'E':
+    elif val == 'Ecf1':
         n = random.randint(0, len(qcf['E']) - 1)
         strn = qcf['E'][n]
-    elif val == 'F':
+    elif val == 'Fcf1':
         n = random.randint(0, len(qcf['F']) - 1)
         strn = qcf['F'][n]
-    else:
+    elif val=='OTHERScf1':
         n = random.randint(0, len(qcf['OTHERS']) - 1)
         strn = qcf['OTHERS'][n]
+    val=str(val).replace("cf1","")
     bot.edit_message_text(
         text="Random " + val + " question from codeforces\n\n" + strn,
         chat_id=query.message.chat_id,
@@ -240,11 +228,11 @@ def qselcf(bot, update):
 # FUNCTION TO GET INPUT ABOUT THE TYPE OF QUESTION FROM USER
 @timeouts.wrapper
 def randomcc(bot, update):
-    keyboard = [[InlineKeyboardButton("Beginner", callback_data='BEGINNER'),
-                 InlineKeyboardButton("Easy", callback_data='EASY')],
-                [InlineKeyboardButton("Medium", callback_data='MEDIUM'),
-                 InlineKeyboardButton("Hard", callback_data='HARD')],
-                [InlineKeyboardButton("Challenge", callback_data='CHALLENGE')]]
+    keyboard = [[InlineKeyboardButton("Beginner", callback_data='BEGINNERcc1'),
+                 InlineKeyboardButton("Easy", callback_data='EASYcc1')],
+                [InlineKeyboardButton("Medium", callback_data='MEDIUMcc1'),
+                 InlineKeyboardButton("Hard", callback_data='HARDcc1')],
+                [InlineKeyboardButton("Challenge", callback_data='CHALLENGEcc1')]]
     reply_markup = InlineKeyboardMarkup(keyboard)
     update.message.reply_text('Please select the type of question', reply_markup=reply_markup)
     return QSELCC
@@ -255,26 +243,27 @@ def qselcc(bot, update):
     global scce, s1cce, scch, s1cch, sccm, s1ccm, sccs, s1ccs, sccc, s1ccc
     query = update.callback_query
     val = query.data
-    if val == 'BEGINNER':
+    if val == 'BEGINNERcc1':
         n = random.randint(0, len(sccs) - 1)
         strt = sccs[n].text.strip("\n\n ")
         strn = s1ccs[n].text
-    if val == 'EASY':
+    if val == 'EASYcc1':
         n = random.randint(0, len(scce) - 1)
         strt = scce[n].text.strip("\n\n ")
         strn = s1cce[n].text
-    if val == 'MEDIUM':
+    if val == 'MEDIUMcc1':
         n = random.randint(0, len(sccm) - 1)
         strt = sccm[n].text.strip("\n\n ")
         strn = s1ccm[n].text
-    if val == 'HARD':
+    if val == 'HARDcc1':
         n = random.randint(0, len(scch) - 1)
         strt = scch[n].text.strip("\n\n ")
         strn = s1cch[n].text
-    if val == 'CHALLENGE':
+    if val == 'CHALLENGEcc1':
         n = random.randint(0, len(sccc) - 1)
         strt = sccc[n].text.strip("\n\n ")
         strn = s1ccc[n].text
+    val=str(val).replace("cc1","")
     bot.edit_message_text(
         text="Random " + val + " question from codechef\n\n" + strt + "\n" + "https://www.codechef.com/problems/" + strn,
         chat_id=query.message.chat_id,
@@ -297,11 +286,11 @@ def register(bot, update):
 def name(bot, update, user_data):
     user_data['name'] = update.message.text.upper()
     # THIS IS HOW AN INLINE KEYBOARD IS MADE AND USED
-    keyboard = [[InlineKeyboardButton("Hackerearth", callback_data='HE'),
-                 InlineKeyboardButton("Hackerrank", callback_data='HR')],
-                [InlineKeyboardButton("Codechef", callback_data='CC'),
-                 InlineKeyboardButton("Spoj", callback_data='SP')],
-                [InlineKeyboardButton("Codeforces", callback_data='CF')]]
+    keyboard = [[InlineKeyboardButton("Hackerearth", callback_data='HEreg1'),
+                 InlineKeyboardButton("Hackerrank", callback_data='HRreg1')],
+                [InlineKeyboardButton("Codechef", callback_data='CCreg1'),
+                 InlineKeyboardButton("Spoj", callback_data='SPreg1')],
+                [InlineKeyboardButton("Codeforces", callback_data='CFreg1')]]
     reply_markup = InlineKeyboardMarkup(keyboard)
     update.message.reply_text('please enter the online judge you want to setup with  the bot',
                               reply_markup=reply_markup)
@@ -312,7 +301,10 @@ def name(bot, update, user_data):
 def judge(bot, update, user_data):
     # AND THIS IS HOW WE GET THE CALLBACK DATA WHEN INLINE KEYBOARD KEY IS PRESSED
     query = update.callback_query
-    user_data['code'] = query.data
+    choices=['HEreg1','HRreg1','CFreg1','CCreg1','SPreg1']
+    if query.data not in choices:
+        return ConversationHandler.END
+    user_data['code'] = str(query.data).replace("reg1","")
     bot.edit_message_text(text='please enter your handle eg. gotham13121997',
                           chat_id=query.message.chat_id,
                           message_id=query.message.message_id)
@@ -449,8 +441,10 @@ def handle(bot, update, user_data):
             update.message.reply_text('wrong id')
             user_data.clear()
             return ConversationHandler.END
+    else:
+        return ConversationHandler.END
     # CONNECTING TO DATABASE
-    conn = sqlite3.connect('coders1.db')
+    conn = sqlite3.connect(mount_point+'coders1.db')
     c = conn.cursor()
     # STORING THE PROFILE INFO IN datas TABLE
     # STORING HANDLES IN handles TABLE
@@ -463,7 +457,7 @@ def handle(bot, update, user_data):
     # BELOW LINES ARE USED TO CREATE XLMX FILES OF ALL SORTS OF RANKLIST
     # SO WHEN USER ASKS FOR RANKLIST THERE IS NO DELAY
     c.execute("SELECT name, HE, HR, SP, CF, CC FROM datas")
-    workbook = Workbook('all.xlsx')
+    workbook = Workbook(mount_point+'all.xlsx')
     worksheet = workbook.add_worksheet()
     format = workbook.add_format()
     format.set_align('top')
@@ -476,7 +470,7 @@ def handle(bot, update, user_data):
     worksheet.set_column(0, 5, 40)
     workbook.close()
     c.execute("SELECT name, " + code1 + " FROM datas")
-    workbook = Workbook('' + code1 + ".xlsx")
+    workbook = Workbook(mount_point + code1 + ".xlsx")
     worksheet = workbook.add_worksheet()
     format = workbook.add_format()
     format.set_align('top')
@@ -501,13 +495,13 @@ def handle(bot, update, user_data):
 # START OF CONVERSATION HANDLER FOR COMPILING AND RUNNING
 @timeouts.wrapper
 def compilers(bot, update):
-    keyboard = [[InlineKeyboardButton("C++", callback_data='cpp'),
-                 InlineKeyboardButton("Python", callback_data='python')],
-                [InlineKeyboardButton("C", callback_data='c'),
-                 InlineKeyboardButton("Java", callback_data='java')],
-                [InlineKeyboardButton("Python3", callback_data='python3'),
-                 InlineKeyboardButton("Java8", callback_data='java8')],
-                [InlineKeyboardButton("Other", callback_data='other')]]
+    keyboard = [[InlineKeyboardButton("C++", callback_data='cppcomp1'),
+                 InlineKeyboardButton("Python", callback_data='pythoncomp1')],
+                [InlineKeyboardButton("C", callback_data='ccomp1'),
+                 InlineKeyboardButton("Java", callback_data='javacomp1')],
+                [InlineKeyboardButton("Python3", callback_data='python3comp1'),
+                 InlineKeyboardButton("Java8", callback_data='java8comp1')],
+                [InlineKeyboardButton("Other", callback_data='othercomp1')]]
     reply_markup = InlineKeyboardMarkup(keyboard)
     update.message.reply_text('Please select the language', reply_markup=reply_markup)
     return LANG
@@ -517,6 +511,7 @@ def compilers(bot, update):
 def lang(bot, update, user_data):
     query = update.callback_query
     val = query.data
+    val=str(val).replace("comp1","")
     if val == "other":
         # IF USER CHOOSES OTHER
         s1 = ""
@@ -528,8 +523,8 @@ def lang(bot, update, user_data):
     else:
         # ELSE ASKING WETHER HE WANTS TO SEND SOURCE CODE OR A .TXT FILE
         user_data['lang'] = val
-        keyboard = [[InlineKeyboardButton("Enter Source Code", callback_data='code'),
-                     InlineKeyboardButton("Send a .txt file", callback_data='file')]]
+        keyboard = [[InlineKeyboardButton("Enter Source Code", callback_data='codeso1'),
+                     InlineKeyboardButton("Send a .txt file", callback_data='fileso1')]]
         reply_markup = InlineKeyboardMarkup(keyboard)
         bot.edit_message_text(text="please select", reply_markup=reply_markup, chat_id=query.message.chat_id,
                               message_id=query.message.message_id)
@@ -540,14 +535,17 @@ def lang(bot, update, user_data):
 def code(bot, update, user_data):
     query = update.callback_query
     val = query.data
+    val=str(val).replace("so1","")
     if val == "code":
         bot.edit_message_text(text="please enter your code\nPlease make sure that the first line is not a comment line",
                               chat_id=query.message.chat_id, message_id=query.message.message_id)
         return DECODE
-    else:
+    elif val=="file":
         bot.edit_message_text(text="please send your .txt file\nMaximum size 2mb", chat_id=query.message.chat_id,
                               message_id=query.message.message_id)
         return FILE
+    else:
+        return ConversationHandler.END
 
 
 # FUNCTION TO GET TESTCASE FILE
@@ -712,10 +710,10 @@ def other(bot, update, user_data):
 # START OF CONVERSATION HANDLER FOR GEEKS FOR GEEKS
 @timeouts.wrapper
 def gfg(bot, update):
-    keyboard = [[InlineKeyboardButton("ALGORITHMS", callback_data='Algorithms.json'),
-                 InlineKeyboardButton("DATA STRUCTURES", callback_data='DS.json')],
-                [InlineKeyboardButton("GATE", callback_data='GATE.json'),
-                 InlineKeyboardButton("INTERVIEW", callback_data='Interview.json')]]
+    keyboard = [[InlineKeyboardButton("ALGORITHMS", callback_data='Algorithmsgfg1'),
+                 InlineKeyboardButton("DATA STRUCTURES", callback_data='DSgfg1')],
+                [InlineKeyboardButton("GATE", callback_data='GATEgfg1'),
+                 InlineKeyboardButton("INTERVIEW", callback_data='Interviewgfg1')]]
     reply_markup = InlineKeyboardMarkup(keyboard)
     update.message.reply_text("please select", reply_markup=reply_markup)
     return GFG1
@@ -725,76 +723,78 @@ def gfg(bot, update):
 def gfg1(bot, update, user_data):
     query = update.callback_query
     val = query.data
+    val=str(val).replace("gfg1","")
+    val=val+".json"
     user_data['gfg'] = val
     if (val == "Algorithms.json"):
-        keyboard = [[InlineKeyboardButton("Analysis of Algorithms", callback_data='Analysis of Algorithms'),
-                     InlineKeyboardButton("Searching and Sorting", callback_data='Searching and Sorting')],
-                    [InlineKeyboardButton("Greedy Algorithms", callback_data='Greedy Algorithms'),
-                     InlineKeyboardButton("Dynamic Programming", callback_data='Dynamic Programming')],
+        keyboard = [[InlineKeyboardButton("Analysis of Algorithms", callback_data='Analysis of Algorithmsgfg2'),
+                     InlineKeyboardButton("Searching and Sorting", callback_data='Searching and Sortinggfg2')],
+                    [InlineKeyboardButton("Greedy Algorithms", callback_data='Greedy Algorithmsgfg2'),
+                     InlineKeyboardButton("Dynamic Programming", callback_data='Dynamic Programminggfg2')],
                     [InlineKeyboardButton("Strings and Pattern Searching",
-                                          callback_data='Strings and Pattern Searching'),
-                     InlineKeyboardButton("Backtracking", callback_data='Backtracking')],
-                    [InlineKeyboardButton("Geometric Algorithms", callback_data='Geometric Algorithms'),
-                     InlineKeyboardButton("Mathematical Algorithms", callback_data='Mathematical Algorithms')],
-                    [InlineKeyboardButton("Bit Algorithms", callback_data='Bit Algorithms'),
-                     InlineKeyboardButton("Randomized Algorithms", callback_data='Randomized Algorithms')],
-                    [InlineKeyboardButton("Misc Algorithms", callback_data='Misc Algorithms'),
-                     InlineKeyboardButton("Recursion", callback_data='Recursion')],
-                    [InlineKeyboardButton("Divide and Conquer", callback_data='Divide and Conquer')]]
+                                          callback_data='Strings and Pattern Searchinggfg2'),
+                     InlineKeyboardButton("Backtracking", callback_data='Backtrackinggfg2')],
+                    [InlineKeyboardButton("Geometric Algorithms", callback_data='Geometric Algorithmsgfg2'),
+                     InlineKeyboardButton("Mathematical Algorithms", callback_data='Mathematical Algorithmsgfg2')],
+                    [InlineKeyboardButton("Bit Algorithms", callback_data='Bit Algorithmsgfg2'),
+                     InlineKeyboardButton("Randomized Algorithms", callback_data='Randomized Algorithmsgfg2')],
+                    [InlineKeyboardButton("Misc Algorithms", callback_data='Misc Algorithmsgfg2'),
+                     InlineKeyboardButton("Recursion", callback_data='Recursiongfg2')],
+                    [InlineKeyboardButton("Divide and Conquer", callback_data='Divide and Conquergfg2')]]
     elif (val == "DS.json"):
-        keyboard = [[InlineKeyboardButton("Linked Lists", callback_data='Linked Lists'),
-                     InlineKeyboardButton("Stacks", callback_data='Stacks')],
-                    [InlineKeyboardButton("Queue", callback_data='Queue'),
-                     InlineKeyboardButton("Binary Trees", callback_data='Binary Trees')],
+        keyboard = [[InlineKeyboardButton("Linked Lists", callback_data='Linked Listsgfg2'),
+                     InlineKeyboardButton("Stacks", callback_data='Stacksgfg2')],
+                    [InlineKeyboardButton("Queue", callback_data='Queuegfg2'),
+                     InlineKeyboardButton("Binary Trees", callback_data='Binary Treesgfg2')],
                     [InlineKeyboardButton("Binary Search Trees",
-                                          callback_data='Binary Search Trees'),
-                     InlineKeyboardButton("Heaps", callback_data='Heaps')],
-                    [InlineKeyboardButton("Hashing", callback_data='Hashing'),
-                     InlineKeyboardButton("Graphs", callback_data='Graphs')],
-                    [InlineKeyboardButton("Advanced Data Structures", callback_data='Advanced Data Structures'),
-                     InlineKeyboardButton("Arrays", callback_data='Arrays')],
-                    [InlineKeyboardButton("Matrix", callback_data='Matrix')]]
+                                          callback_data='Binary Search Treesgfg2'),
+                     InlineKeyboardButton("Heaps", callback_data='Heapsgfg2')],
+                    [InlineKeyboardButton("Hashing", callback_data='Hashinggfg2'),
+                     InlineKeyboardButton("Graphs", callback_data='Graphsgfg2')],
+                    [InlineKeyboardButton("Advanced Data Structures", callback_data='Advanced Data Structuresgfg2'),
+                     InlineKeyboardButton("Arrays", callback_data='Arraysgfg2')],
+                    [InlineKeyboardButton("Matrix", callback_data='Matrixgfg2')]]
     elif (val == "GATE.json"):
-        keyboard = [[InlineKeyboardButton("Operating Systems", callback_data='Operating Systems'),
-                     InlineKeyboardButton("Database Management Systems", callback_data='Database Management Systems')],
-                    [InlineKeyboardButton("Automata Theory", callback_data='Automata Theory'),
-                     InlineKeyboardButton("Compilers", callback_data='Compilers')],
+        keyboard = [[InlineKeyboardButton("Operating Systems", callback_data='Operating Systemsgfg2'),
+                     InlineKeyboardButton("Database Management Systems", callback_data='Database Management Systemsgfg2')],
+                    [InlineKeyboardButton("Automata Theory", callback_data='Automata Theorygfg2'),
+                     InlineKeyboardButton("Compilers", callback_data='Compilersgfg2')],
                     [InlineKeyboardButton("Computer Networks",
-                                          callback_data='Computer Networks'),
+                                          callback_data='Computer Networksgfg2'),
                      InlineKeyboardButton("GATE Data Structures and Algorithms",
-                                          callback_data='GATE Data Structures and Algorithms')]]
+                                          callback_data='GATE Data Structures and Algorithmsgfg2')]]
     elif (val == "Interview.json"):
-        keyboard = [[InlineKeyboardButton("Payu", callback_data='Payu'),
-                     InlineKeyboardButton("Adobe", callback_data='Adobe')],
-                    [InlineKeyboardButton("Amazon", callback_data='Amazon'),
-                     InlineKeyboardButton("Flipkart", callback_data='Flipkart')],
+        keyboard = [[InlineKeyboardButton("Payu", callback_data='Payugfg2'),
+                     InlineKeyboardButton("Adobe", callback_data='Adobegfg2')],
+                    [InlineKeyboardButton("Amazon", callback_data='Amazongfg2'),
+                     InlineKeyboardButton("Flipkart", callback_data='Flipkartgfg2')],
                     [InlineKeyboardButton("Google",
-                                          callback_data='Google'),
-                     InlineKeyboardButton("Microsoft", callback_data='Microsoft')],
-                    [InlineKeyboardButton("Snapdeal", callback_data='Snapdeal'),
-                     InlineKeyboardButton("Zopper-Com", callback_data='Zopper-Com')],
-                    [InlineKeyboardButton("Yahoo", callback_data='Yahoo'),
-                     InlineKeyboardButton("Cisco", callback_data='Cisco')],
-                    [InlineKeyboardButton("Facebook", callback_data='Facebook'),
-                     InlineKeyboardButton("Yatra.Com", callback_data='Yatra.Com')],
-                    [InlineKeyboardButton("Symantec", callback_data='Symantec'),
-                     InlineKeyboardButton("Myntra", callback_data='Myntra')],
-                    [InlineKeyboardButton("Groupon", callback_data='Groupon'),
-                     InlineKeyboardButton("Belzabar", callback_data='Belzabar')],
-                    [InlineKeyboardButton("Paypal", callback_data='Paypal'),
-                     InlineKeyboardButton("Akosha", callback_data='Akosha')],
-                    [InlineKeyboardButton("Linkedin", callback_data='Linkedin'),
-                     InlineKeyboardButton("Browserstack", callback_data='Browserstack')],
-                    [InlineKeyboardButton("Makemytrip", callback_data='Makemytrip'),
-                     InlineKeyboardButton("Infoedge", callback_data='Infoedge')],
-                    [InlineKeyboardButton("Practo", callback_data='Practo'),
-                     InlineKeyboardButton("Housing-Com", callback_data='Housing-Com')],
-                    [InlineKeyboardButton("Ola-Cabs", callback_data='Ola-Cabs'),
-                     InlineKeyboardButton("Grofers", callback_data='Grofers')],
-                    [InlineKeyboardButton("Thoughtworks", callback_data='Thoughtworks'),
-                     InlineKeyboardButton("Delhivery", callback_data='Delhivery')],
-                    [InlineKeyboardButton("Taxi4Sure", callback_data='Taxi4Sure'),
-                     InlineKeyboardButton("Lenskart", callback_data='Lenskart')]]
+                                          callback_data='Googlegfg2'),
+                     InlineKeyboardButton("Microsoft", callback_data='Microsoftgfg2')],
+                    [InlineKeyboardButton("Snapdeal", callback_data='Snapdealgfg2'),
+                     InlineKeyboardButton("Zopper-Com", callback_data='Zopper-Comgfg2')],
+                    [InlineKeyboardButton("Yahoo", callback_data='Yahoogfg2'),
+                     InlineKeyboardButton("Cisco", callback_data='Ciscogfg2')],
+                    [InlineKeyboardButton("Facebook", callback_data='Facebookgfg2'),
+                     InlineKeyboardButton("Yatra.Com", callback_data='Yatra.Comgfg2')],
+                    [InlineKeyboardButton("Symantec", callback_data='Symantecgfg2'),
+                     InlineKeyboardButton("Myntra", callback_data='Myntragfg2')],
+                    [InlineKeyboardButton("Groupon", callback_data='Groupongfg2'),
+                     InlineKeyboardButton("Belzabar", callback_data='Belzabargfg2')],
+                    [InlineKeyboardButton("Paypal", callback_data='Paypalgfg2'),
+                     InlineKeyboardButton("Akosha", callback_data='Akoshagfg2')],
+                    [InlineKeyboardButton("Linkedin", callback_data='Linkedingfg2'),
+                     InlineKeyboardButton("Browserstack", callback_data='Browserstackgfg2')],
+                    [InlineKeyboardButton("Makemytrip", callback_data='Makemytripgfg2'),
+                     InlineKeyboardButton("Infoedge", callback_data='Infoedgegfg2')],
+                    [InlineKeyboardButton("Practo", callback_data='Practogfg2'),
+                     InlineKeyboardButton("Housing-Com", callback_data='Housing-Comgfg2')],
+                    [InlineKeyboardButton("Ola-Cabs", callback_data='Ola-Cabsgfg2'),
+                     InlineKeyboardButton("Grofers", callback_data='Grofersgfg2')],
+                    [InlineKeyboardButton("Thoughtworks", callback_data='Thoughtworksgfg2'),
+                     InlineKeyboardButton("Delhivery", callback_data='Delhiverygfg2')],
+                    [InlineKeyboardButton("Taxi4Sure", callback_data='Taxi4Suregfg2'),
+                     InlineKeyboardButton("Lenskart", callback_data='Lenskartgfg2')]]
     reply_markup = InlineKeyboardMarkup(keyboard)
     bot.edit_message_text(text="Please select", reply_markup=reply_markup, chat_id=query.message.chat_id,
                           message_id=query.message.message_id)
@@ -805,39 +805,43 @@ def gfg1(bot, update, user_data):
 def gfg2(bot, update, user_data):
     query = update.callback_query
     val = query.data
+    val=str(val).replace("gfg2","")
     if (val == "Advanced Data Structures"):
-        keyboard = [[InlineKeyboardButton("Advanced Lists", callback_data='Advanced Lists'),
-                     InlineKeyboardButton("Trie", callback_data='Trie')],
-                    [InlineKeyboardButton("Suffix Array and Suffix Tree", callback_data='Suffix Array and Suffix Tree'),
-                     InlineKeyboardButton("AVL Tree", callback_data='AVL Tree')],
+        keyboard = [[InlineKeyboardButton("Advanced Lists", callback_data='Advanced Listsgfg3'),
+                     InlineKeyboardButton("Trie", callback_data='Triegfg3')],
+                    [InlineKeyboardButton("Suffix Array and Suffix Tree", callback_data='Suffix Array and Suffix Treegfg3'),
+                     InlineKeyboardButton("AVL Tree", callback_data='AVL Treegfg3')],
                     [InlineKeyboardButton("Splay Tree",
-                                          callback_data='Splay Tree'),
-                     InlineKeyboardButton("B Tree", callback_data='B Tree')],
-                    [InlineKeyboardButton("Segment Tree", callback_data='Segment Tree'),
-                     InlineKeyboardButton("Red Black Tree", callback_data='Red Black Tree')],
-                    [InlineKeyboardButton("K Dimensional Tree", callback_data='K Dimensional Tree'),
-                     InlineKeyboardButton("Others", callback_data='Others')]]
+                                          callback_data='Splay Treegfg3'),
+                     InlineKeyboardButton("B Tree", callback_data='B Treegfg3')],
+                    [InlineKeyboardButton("Segment Tree", callback_data='Segment Treegfg3'),
+                     InlineKeyboardButton("Red Black Tree", callback_data='Red Black Treegfg3')],
+                    [InlineKeyboardButton("K Dimensional Tree", callback_data='K Dimensional Treegfg3'),
+                     InlineKeyboardButton("Others", callback_data='Othersgfg3')]]
         reply_markup = InlineKeyboardMarkup(keyboard)
         bot.edit_message_text(text="Please select", reply_markup=reply_markup, chat_id=query.message.chat_id,
                               message_id=query.message.message_id)
         return GFG3
     else:
-        with open(user_data['gfg'], encoding='utf-8') as data_file:
-            data = json.load(data_file)
-        se = data[val]
-        s = ""
-        s1 = ""
-        a = 0
-        for i in se:
-            a = a + 1
-            if (a <= 50):
-                s = s + '<a href="' + se[i] + '">' + i + '</a>\n\n'
-            else:
-                s1 = s1 + '<a href="' + se[i] + '">' + i + '</a>\n\n'
-        bot.edit_message_text(text=val + "\n\n" + s, chat_id=query.message.chat_id,
-                              message_id=query.message.message_id, parse_mode=ParseMode.HTML)
-        if (len(s1) != 0):
-            bot.send_message(text=val + "\n\n" + s1, chat_id=query.message.chat_id, parse_mode=ParseMode.HTML)
+        try:
+            with open(user_data['gfg'], encoding='utf-8') as data_file:
+                data = json.load(data_file)
+            se = data[val]
+            s = ""
+            s1 = ""
+            a = 0
+            for i in se:
+                a = a + 1
+                if (a <= 50):
+                    s = s + '<a href="' + se[i] + '">' + i + '</a>\n\n'
+                else:
+                    s1 = s1 + '<a href="' + se[i] + '">' + i + '</a>\n\n'
+            bot.edit_message_text(text=val + "\n\n" + s, chat_id=query.message.chat_id,
+                                  message_id=query.message.message_id, parse_mode=ParseMode.HTML)
+            if (len(s1) != 0):
+                bot.send_message(text=val + "\n\n" + s1, chat_id=query.message.chat_id, parse_mode=ParseMode.HTML)
+        except:
+            return ConversationHandler.END
         user_data.clear()
         return ConversationHandler.END
 
@@ -845,15 +849,19 @@ def gfg2(bot, update, user_data):
 # FUNCTION TO SHOW SUBMENU 3
 def gfg3(bot, update, user_data):
     query = update.callback_query
-    val = query.data
-    with open(user_data['gfg'], encoding='utf-8') as data_file:
-        data = json.load(data_file)
-    se = data["Advanced Data Structures"][val]
-    s = ""
-    for i in se:
-        s = s + '<a href="' + se[i] + '">' + i + '</a>\n\n'
-    bot.edit_message_text(text=val + "\n\n" + s, chat_id=query.message.chat_id,
-                          message_id=query.message.message_id, parse_mode=ParseMode.HTML)
+    try:
+        val = query.data
+        val=str(val).replace("gfg3","")
+        with open(user_data['gfg'], encoding='utf-8') as data_file:
+            data = json.load(data_file)
+        se = data["Advanced Data Structures"][val]
+        s = ""
+        for i in se:
+            s = s + '<a href="' + se[i] + '">' + i + '</a>\n\n'
+        bot.edit_message_text(text=val + "\n\n" + s, chat_id=query.message.chat_id,
+                              message_id=query.message.message_id, parse_mode=ParseMode.HTML)
+    except:
+        return ConversationHandler.END
     user_data.clear()
     return ConversationHandler.END
 
@@ -875,7 +883,11 @@ def ongoing(bot, update):
         jsonData = json.loads(rawData)
         searchResults = jsonData['active']
         s = ""
+        i=0
         for er in searchResults:
+            i=i+1
+            if(i==21):
+                break
             title = er['contest_name']
             duration = er['duration']
             host = er['host_name']
@@ -905,6 +917,8 @@ def upcoming(bot, update):
         searchResults = jsonData['pending']
         i = 0
         s = ""
+        keyboard=[]
+        keyboard1=[]
         for er in searchResults:
             i = i + 1
             # LIMITING NO OF EVENTS TO 20
@@ -916,34 +930,23 @@ def upcoming(bot, update):
             host = er['host_name']
             contest = er['contest_url']
             start1 = time_converter(start, '+0530')
+            keyboard1.append(InlineKeyboardButton(str(i), callback_data=str(i)))
             s = s + str(i) + ". " + title + "\n" + "Start:\n" + start.replace("T", " ") + " GMT\n" + str(
                 start1).replace("T",
                                 " ") + " IST\n" + "Duration: " + duration + "\n" + host + "\n" + contest + "\n\n"
+            if i%5==0:
+                keyboard.append(keyboard1)
+                keyboard1 = []
+        keyboard.append(keyboard1)
         upc = searchResults
-        print(upc[0])
-        print(upc[0]['contest_name'])
-        keyboard = [[InlineKeyboardButton("1", callback_data='1'), InlineKeyboardButton("2", callback_data='2'),
-                     InlineKeyboardButton("3", callback_data='3'), InlineKeyboardButton("4", callback_data='4')]
-            , [InlineKeyboardButton("5", callback_data='5'), InlineKeyboardButton("6", callback_data='6'),
-               InlineKeyboardButton(
-                   "7", callback_data='7'), InlineKeyboardButton("8", callback_data='8')]
-            , [InlineKeyboardButton("9", callback_data='9'), InlineKeyboardButton("10",
-                                                                                  callback_data='10'),
-               InlineKeyboardButton(
-                   "11", callback_data='11'), InlineKeyboardButton("12", callback_data='12')]
-            , [InlineKeyboardButton("13", callback_data='13'), InlineKeyboardButton("14",
-                                                                                    callback_data='14'),
-               InlineKeyboardButton(
-                   "15", callback_data='15'), InlineKeyboardButton("16", callback_data='16')],
-                    [InlineKeyboardButton("17", callback_data='17'), InlineKeyboardButton("18", callback_data='18'),
-                     InlineKeyboardButton("19", callback_data='19'), InlineKeyboardButton("20", callback_data='20')]]
         reply_markup = InlineKeyboardMarkup(keyboard)
         update.message.reply_text(s + "Select competition number to get notification" + "\n\n",
                                   reply_markup=reply_markup)
-
     except:
         i = 0
         s = ""
+        keyboard = []
+        keyboard1 = []
         for er in upc:
             i = i + 1
             # LIMITING NO OF EVENTS TO 20
@@ -955,23 +958,13 @@ def upcoming(bot, update):
             host = er['host_name']
             contest = er['contest_url']
             start1 = time_converter(start, '+0530')
-            s = s + title + "\n" + "Start:\n" + start.replace("T", " ") + " GMT\n" + str(start1).replace("T",
+            keyboard1.append(InlineKeyboardButton(str(i), callback_data=str(i)))
+            s = s + str(i) + ". " + title + "\n" + "Start:\n" + start.replace("T", " ") + " GMT\n" + str(start1).replace("T",
                                                                                                          " ") + " IST\n" + "Duration: " + duration + "\n" + host + "\n" + contest + "\n\n"
-        keyboard = [[InlineKeyboardButton("1", callback_data='1'), InlineKeyboardButton("2", callback_data='2'),
-                     InlineKeyboardButton("3", callback_data='3'), InlineKeyboardButton("4", callback_data='4')]
-            , [InlineKeyboardButton("5", callback_data='5'), InlineKeyboardButton("6", callback_data='6'),
-               InlineKeyboardButton(
-                   "7", callback_data='7'), InlineKeyboardButton("8", callback_data='8')]
-            , [InlineKeyboardButton("9", callback_data='9'), InlineKeyboardButton("10",
-                                                                                  callback_data='10'),
-               InlineKeyboardButton(
-                   "11", callback_data='11'), InlineKeyboardButton("12", callback_data='12')]
-            , [InlineKeyboardButton("13", callback_data='13'), InlineKeyboardButton("14",
-                                                                                    callback_data='14'),
-               InlineKeyboardButton(
-                   "15", callback_data='15'), InlineKeyboardButton("16", callback_data='16')],
-                    [InlineKeyboardButton("17", callback_data='17'), InlineKeyboardButton("18", callback_data='18'),
-                     InlineKeyboardButton("19", callback_data='19'), InlineKeyboardButton("20", callback_data='20')]]
+            if i%5==0:
+                keyboard.append(keyboard1)
+                keyboard1 = []
+        keyboard.append(keyboard1)
         reply_markup = InlineKeyboardMarkup(keyboard)
         update.message.reply_text(s + "\n\n" + "Select competition number to get notification",
                                   reply_markup=reply_markup)
@@ -979,7 +972,7 @@ def upcoming(bot, update):
 
 
 jobstores = {
-    'default': SQLAlchemyJobStore(url='sqlite:///coders1.db')
+    'default': SQLAlchemyJobStore(url='sqlite:///'+mount_point+'coders1.db')
 }
 schedule = BackgroundScheduler(jobstores=jobstores)
 schedule.start()
@@ -987,27 +980,27 @@ schedule.start()
 
 # FUNCTION TO SET REMINDER
 def remind(bot, update):
-    global upc
     query = update.callback_query
     msg = query.data
-    msg = int(msg) - 1
-    start1 = time_converter(upc[msg]['start'], '-0030')
-    dateT = str(upc[msg]['start']).replace("T", " ").split(" ")
-    start1 = start1.replace("T", " ").split(" ")
-    date = dateT[0].split("-")
-    date1 = start1[0].split("-")
-    time1 = start1[1].split(":")
-    schedule.add_job(remindmsgDay, 'cron', year=date[0], month=date[1], day=date[2], replace_existing=True,
-                     id=str(query.message.chat_id) + str(upc[msg]['contest_name']) + "0",
-                     args=[str(query.message.chat_id),
-                           str(upc[msg]['contest_name']) + "\n" + str(upc[msg]['contest_url'])])
-    schedule.add_job(remindmsg, 'cron', year=date1[0], month=date1[1], day=date1[2], hour=time1[0], minute=time1[0],
-                     replace_existing=True,
-                     id=str(query.message.chat_id) + str(upc[msg]['contest_name']) + "1",
-                     args=[str(query.message.chat_id),
-                           str(upc[msg]['contest_name'] + "\n" + str(upc[msg]['contest_url']))])
-    bot.edit_message_text(chat_id=query.message.chat_id, message_id=query.message.message_id,
-                          text="I will remind you about this competition")
+    if str(msg).isdigit():
+        msg = int(msg) - 1
+        start1 = time_converter(upc[msg]['start'], '-0030')
+        dateT = str(upc[msg]['start']).replace("T", " ").split(" ")
+        start1 = start1.replace("T", " ").split(" ")
+        date = dateT[0].split("-")
+        date1 = start1[0].split("-")
+        time1 = start1[1].split(":")
+        schedule.add_job(remindmsgDay, 'cron', year=date[0], month=date[1], day=date[2], replace_existing=True,
+                         id=str(query.message.chat_id) + str(upc[msg]['contest_name']) + "0",
+                         args=[str(query.message.chat_id),
+                               str(upc[msg]['contest_name']) + "\n" + str(upc[msg]['contest_url'])])
+        schedule.add_job(remindmsg, 'cron', year=date1[0], month=date1[1], day=date1[2], hour=time1[0], minute=time1[0],
+                         replace_existing=True,
+                         id=str(query.message.chat_id) + str(upc[msg]['contest_name']) + "1",
+                         args=[str(query.message.chat_id),
+                               str(upc[msg]['contest_name'] + "\n" + str(upc[msg]['contest_url']))])
+        bot.edit_message_text(chat_id=query.message.chat_id, message_id=query.message.message_id,
+                              text="I will remind you about " + upc[msg]['contest_name']+"\nYou can use command /dontremindme to cancel reminder")
     return ConversationHandler.END
 
 
@@ -1028,7 +1021,7 @@ def remindmsg(chatId, message):
 @timeouts.wrapper
 def removeRemind(bot, update ):
     cid = update.message.chat_id
-    conn = sqlite3.connect('coders1.db')
+    conn = sqlite3.connect(mount_point+'coders1.db')
     c = conn.cursor()
     c.execute("SELECT id FROM apscheduler_jobs WHERE id LIKE  " + "'" + str(
         update.message.chat_id) + "%' AND id LIKE " + "'%0'")
@@ -1040,7 +1033,7 @@ def removeRemind(bot, update ):
         for i in range(0, len(a)):
             s =str(a[i]).replace(str(cid), "").replace("('", "").replace("',)", "").replace(
                 '("', "").replace('",)', "").rstrip("0")
-            keyboard.append([InlineKeyboardButton(s, callback_data=s)])
+            keyboard.append([InlineKeyboardButton(s, callback_data=s+"notiplz")])
         reply_markup = InlineKeyboardMarkup(keyboard)
         update.message.reply_text("Here are your pending reminders\nSelect the reminder you want to remove",reply_markup=reply_markup)
         c.close()
@@ -1053,10 +1046,11 @@ def removeRemind(bot, update ):
 
 def remnoti(bot, update):
     query=update.callback_query
-    val=str(query.message.chat_id)+query.data
+    val = str(query.message.chat_id) + str(query.data).replace("notiplz", "")
     schedule.remove_job(val + "0")
     schedule.remove_job(val + "1")
-    bot.edit_message_text(text="Reminder removed",message_id=query.message.message_id,chat_id=query.message.chat_id)
+    bot.edit_message_text(text="Reminder removed", message_id=query.message.message_id,
+                          chat_id=query.message.chat_id)
     return ConversationHandler.END
 
 
@@ -1065,12 +1059,12 @@ def remnoti(bot, update):
 # START OF CONVERSATION HANDLER FOR UNREGISTERING
 @timeouts.wrapper
 def unregister(bot, update):
-    keyboard = [[InlineKeyboardButton("Hackerearth", callback_data='HE'),
-                 InlineKeyboardButton("Hackerrank", callback_data='HR')],
-                [InlineKeyboardButton("Codechef", callback_data='CC'),
-                 InlineKeyboardButton("Spoj", callback_data='SP')],
-                [InlineKeyboardButton("Codeforces", callback_data='CF'),
-                 InlineKeyboardButton("ALL", callback_data='ALL')]]
+    keyboard = [[InlineKeyboardButton("Hackerearth", callback_data='HErem2'),
+                 InlineKeyboardButton("Hackerrank", callback_data='HRrem2')],
+                [InlineKeyboardButton("Codechef", callback_data='CCrem2'),
+                 InlineKeyboardButton("Spoj", callback_data='SPrem2')],
+                [InlineKeyboardButton("Codeforces", callback_data='CFrem2'),
+                 InlineKeyboardButton("ALL", callback_data='ALLrem2')]]
     reply_markup = InlineKeyboardMarkup(keyboard)
     update.message.reply_text("Select the judge you want to unregister from", reply_markup=reply_markup)
     return REMOVER
@@ -1080,7 +1074,8 @@ def unregister(bot, update):
 def remover(bot, update):
     query = update.callback_query
     val = query.data
-    conn = sqlite3.connect('coders1.db')
+    val=str(val).replace("rem2","")
+    conn = sqlite3.connect(mount_point+'coders1.db')
     c = conn.cursor()
     a = str(query.from_user.id)
     c.execute("SELECT id FROM handles WHERE id=(?)", (a,))
@@ -1100,7 +1095,7 @@ def remover(bot, update):
                               message_id=query.message.message_id)
         c.execute("SELECT name, HE FROM datas")
         # RECREATING ALL XLSX FILES
-        workbook = Workbook("HE.xlsx")
+        workbook = Workbook(mount_point+"HE.xlsx")
         worksheet = workbook.add_worksheet()
         format = workbook.add_format()
         format.set_align('top')
@@ -1113,7 +1108,7 @@ def remover(bot, update):
         worksheet.set_column(0, 5, 40)
         workbook.close()
         c.execute("SELECT name, HR FROM datas")
-        workbook = Workbook("HR.xlsx")
+        workbook = Workbook(mount_point+"HR.xlsx")
         worksheet = workbook.add_worksheet()
         format = workbook.add_format()
         format.set_align('top')
@@ -1126,7 +1121,7 @@ def remover(bot, update):
         worksheet.set_column(0, 5, 40)
         workbook.close()
         c.execute("SELECT name, SP FROM datas")
-        workbook = Workbook("SP.xlsx")
+        workbook = Workbook(mount_point+"SP.xlsx")
         worksheet = workbook.add_worksheet()
         format = workbook.add_format()
         format.set_align('top')
@@ -1139,7 +1134,7 @@ def remover(bot, update):
         worksheet.set_column(0, 5, 40)
         workbook.close()
         c.execute("SELECT name, CF FROM datas")
-        workbook = Workbook("CF.xlsx")
+        workbook = Workbook(mount_point+"CF.xlsx")
         worksheet = workbook.add_worksheet()
         format = workbook.add_format()
         format.set_align('top')
@@ -1152,7 +1147,7 @@ def remover(bot, update):
         worksheet.set_column(0, 5, 40)
         workbook.close()
         c.execute("SELECT name, CC FROM datas")
-        workbook = Workbook("CC.xlsx")
+        workbook = Workbook(mount_point+"CC.xlsx")
         worksheet = workbook.add_worksheet()
         format = workbook.add_format()
         format.set_align('top')
@@ -1182,7 +1177,7 @@ def remover(bot, update):
                               message_id=query.message.message_id)
         c.execute("SELECT name, " + val + " FROM datas")
         # RECREATING XLSX FILE
-        workbook = Workbook("" + val + ".xlsx")
+        workbook = Workbook(mount_point + val + ".xlsx")
         worksheet = workbook.add_worksheet()
         format = workbook.add_format()
         format.set_align('top')
@@ -1204,7 +1199,7 @@ def remover(bot, update):
         c.execute("DELETE FROM datas WHERE id = (?)", (a,))
         c.execute("DELETE FROM handles WHERE id = (?)", (a,))
         conn.commit()
-    workbook = Workbook('all.xlsx')
+    workbook = Workbook(mount_point+'all.xlsx')
     worksheet = workbook.add_worksheet()
     format = workbook.add_format()
     format.set_align('top')
@@ -1276,13 +1271,14 @@ def qupd():
 @sched.scheduled_job('cron', day_of_week='sat-sun', hour=18, minute=30)
 def updateCf():
     global qcf
+    bot = Bot(TOKEN)
     opener = urllib.request.build_opener()
     opener.addheaders = [('User-agent', 'Mozilla/5.0')]
     source1 = opener.open("http://www.codeforces.com/problemset")
     soup1 = bs.BeautifulSoup(source1, 'html5lib')
     endpage = int(soup1.findAll('span', {"class": "page-index"})[-1].getText())
     latest = soup1.find('td', {"class": "id"}).text
-    with open('codeforces.json', 'r') as codeforces:
+    with open(mount_point+'codeforces.json', 'r') as codeforces:
         data = json.load(codeforces)
         latest1 = data['latest']
         if latest1 == latest:
@@ -1292,6 +1288,8 @@ def updateCf():
             signal = True
             for i in range(1, endpage + 1):
                 if signal == False:
+                    for chatids in adminlist:
+                        bot.send_message(chat_id=chatids, text="Codeforces questions up to date")
                     break
                 source = opener.open("http://www.codeforces.com/problemset/page/" + str(i))
                 soup = bs.BeautifulSoup(source, 'html5lib')
@@ -1317,12 +1315,11 @@ def updateCf():
                             data['F'].append(save)
                         else:
                             data['OTHERS'].append(save)
-    os.remove('codeforces.json')
-    with open('codeforces.json', 'w') as codeforces:
+    os.remove(mount_point+'codeforces.json')
+    with open(mount_point+'codeforces.json', 'w') as codeforces:
         json.dump(data, codeforces)
-    with open('codeforces.json', 'r') as codeforces:
+    with open(mount_point+'codeforces.json', 'r') as codeforces:
         qcf = json.load(codeforces)
-    bot = Bot(TOKEN)
     for chatids in adminlist:
         bot.send_message(chat_id=chatids, text="Questions updated codeforces")
 
@@ -1333,7 +1330,7 @@ def updateCf():
 def updaters():
     global timeouts
     timeouts = Spam_settings()
-    conn = sqlite3.connect('coders1.db')
+    conn = sqlite3.connect(mount_point+'coders1.db')
     c = conn.cursor()
     c.execute('SELECT id, HE, HR, CC, SP, CF FROM handles')
     for row in c.fetchall():
@@ -1448,7 +1445,7 @@ def updaters():
         c.execute("UPDATE datas SET HE=(?), HR=(?), CC=(?), SP=(?), CF=(?) WHERE id=(?)", (he, hr, cc, sp, cf, a))
     # RECREATING ALL THE XLSX FILES
     c.execute("SELECT name, HE FROM datas")
-    workbook = Workbook("HE.xlsx")
+    workbook = Workbook(mount_point+"HE.xlsx")
     worksheet = workbook.add_worksheet()
     format = workbook.add_format()
     format.set_align('top')
@@ -1461,7 +1458,7 @@ def updaters():
     worksheet.set_column(0, 5, 40)
     workbook.close()
     c.execute("SELECT name, HR FROM datas")
-    workbook = Workbook("HR.xlsx")
+    workbook = Workbook(mount_point+"HR.xlsx")
     worksheet = workbook.add_worksheet()
     format = workbook.add_format()
     format.set_align('top')
@@ -1474,7 +1471,7 @@ def updaters():
     worksheet.set_column(0, 5, 40)
     workbook.close()
     c.execute("SELECT name, SP FROM datas")
-    workbook = Workbook("SP.xlsx")
+    workbook = Workbook(mount_point+"SP.xlsx")
     worksheet = workbook.add_worksheet()
     format = workbook.add_format()
     format.set_align('top')
@@ -1487,7 +1484,7 @@ def updaters():
     worksheet.set_column(0, 5, 40)
     workbook.close()
     c.execute("SELECT name, CF FROM datas")
-    workbook = Workbook("CF.xlsx")
+    workbook = Workbook(mount_point+"CF.xlsx")
     worksheet = workbook.add_worksheet()
     format = workbook.add_format()
     format.set_align('top')
@@ -1500,7 +1497,7 @@ def updaters():
     worksheet.set_column(0, 5, 40)
     workbook.close()
     c.execute("SELECT name, CC FROM datas")
-    workbook = Workbook("CC.xlsx")
+    workbook = Workbook(mount_point+"CC.xlsx")
     worksheet = workbook.add_worksheet()
     format = workbook.add_format()
     format.set_align('top')
@@ -1513,7 +1510,7 @@ def updaters():
     worksheet.set_column(0, 5, 40)
     workbook.close()
     c.execute("SELECT name, HE, HR, SP, CF, CC FROM datas")
-    workbook = Workbook('all.xlsx')
+    workbook = Workbook(mount_point+'all.xlsx')
     worksheet = workbook.add_worksheet()
     format = workbook.add_format()
     format.set_align('top')
@@ -1535,39 +1532,42 @@ def updaters():
 # START OF CONVERSATION HANDLER TO SUBSCRIBE TO QUESTION OF THE DAY
 @timeouts.wrapper
 def subscribe(bot,update):
-    keyboard = [[InlineKeyboardButton("CODEFORCES", callback_data='CF'),
-                 InlineKeyboardButton("CODECHEF", callback_data='CC')]]
+    if update.message.chat_id<0:
+        update.message.reply_text("I detected this is a group\nIf you subscribe here I will send questions to the group\nTo get questions to yourself subscribe to me in personal message")
+    keyboard = [[InlineKeyboardButton("CODEFORCES", callback_data='CFsub3'),
+                 InlineKeyboardButton("CODECHEF", callback_data='CCsub3')]]
     reply_markup=InlineKeyboardMarkup(keyboard)
-    update.message.reply_text("Please select the website to which you wish to subscribe for getting question of the day",reply_markup=reply_markup)
+    bot.send_message(text="Please select the website to which you wish to subscribe for getting question of the day",chat_id=update.message.chat_id,reply_markup=reply_markup)
     return SUBSEL
 
 def subsel(bot,update):
     query=update.callback_query
     val=query.data
-    if val=='CC':
-        keyboard = [[InlineKeyboardButton("Beginner", callback_data='BEGINNER'),
-                     InlineKeyboardButton("Easy", callback_data='EASY')],
-                    [InlineKeyboardButton("Medium", callback_data='MEDIUM'),
-                     InlineKeyboardButton("Hard", callback_data='HARD')],
-                    [InlineKeyboardButton("Challenge", callback_data='CHALLENGE')]]
+    if val=='CCsub3':
+        keyboard = [[InlineKeyboardButton("Beginner", callback_data='BEGINNERcc2'),
+                     InlineKeyboardButton("Easy", callback_data='EASYcc2')],
+                    [InlineKeyboardButton("Medium", callback_data='MEDIUMcc2'),
+                     InlineKeyboardButton("Hard", callback_data='HARDcc2')],
+                    [InlineKeyboardButton("Challenge", callback_data='CHALLENGEcc2')]]
         reply_markup = InlineKeyboardMarkup(keyboard)
-        bot.edit_message_text(chat_id=query.message.chat_id,message_id=query.message.message_id,text="PLEASE SELECT",reply_markup=reply_markup)
+        bot.edit_message_text(chat_id=query.message.chat_id,message_id=query.message.message_id,text="Please select",reply_markup=reply_markup)
         return SUBCC
-    else:
-        keyboard = [[InlineKeyboardButton("A", callback_data='A'),
-                     InlineKeyboardButton("B", callback_data='B'), InlineKeyboardButton("C", callback_data='C')],
-                    [InlineKeyboardButton("D", callback_data='D'),
-                     InlineKeyboardButton("E", callback_data='E'), InlineKeyboardButton("F", callback_data='F')],
-                    [InlineKeyboardButton("OTHERS", callback_data='OTHERS')]]
+    elif val=='CFsub3':
+        keyboard = [[InlineKeyboardButton("A", callback_data='Acf2'),
+                     InlineKeyboardButton("B", callback_data='Bcf2'), InlineKeyboardButton("C", callback_data='Ccf2')],
+                    [InlineKeyboardButton("D", callback_data='Dcf2'),
+                     InlineKeyboardButton("E", callback_data='Ecf2'), InlineKeyboardButton("F", callback_data='Fcf2')],
+                    [InlineKeyboardButton("OTHERS", callback_data='OTHERScf2')]]
         reply_markup = InlineKeyboardMarkup(keyboard)
-        bot.edit_message_text(chat_id=query.message.chat_id, message_id=query.message.message_id, text="PLEASE SELECT",reply_markup=reply_markup)
+        bot.edit_message_text(chat_id=query.message.chat_id, message_id=query.message.message_id, text="Please select",reply_markup=reply_markup)
         return SUBCF
 
 
 def subcc(bot,update):
-    conn = sqlite3.connect('coders1.db')
+    conn = sqlite3.connect(mount_point+'coders1.db')
     query = update.callback_query
     val = query.data
+    val=str(val).replace("cc2","")
     a=str(query.message.chat_id)
     c=conn.cursor()
     c.execute("INSERT OR IGNORE INTO subscribers (id,CC,CCSEL) VALUES (?, ?, ?)", (a,1,val))
@@ -1575,14 +1575,15 @@ def subcc(bot,update):
         c.execute("UPDATE subscribers SET CC = (?) , CCSEL= (?) WHERE id = (?) ", (1, val, a))
     conn.commit()
     conn.close()
-    bot.edit_message_text(chat_id=query.message.chat_id, message_id=query.message.message_id, text="I WILL SEND YOU A QUESTION OF TYPE "+val+" EVERYDAY FROM CODECHEF \nYOU CAN USE COMMAND /unsubscribe to unsubscribe ")
+    bot.edit_message_text(chat_id=query.message.chat_id, message_id=query.message.message_id, text="I will send you a question of type "+val+" everyday from codechef \nyou can use command /unsubscribe to unsubscribe ")
     return ConversationHandler.END
 
 
 def subcf(bot,update):
-    conn = sqlite3.connect('coders1.db')
+    conn = sqlite3.connect(mount_point+'coders1.db')
     query = update.callback_query
     val = query.data
+    val=str(val).replace("cf2","")
     a=str(query.message.chat_id)
     c=conn.cursor()
     c.execute("INSERT OR IGNORE INTO subscribers (id,CF,CFSEL) VALUES (?, ?, ?)", (a,1,val))
@@ -1590,7 +1591,7 @@ def subcf(bot,update):
         c.execute("UPDATE subscribers SET CF = (?) , CFSEL= (?) WHERE id = (?) ", (1, val, a))
     conn.commit()
     conn.close()
-    bot.edit_message_text(chat_id=query.message.chat_id, message_id=query.message.message_id, text="I WILL SEND YOU A QUESTION OF TYPE "+val+" EVERYDAY FROM CODEFORCES \nYOU CAN USE COMMAND /unsubscribe to unsubscribe ")
+    bot.edit_message_text(chat_id=query.message.chat_id, message_id=query.message.message_id, text="I will send you a question of type "+val+" everyday from codeforces \nyou can use command /unsubscribe to unsubscribe ")
     return ConversationHandler.END
 # END OF CONVERSATION HANDLER TO SUBSCRIBE TO QUESTION OF THE DAY
 
@@ -1598,7 +1599,7 @@ def subcf(bot,update):
 # START OF CONVERSATION HANDLER TO UNSUBSCRIBE FROM QUESTION OF THE DAY
 @timeouts.wrapper
 def unsubsel(bot,update):
-    conn = sqlite3.connect('coders1.db')
+    conn = sqlite3.connect(mount_point+'coders1.db')
     c = conn.cursor()
     c.execute("SELECT id FROM subscribers WHERE id=(?)", (str(update.message.chat_id),))
     if not c.fetchone():
@@ -1610,9 +1611,9 @@ def unsubsel(bot,update):
         keyboard=[]
         for row in c.fetchall():
             if(row[0]==1):
-                keyboard.append([InlineKeyboardButton("CODECHEF", callback_data='CC')])
+                keyboard.append([InlineKeyboardButton("CODECHEF", callback_data='CCunsub4')])
             if(row[1]==1):
-                keyboard.append([InlineKeyboardButton("CODEFORCES", callback_data='CF')])
+                keyboard.append([InlineKeyboardButton("CODEFORCES", callback_data='CFunsub4')])
         reply_markup = InlineKeyboardMarkup(keyboard)
         update.message.reply_text("Select the one you want to unsubscribe from",reply_markup=reply_markup)
         c.close()
@@ -1623,8 +1624,10 @@ def unsubsel(bot,update):
 def unsub(bot,update):
     query=update.callback_query
     val=query.data
+    val=str(val).replace("unsub4","")
+
     a = str(query.message.chat_id)
-    conn = sqlite3.connect('coders1.db')
+    conn = sqlite3.connect(mount_point+'coders1.db')
     c=conn.cursor()
     c.execute("UPDATE subscribers SET " + val + " = 0 WHERE id = (?) ", (a,))
     conn.commit()
@@ -1650,7 +1653,7 @@ def unsub(bot,update):
 def sender():
     bot = Bot(TOKEN)
     global scce, s1cce, scch, s1cch, sccm, s1ccm, sccs, s1ccs, sccc, s1ccc,qcf
-    conn = sqlite3.connect('coders1.db')
+    conn = sqlite3.connect(mount_point+'coders1.db')
     c=conn.cursor()
     c.execute("SELECT  * FROM subscribers")
     for row in c.fetchall():
@@ -1713,12 +1716,12 @@ sched.start()
 # START OF CONVERSATION HANDLER FOR UPDATING USERS DATA ON HIS WISH
 @timeouts.wrapper
 def updatesel(bot, update):
-    keyboard = [[InlineKeyboardButton("Hackerearth", callback_data='HE'),
-                 InlineKeyboardButton("Hackerrank", callback_data='HR')],
-                [InlineKeyboardButton("Codechef", callback_data='CC'),
-                 InlineKeyboardButton("Spoj", callback_data='SP')],
-                [InlineKeyboardButton("Codeforces", callback_data='CF'),
-                 InlineKeyboardButton("ALL", callback_data='ALL')]]
+    keyboard = [[InlineKeyboardButton("Hackerearth", callback_data='HEupd5'),
+                 InlineKeyboardButton("Hackerrank", callback_data='HRupd5')],
+                [InlineKeyboardButton("Codechef", callback_data='CCupd5'),
+                 InlineKeyboardButton("Spoj", callback_data='SPupd5')],
+                [InlineKeyboardButton("Codeforces", callback_data='CFupd5'),
+                 InlineKeyboardButton("ALL", callback_data='ALLupd5')]]
     reply_markup = InlineKeyboardMarkup(keyboard)
     update.message.reply_text("PLEASE SELECT THE JUDGE FROM WHICH YOU WANT TO UPDATE YOUR PROFILE",
                               reply_markup=reply_markup)
@@ -1729,8 +1732,9 @@ def updatesel(bot, update):
 def updasel(bot, update):
     query = update.callback_query
     val = query.data
+    val=str(val).replace("upd5","")
     a = str(query.from_user.id)
-    conn = sqlite3.connect('coders1.db')
+    conn = sqlite3.connect(mount_point+'coders1.db')
     c = conn.cursor()
     c.execute("SELECT id FROM handles WHERE id=(?)", (a,))
     if not c.fetchone():
@@ -1862,7 +1866,7 @@ def updasel(bot, update):
                       (he, hr, cc, sp, cf, str(a)))
         # RECREATING ALL XLSX FILES
         c.execute("SELECT name, HE FROM datas")
-        workbook = Workbook("HE.xlsx")
+        workbook = Workbook(mount_point+"HE.xlsx")
         worksheet = workbook.add_worksheet()
         format = workbook.add_format()
         format.set_align('top')
@@ -1875,7 +1879,7 @@ def updasel(bot, update):
         worksheet.set_column(0, 5, 40)
         workbook.close()
         c.execute("SELECT name, HR FROM datas")
-        workbook = Workbook("HR.xlsx")
+        workbook = Workbook(mount_point+"HR.xlsx")
         worksheet = workbook.add_worksheet()
         format = workbook.add_format()
         format.set_align('top')
@@ -1888,7 +1892,7 @@ def updasel(bot, update):
         worksheet.set_column(0, 5, 40)
         workbook.close()
         c.execute("SELECT name, SP FROM datas")
-        workbook = Workbook("SP.xlsx")
+        workbook = Workbook(mount_point+"SP.xlsx")
         worksheet = workbook.add_worksheet()
         format = workbook.add_format()
         format.set_align('top')
@@ -1901,7 +1905,7 @@ def updasel(bot, update):
         worksheet.set_column(0, 5, 40)
         workbook.close()
         c.execute("SELECT name, CF FROM datas")
-        workbook = Workbook("CF.xlsx")
+        workbook = Workbook(mount_point+"CF.xlsx")
         worksheet = workbook.add_worksheet()
         format = workbook.add_format()
         format.set_align('top')
@@ -1914,7 +1918,7 @@ def updasel(bot, update):
         worksheet.set_column(0, 5, 40)
         workbook.close()
         c.execute("SELECT name, CC FROM datas")
-        workbook = Workbook("CC.xlsx")
+        workbook = Workbook(mount_point+"CC.xlsx")
         worksheet = workbook.add_worksheet()
         format = workbook.add_format()
         format.set_align('top')
@@ -2043,7 +2047,7 @@ def updasel(bot, update):
             bot.edit_message_text(text=""+ans, chat_id=query.message.chat_id, message_id=query.message.message_id)
         # RECREATING ALL THE XLMX FILES
         c.execute("SELECT name, " + val + " FROM datas")
-        workbook = Workbook("" + val + ".xlsx")
+        workbook = Workbook(mount_point + val + ".xlsx")
         worksheet = workbook.add_worksheet()
         format = workbook.add_format()
         format.set_align('top')
@@ -2056,7 +2060,7 @@ def updasel(bot, update):
         worksheet.set_column(0, 5, 40)
         workbook.close()
     c.execute("SELECT name, HE, HR, SP, CF, CC FROM datas")
-    workbook = Workbook('all.xlsx')
+    workbook = Workbook(mount_point+'all.xlsx')
     worksheet = workbook.add_worksheet()
     format = workbook.add_format()
     format.set_align('top')
@@ -2079,9 +2083,9 @@ def updasel(bot, update):
 # START OF CONVERSATION HANDLER TO GET THE RANKLIST
 @timeouts.wrapper
 def ranklist(bot, update):
-    keyboard = [[InlineKeyboardButton("EVERY ONE", callback_data='all'),
-                 InlineKeyboardButton("MINE", callback_data='mine')],
-                [InlineKeyboardButton("GET BY NAME", callback_data='getName')]]
+    keyboard = [[InlineKeyboardButton("EVERY ONE", callback_data='allsel1'),
+                 InlineKeyboardButton("MINE", callback_data='minesel1')],
+                [InlineKeyboardButton("GET BY NAME", callback_data='getNamesel1')]]
     reply_markup = InlineKeyboardMarkup(keyboard)
     update.message.reply_text("Please select the ranklist you want", reply_markup=reply_markup)
     return SELECTION
@@ -2091,30 +2095,31 @@ def ranklist(bot, update):
 def selection(bot, update):
     query = update.callback_query
     val = query.data
+    val=str(val).replace("sel1","")
     if val == "all":
-        keyboard = [[InlineKeyboardButton("Hackerearth", callback_data='HE'),
-                     InlineKeyboardButton("Hackerrank", callback_data='HR')],
-                    [InlineKeyboardButton("Codechef", callback_data='CC'),
-                     InlineKeyboardButton("Spoj", callback_data='SP')],
-                    [InlineKeyboardButton("Codeforces", callback_data='CF'),
-                     InlineKeyboardButton("ALL", callback_data='ALL')]]
+        keyboard = [[InlineKeyboardButton("Hackerearth", callback_data='HElist6'),
+                     InlineKeyboardButton("Hackerrank", callback_data='HRlist6')],
+                    [InlineKeyboardButton("Codechef", callback_data='CClist6'),
+                     InlineKeyboardButton("Spoj", callback_data='SPlist6')],
+                    [InlineKeyboardButton("Codeforces", callback_data='CFlist6'),
+                     InlineKeyboardButton("ALL", callback_data='ALLlist6')]]
         reply_markup = InlineKeyboardMarkup(keyboard)
         bot.edit_message_text(text='please select the judge or select all for showing all', reply_markup=reply_markup,
                               chat_id=query.message.chat_id,
                               message_id=query.message.message_id)
         return HOLO
     elif val == "mine":
-        conn = sqlite3.connect('coders1.db')
+        conn = sqlite3.connect(mount_point+'coders1.db')
         c = conn.cursor()
         print(str(query.from_user.id))
         c.execute("SELECT id FROM datas WHERE id=" + str(query.from_user.id))
         if c.fetchone():
-            keyboard = [[InlineKeyboardButton("Hackerearth", callback_data='HE'),
-                         InlineKeyboardButton("Hackerrank", callback_data='HR')],
-                        [InlineKeyboardButton("Codechef", callback_data='CC'),
-                         InlineKeyboardButton("Spoj", callback_data='SP')],
-                        [InlineKeyboardButton("Codeforces", callback_data='CF'),
-                         InlineKeyboardButton("ALL", callback_data='ALL')]]
+            keyboard = [[InlineKeyboardButton("Hackerearth", callback_data='HElist7'),
+                         InlineKeyboardButton("Hackerrank", callback_data='HRlist7')],
+                        [InlineKeyboardButton("Codechef", callback_data='CClist7'),
+                         InlineKeyboardButton("Spoj", callback_data='SPlist7')],
+                        [InlineKeyboardButton("Codeforces", callback_data='CFlist7'),
+                         InlineKeyboardButton("ALL", callback_data='ALLlist7')]]
             reply_markup = InlineKeyboardMarkup(keyboard)
             bot.edit_message_text(text='please select the judge or select all for showing all',
                                   reply_markup=reply_markup,
@@ -2135,13 +2140,19 @@ def selection(bot, update):
                               chat_id=query.message.chat_id,
                               message_id=query.message.message_id)
         return POLO
+    else:
+        return ConversationHandler.END
 
 
 # FUNCTION TO GET THE USERS RANKLIST
 def solo(bot, update):
     query = update.callback_query
     val = query.data
-    conn = sqlite3.connect('coders1.db')
+    choices = ['HElist7', 'HRlist7', 'CClist7', 'SPlist7', 'CFlist7', 'ALLlist7']
+    if val not in choices:
+        return ConversationHandler.END
+    val=str(val).replace("list7","")
+    conn = sqlite3.connect(mount_point+'coders1.db')
     c = conn.cursor()
     if val == "ALL":
         a = str(query.from_user.id)
@@ -2183,16 +2194,16 @@ def solo(bot, update):
 # FUNCTION TO GET THE RANKLIST MENU OF THE USER BY SEARCHING IS NAME
 def polo(bot, update, user_data):
     msg = update.message.text.upper()
-    conn = sqlite3.connect('coders1.db')
+    conn = sqlite3.connect(mount_point+'coders1.db')
     c = conn.cursor()
     c.execute("SELECT name FROM handles WHERE name=(?)", (msg,))
     if c.fetchone():
-        keyboard = [[InlineKeyboardButton("Hackerearth", callback_data='HE'),
-                     InlineKeyboardButton("Hackerrank", callback_data='HR')],
-                    [InlineKeyboardButton("Codechef", callback_data='CC'),
-                     InlineKeyboardButton("Spoj", callback_data='SP')],
-                    [InlineKeyboardButton("Codeforces", callback_data='CF'),
-                     InlineKeyboardButton("ALL", callback_data='ALL')]]
+        keyboard = [[InlineKeyboardButton("Hackerearth", callback_data='HElist8'),
+                     InlineKeyboardButton("Hackerrank", callback_data='HRlist8')],
+                    [InlineKeyboardButton("Codechef", callback_data='CClist8'),
+                     InlineKeyboardButton("Spoj", callback_data='SPlist8')],
+                    [InlineKeyboardButton("Codeforces", callback_data='CFlist8'),
+                     InlineKeyboardButton("ALL", callback_data='ALLlist8')]]
         reply_markup = InlineKeyboardMarkup(keyboard)
         update.message.reply_text('please select the judge or select all for showing all', reply_markup=reply_markup)
         user_data['name1'] = msg
@@ -2208,8 +2219,12 @@ def polo(bot, update, user_data):
 def xolo(bot, update, user_data):
     query = update.callback_query
     val = query.data
+    choices = ['HElist8', 'HRlist8', 'CClist8', 'SPlist8', 'CFlist8', 'ALLlist8']
+    if val not in choices:
+        return ConversationHandler.END
+    val=str(val).replace("list8","")
     name1 = user_data['name1']
-    conn = sqlite3.connect('coders1.db')
+    conn = sqlite3.connect(mount_point+'coders1.db')
     c = conn.cursor()
     if val == "ALL":
         c.execute("SELECT name, HE, HR, SP, CC, CF FROM datas WHERE name=(?)", (name1,))
@@ -2250,12 +2265,16 @@ def xolo(bot, update, user_data):
 def holo(bot, update):
     query = update.callback_query
     val = query.data
+    choices = ['HElist6', 'HRlist6', 'CClist6', 'SPlist6', 'CFlist6', 'ALLlist6']
+    if val not in choices:
+        return ConversationHandler.END
+    val = str(val).replace("list6", "")
     if val == "ALL":
         try:
             bot.edit_message_text(text='I am sending you the details',
                                   chat_id=query.message.chat_id,
                                   message_id=query.message.message_id)
-            bot.send_document(chat_id=query.message.chat_id, document=open('all.xlsx', 'rb'))
+            bot.send_document(chat_id=query.message.chat_id, document=open(mount_point+'all.xlsx', 'rb'))
         except FileNotFoundError:
             bot.edit_message_text(text='Sorry no entry found',
                                   chat_id=query.message.chat_id,
@@ -2266,7 +2285,7 @@ def holo(bot, update):
             bot.edit_message_text(text='I am sending you the details',
                                   chat_id=query.message.chat_id,
                                   message_id=query.message.message_id)
-            bot.send_document(chat_id=query.message.chat_id, document=open("" + val + ".xlsx", 'rb'))
+            bot.send_document(chat_id=query.message.chat_id, document=open(mount_point + val + ".xlsx", 'rb'))
         except FileNotFoundError:
             bot.edit_message_text(text='Sorry no entry found',
                                   chat_id=query.message.chat_id,
@@ -2326,7 +2345,7 @@ def getDb(bot, update):
 def db(bot, update):
     file_id = update.message.document.file_id
     newFile = bot.get_file(file_id)
-    newFile.download('coders1.db')
+    newFile.download(mount_point+'coders1.db')
     update.message.reply_text("saved")
     return ConversationHandler.END
 # END OF ADMIN CONVERSATION HANDLER TO REPLACE THE DATABASE
@@ -2346,9 +2365,10 @@ def cf(bot, update):
     global qcf
     file_id = update.message.document.file_id
     newFile = bot.get_file(file_id)
-    newFile.download('codeforces.json')
+    newFile.download(mount_point+'codeforces.json')
     update.message.reply_text("saved")
-    qcf=json.load('codeforces.json')
+    with open(mount_point+'codeforces.json') as codeforces:
+        qcf=json.load(codeforces)
     return ConversationHandler.END
 # END OF ADMIN CONVERSATION HANDLER TO REPLACE THE CODEFORCES JSON
 
@@ -2359,7 +2379,7 @@ def givememydb(bot, update):
     if not str(update.message.chat_id) in adminlist:
         update.message.reply_text("sorry you are not an admin")
         return
-    bot.send_document(chat_id=update.message.chat_id, document=open('coders1.db', 'rb'))
+    bot.send_document(chat_id=update.message.chat_id, document=open(mount_point+'coders1.db', 'rb'))
 
 
 # ADMIN COMMAND HANDLER FOR GETTING THE CODEFORCES JSON
@@ -2368,7 +2388,7 @@ def getcfjson(bot,update):
     if not str(update.message.chat_id) in adminlist:
         update.message.reply_text("sorry you are not an admin")
         return
-    bot.send_document(chat_id=update.message.chat_id, document=open('codeforces.json', 'rb'))
+    bot.send_document(chat_id=update.message.chat_id, document=open(mount_point+'codeforces.json', 'rb'))
 
 
 # ADMIN COMMAND HANDLER FUNCTION TO GET THE DETAILS OF HANDLES OF ALL THE USERS IN DATABASE
@@ -2377,7 +2397,7 @@ def adminhandle(bot, update):
     if not str(update.message.chat_id) in adminlist:
         update.message.reply_text("sorry you are not an admin")
         return
-    conn = sqlite3.connect('coders1.db')
+    conn = sqlite3.connect(mount_point+'coders1.db')
     c = conn.cursor()
     c.execute('SELECT * FROM handles')
     workbook = Workbook("admin.xlsx")
@@ -2416,7 +2436,7 @@ def setup(webhook_url=None):
 
                 NAME: [MessageHandler(Filters.text, name, pass_user_data=True)],
 
-                JUDGE: [CallbackQueryHandler(judge, pass_user_data=True)],
+                JUDGE: [CallbackQueryHandler(judge, pass_user_data=True,pattern=r'\w*reg1\b')],
 
                 HANDLE: [MessageHandler(Filters.text, handle, pass_user_data=True)]
             },
@@ -2429,15 +2449,15 @@ def setup(webhook_url=None):
             allow_reentry=True,
             states={
 
-                SELECTION: [CallbackQueryHandler(selection)],
+                SELECTION: [CallbackQueryHandler(selection,pattern=r'\w*sel1\b')],
 
-                HOLO: [CallbackQueryHandler(holo)],
+                HOLO: [CallbackQueryHandler(holo,pattern=r'\w*list6\b')],
 
-                SOLO: [CallbackQueryHandler(solo)],
+                SOLO: [CallbackQueryHandler(solo,pattern=r'\w*list7\b')],
 
                 POLO: [MessageHandler(Filters.text, polo, pass_user_data=True)],
 
-                XOLO: [CallbackQueryHandler(xolo, pass_user_data=True)]
+                XOLO: [CallbackQueryHandler(xolo, pass_user_data=True,pattern=r'\w*list8\b')]
             },
 
             fallbacks=[CommandHandler('cancel', cancel, pass_user_data=True)]
@@ -2448,7 +2468,7 @@ def setup(webhook_url=None):
             allow_reentry=True,
             states={
 
-                REMOVER: [CallbackQueryHandler(remover)]
+                REMOVER: [CallbackQueryHandler(remover,pattern=r'\w*rem2\b')]
 
             },
 
@@ -2460,7 +2480,7 @@ def setup(webhook_url=None):
             allow_reentry=True,
             states={
 
-                UPDA: [CallbackQueryHandler(updasel)]
+                UPDA: [CallbackQueryHandler(updasel,pattern=r'\w*upd5\b')]
 
             },
 
@@ -2472,8 +2492,8 @@ def setup(webhook_url=None):
             allow_reentry=True,
             states={
 
-                LANG: [CallbackQueryHandler(lang, pass_user_data=True)],
-                CODE: [CallbackQueryHandler(code, pass_user_data=True)],
+                LANG: [CallbackQueryHandler(lang, pass_user_data=True,pattern=r'\w*comp1\b')],
+                CODE: [CallbackQueryHandler(code, pass_user_data=True,pattern=r'\w*so1\b')],
                 DECODE: [MessageHandler(Filters.text, decode, pass_user_data=True)],
                 TESTCASES: [MessageHandler(Filters.text, testcases, pass_user_data=True)],
                 OTHER: [MessageHandler(Filters.text, other, pass_user_data=True)],
@@ -2489,7 +2509,7 @@ def setup(webhook_url=None):
             allow_reentry=True,
             states={
 
-                QSELCC: [CallbackQueryHandler(qselcc)]
+                QSELCC: [CallbackQueryHandler(qselcc,pattern=r'\w*cc1\b')]
 
             },
 
@@ -2501,11 +2521,11 @@ def setup(webhook_url=None):
             allow_reentry=True,
             states={
 
-                GFG1: [CallbackQueryHandler(gfg1, pass_user_data=True)],
+                GFG1: [CallbackQueryHandler(gfg1, pass_user_data=True,pattern=r'\w*gfg1\b')],
 
-                GFG2: [CallbackQueryHandler(gfg2, pass_user_data=True)],
+                GFG2: [CallbackQueryHandler(gfg2, pass_user_data=True,pattern='^.*gfg2.*$')],
 
-                GFG3: [CallbackQueryHandler(gfg3, pass_user_data=True)]
+                GFG3: [CallbackQueryHandler(gfg3, pass_user_data=True,pattern='^.*gfg3.*$')]
             },
 
             fallbacks=[CommandHandler('cancel', cancel, pass_user_data=True)]
@@ -2526,7 +2546,7 @@ def setup(webhook_url=None):
             allow_reentry=True,
             states={
 
-                SCHED: [CallbackQueryHandler(remind)]
+                SCHED: [CallbackQueryHandler(remind,pattern=r"^[0-9]*$")]
 
             },
 
@@ -2537,7 +2557,7 @@ def setup(webhook_url=None):
             entry_points=[CommandHandler('dontRemindMe', removeRemind)],
             allow_reentry=True,
             states={
-                REMNOTI: [CallbackQueryHandler(remnoti)]
+                REMNOTI: [CallbackQueryHandler(remnoti,pattern=r'^.*notiplz.*$')]
             },
 
             fallbacks=[CommandHandler('cancel', cancel, pass_user_data=True)]
@@ -2548,7 +2568,7 @@ def setup(webhook_url=None):
             allow_reentry=True,
             states={
 
-                QSELCF: [CallbackQueryHandler(qselcf)]
+                QSELCF: [CallbackQueryHandler(qselcf,pattern=r'\w*cf1\b')]
 
             },
 
@@ -2569,9 +2589,9 @@ def setup(webhook_url=None):
             entry_points=[CommandHandler('subscribe', subscribe)],
             allow_reentry=True,
             states={
-                SUBSEL:[CallbackQueryHandler(subsel)],
-                SUBCC:[CallbackQueryHandler(subcc)],
-                SUBCF: [CallbackQueryHandler(subcf)]
+                SUBSEL:[CallbackQueryHandler(subsel,pattern=r'\w*sub3\b')],
+                SUBCC:[CallbackQueryHandler(subcc,pattern=r'\w*cc2\b')],
+                SUBCF: [CallbackQueryHandler(subcf,pattern=r'\w*cf2\b')]
             },
 
             fallbacks=[CommandHandler('cancel', cancel, pass_user_data=True)]
@@ -2581,7 +2601,7 @@ def setup(webhook_url=None):
             entry_points=[CommandHandler('unsubscribe', unsubsel)],
             allow_reentry=True,
             states={
-                UNSUB: [CallbackQueryHandler(unsub)]
+                UNSUB: [CallbackQueryHandler(unsub,pattern=r'\w*unsub4\b')]
             },
 
             fallbacks=[CommandHandler('cancel', cancel, pass_user_data=True)]
