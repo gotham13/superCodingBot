@@ -181,7 +181,7 @@ def error(bot, update, error):
 @timeouts.wrapper
 def randomcf(bot, update):
     keyboard = [[InlineKeyboardButton("A", callback_data='Acf1'),
-                 InlineKeyboardButton("B", callback_data='Bcf1'), InlineKeyboardButton("C", callback_data='Cf1')],
+                 InlineKeyboardButton("B", callback_data='Bcf1'), InlineKeyboardButton("C", callback_data='Ccf1')],
                 [InlineKeyboardButton("D", callback_data='Dcf1'),
                  InlineKeyboardButton("E", callback_data='Ecf1'), InlineKeyboardButton("F", callback_data='Fcf1')],
                 [InlineKeyboardButton("OTHERS", callback_data='OTHERScf1')]]
