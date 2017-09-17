@@ -38,7 +38,7 @@ It will look somewhat like this
 {"update_id":8393,"message":{"message_id":3,"from":{"id":7474,"first_name":"AAA"},"chat":{"id":,"title":""},"date":25497,"new_chat_participant":{"id":71,"first_name":"NAME","username":"YOUR_BOT_NAME"}}}  
 the id of the chat object is your chat id  
 
-* Edit the config.ini file with your telegram bot token and hackerrank api key. Also put your chat id in admin chat id. You can put multiple admin chat ids seperated by comma. Admins will be notified by the bot whenever data is updated  
+* Edit the config.ini file with your telegram bot token and hackerrank api key. Also put your chat id in admin chat id. You can put multiple admin chat ids seperated by comma. Admins will be notified by the bot whenever data or questions are updated and will have access to admin commands. You can also put your persistent storage point if you will be using OPENSHIFT ONLINE to host the bot (If name of your volume is df then put /df/ in the field) otherwise just leave the field blank 
 
 ### RUNNING ON LOCAL PC
 * pip install requirements.txt in console
@@ -59,8 +59,6 @@ the id of the chat object is your chat id
 * enjoy
 * You will have to use persistent storage to prevent data loss on deployments
   * think of a name for mount point eg /df
-  * change the name of all files you want to save in persistent storage eg. if your mount point is /df
-in place of 'coders1.db' put '/df/coders1.db' in app.py
   * open the openshift console
   * go to storage and create a persistent storage
   * Go to deployments
