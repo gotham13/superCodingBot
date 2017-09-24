@@ -31,9 +31,11 @@ logger = logging.getLogger(__name__)
 config = ConfigParser()
 config.read('config.ini')
 TOKEN = config.get('telegram','bot_token')
-API_KEY = config.get('hackerrank','api_key')
+HACKERRANK_API_KEY = config.get('hackerrank','api_key')
+CLIST_USER_NAME = config.get('clist','username')
+CLIST_API_KEY = config.get('clist','api_key')
 mount_point=config.get('openshift','persistent_mount_point')
-compiler = helper.HackerRankAPI(api_key=API_KEY)
+compiler = helper.HackerRankAPI(api_key=HACKERRANK_API_KEY)
 adminlist=str(config.get('telegram','admin_chat_id')).split(',')
 # FOR CONVERSATION HANDLERS
 NAME,JUDGE,HANDLE,SELECTION,HOLO,SOLO,POLO,XOLO,REMOVER,UPDA,QSELCC,LANG,CODE,DECODE,TESTCASES,RESULT,OTHER,FILE,FILETEST,GFG1,GFG2,GFG3,DB,CF,SCHED,REMNOTI,QSELCF,SUBSEL,SUBCC,SUBCF,UNSUB=range(31)
@@ -877,21 +879,35 @@ upc = ""
 def ongoing(bot, update):
     global ong
     # PARSING JSON
-    rawData = urllib.request.urlopen('http://challengehuntapp.appspot.com/v2').read().decode('utf-8')
+    date1 = update.message.date
+    payload = {'limit': '15', 'start__lt': str(date1), 'end__gt': str(date1),
+               'username': CLIST_USER_NAME, 'api_key': CLIST_API_KEY, 'format': 'json', 'order_by': 'end'}
+    url = "https://clist.by/api/v1/contest/?"
+    url = url + urllib.parse.urlencode(payload)
+    opener = urllib.request.build_opener()
+    opener.addheaders = [('Content-Type', 'application/json')]
+    opener.addheaders = [('User-agent', 'Mozilla/5.0')]
+    rawData = opener.open(url).read().decode('utf-8')
     try:
         jsonData = json.loads(rawData)
-        searchResults = jsonData['active']
+        searchResults = jsonData['objects']
         s = ""
         i=0
         for er in searchResults:
             i=i+1
-            if(i==21):
+            if(i==16):
                 break
-            title = er['contest_name']
-            duration = er['duration']
-            host = er['host_name']
-            contest = er['contest_url']
-            s = s + title + "\nDuration:" + duration + "\n" + host + "\n" + contest + "\n\n"
+            title = er['event']
+            start = er['start']
+            sec = timedelta(seconds=int(er['duration']))
+            d = datetime(1, 1, 1) + sec
+            duration = ("%d days %d hours %d min" % (d.day - 1, d.hour, d.minute))
+            host = er['resource']['name']
+            contest = er['href']
+            start1 = time_converter(start, '+0530')
+            s = s + title + "\n" + "Start:\n" + start.replace("T", " ") + " GMT\n" + str(
+                start1).replace("T",
+                                " ") + " IST\n" + "Duration:" + duration + "\n" + host + "\n" + contest + "\n\n"
         ong = s
         update.message.reply_text(s)
     except:
@@ -910,10 +926,17 @@ def time_converter(old_time, time_zone):
 def upcoming(bot, update):
     global upc
     # PARSING JSON
-    rawData = urllib.request.urlopen('http://challengehuntapp.appspot.com/v2').read().decode('utf-8')
+    date1=update.message.date
+    payload={'limit':'15','start__gt':str(date1),'order_by':'start','username':CLIST_USER_NAME,'api_key':CLIST_API_KEY,'format':'json'}
+    url="https://clist.by/api/v1/contest/?"
+    url=url+urllib.parse.urlencode(payload)
+    opener = urllib.request.build_opener()
+    opener.addheaders = [('Content-Type', 'application/json')]
+    opener.addheaders = [('User-agent', 'Mozilla/5.0')]
+    rawData = opener.open(url).read().decode('utf-8')
     try:
         jsonData = json.loads(rawData)
-        searchResults = jsonData['pending']
+        searchResults = jsonData['objects']
         i = 0
         s = ""
         keyboard=[]
@@ -921,18 +944,20 @@ def upcoming(bot, update):
         for er in searchResults:
             i = i + 1
             # LIMITING NO OF EVENTS TO 20
-            if i == 21:
+            if i == 16:
                 break
-            title = er['contest_name']
+            title = er['event']
             start = er['start']
-            duration = er['duration']
-            host = er['host_name']
-            contest = er['contest_url']
+            sec = timedelta(seconds=int(er['duration']))
+            d = datetime(1, 1, 1) + sec
+            duration = ("%d days %d hours %d min" % (d.day - 1, d.hour, d.minute))
+            host = er['resource']['name']
+            contest = er['href']
             start1 = time_converter(start, '+0530')
             keyboard1.append(InlineKeyboardButton(str(i), callback_data=str(i)))
             s = s + str(i) + ". " + title + "\n" + "Start:\n" + start.replace("T", " ") + " GMT\n" + str(
                 start1).replace("T",
-                                " ") + " IST\n" + "Duration: " + duration + "\n" + host + "\n" + contest + "\n\n"
+                                " ") + " IST\n" + "Duration: " + str(duration) + "\n" + host + "\n" + contest + "\n\n"
             if i%5==0:
                 keyboard.append(keyboard1)
                 keyboard1 = []
@@ -949,17 +974,20 @@ def upcoming(bot, update):
         for er in upc:
             i = i + 1
             # LIMITING NO OF EVENTS TO 20
-            if i == 21:
+            if i == 16:
                 break
-            title = er['contest_name']
+            title = er['event']
             start = er['start']
-            duration = er['duration']
-            host = er['host_name']
-            contest = er['contest_url']
+            sec = timedelta(seconds=int(er['duration']))
+            d = datetime(1, 1, 1) + sec
+            duration = ("%d days %d hours %d min %d sec" % (d.day - 1, d.hour, d.minute, d.second))
+            host = er['resource']['name']
+            contest = er['href']
             start1 = time_converter(start, '+0530')
             keyboard1.append(InlineKeyboardButton(str(i), callback_data=str(i)))
-            s = s + str(i) + ". " + title + "\n" + "Start:\n" + start.replace("T", " ") + " GMT\n" + str(start1).replace("T",
-                                                                                                         " ") + " IST\n" + "Duration: " + duration + "\n" + host + "\n" + contest + "\n\n"
+            s = s + str(i) + ". " + title + "\n" + "Start:\n" + start.replace("T", " ") + " GMT\n" + str(
+                start1).replace("T",
+                                " ") + " IST\n" + "Duration: " + str(duration) + "\n" + host + "\n" + contest + "\n\n"
             if i%5==0:
                 keyboard.append(keyboard1)
                 keyboard1 = []
@@ -990,16 +1018,18 @@ def remind(bot, update):
         date1 = start1[0].split("-")
         time1 = start1[1].split(":")
         schedule.add_job(remindmsgDay, 'cron', year=date[0], month=date[1], day=date[2], replace_existing=True,
-                         id=str(query.message.chat_id) + str(upc[msg]['contest_name']) + "0",
+                         id=str(query.message.chat_id) + str(upc[msg]['id']) + "0",
                          args=[str(query.message.chat_id),
-                               str(upc[msg]['contest_name']) + "\n" + str(upc[msg]['contest_url'])])
+                               str(upc[msg]['event']) + "\n" + str(upc[msg]['href'])])
         schedule.add_job(remindmsg, 'cron', year=date1[0], month=date1[1], day=date1[2], hour=time1[0], minute=time1[0],
                          replace_existing=True,
-                         id=str(query.message.chat_id) + str(upc[msg]['contest_name']) + "1",
+                         id=str(query.message.chat_id) + str(upc[msg]['id']) + "1",
                          args=[str(query.message.chat_id),
-                               str(upc[msg]['contest_name'] + "\n" + str(upc[msg]['contest_url']))])
+                               str(upc[msg]['event'] + "\n" + str(upc[msg]['href']))])
         bot.edit_message_text(chat_id=query.message.chat_id, message_id=query.message.message_id,
-                              text="I will remind you about " + upc[msg]['contest_name']+"\nYou can use command /dontremindme to cancel reminder")
+                              text="I will remind you about " + upc[msg]['event']+"\nYou can use command /dontremindme to cancel reminder")
+        if query.message.chat_id<0:
+            bot.send_message(chat_id=query.message.chat_id,text="I detected this is a group. The reminder will be sent to the group. If you want to get reminder personally then use this command in private message")
     return ConversationHandler.END
 
 
@@ -1030,9 +1060,10 @@ def removeRemind(bot, update ):
         a = c.fetchall()
         keyboard=[]
         for i in range(0, len(a)):
-            s =str(a[i]).replace(str(cid), "").replace("('", "").replace("',)", "").replace(
-                '("', "").replace('",)', "").rstrip("0")
-            keyboard.append([InlineKeyboardButton(s, callback_data=s+"notiplz")])
+            s =str(a[i]).replace("('", "").replace("',)", "").replace(
+                '("', "").replace('",)', "")
+            print(s)
+            keyboard.append([InlineKeyboardButton(str(schedule.get_job(job_id=s).args[1].split("\n")[0]), callback_data=s[:-1]+"notiplz")])
         reply_markup = InlineKeyboardMarkup(keyboard)
         update.message.reply_text("Here are your pending reminders\nSelect the reminder you want to remove",reply_markup=reply_markup)
         c.close()
@@ -1045,7 +1076,7 @@ def removeRemind(bot, update ):
 
 def remnoti(bot, update):
     query=update.callback_query
-    val = str(query.message.chat_id) + str(query.data).replace("notiplz", "")
+    val =str(query.data).replace("notiplz", "")
     schedule.remove_job(val + "0")
     schedule.remove_job(val + "1")
     bot.edit_message_text(text="Reminder removed", message_id=query.message.message_id,
@@ -2360,7 +2391,7 @@ def cf(bot, update):
     newFile = bot.get_file(file_id)
     newFile.download(mount_point+'codeforces.json')
     update.message.reply_text("saved")
-    with open(mount_point+'codeforces.json') as codeforces:
+    with open(mount_point+'codeforces.json','r') as codeforces:
         qcf=json.load(codeforces)
     return ConversationHandler.END
 # END OF ADMIN CONVERSATION HANDLER TO REPLACE THE CODEFORCES JSON
