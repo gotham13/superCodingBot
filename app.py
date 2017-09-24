@@ -424,7 +424,7 @@ def handle(bot, update, user_data):
             sauce = opener.open('http://codeforces.com/profile/' + handle1)
             soup = bs.BeautifulSoup(sauce, 'html5lib')
             try:
-                soup.find('span', {"style": "color:gray;font-weight:bold;"}).text
+                soup.find('img', {"alt": "User\'\'s contribution into Codeforces community"}).text
             except AttributeError:
                 update.message.reply_text('wrong id')
                 user_data.clear()
@@ -434,8 +434,7 @@ def handle(bot, update, user_data):
                 s2 = ""
             else:
                 s2 = "contest rating: " + s[0].text + "\n" + "max: " + s[1].text + s[2].text + "\n"
-            s1 = "CODEFORCES\n" + s2 + "contributions: " + soup.find('span',
-                                                                     {"style": "color:gray;font-weight:bold;"}).text
+            s1 = "CODEFORCES\n" + s2 + "contributions: " + soup.find('img', {"alt": "User\'\'s contribution into Codeforces community"}).nextSibling.nextSibling.text
             vals = s1
         except urllib.error.URLError as e:
             update.message.reply_text('wrong id')
@@ -1428,15 +1427,13 @@ def updaters():
                     sauce = opener.open('http://codeforces.com/profile/' + str(row[wo]))
                     soup = bs.BeautifulSoup(sauce, 'html5lib')
                     try:
-                        soup.find('span', {"style": "color:gray;font-weight:bold;"}).text
+                        soup.find('img', {"alt": "User\'\'s contribution into Codeforces community"}).text
                         s = soup.find_all('span', {"style": "font-weight:bold;"})
                         if len(s) == 0:
                             s2 = ""
                         else:
                             s2 = "contest rating: " + s[0].text + "\n" + "max: " + s[1].text + s[2].text + "\n"
-                        s1 = "CODEFORCES\n" + s2 + "contributions: " + soup.find('span',
-                                                                                 {
-                                                                                     "style": "color:gray;font-weight:bold;"}).text
+                        s1 = "CODEFORCES\n" + s2 + "contributions: " + soup.find('img', {"alt": "User\'\'s contribution into Codeforces community"}).nextSibling.nextSibling.text
                         cf = s1
                     except AttributeError:
                         pass
@@ -1848,15 +1845,13 @@ def updasel(bot, update):
                         sauce = opener.open('http://codeforces.com/profile/' + str(row[wo]))
                         soup = bs.BeautifulSoup(sauce, 'html5lib')
                         try:
-                            soup.find('span', {"style": "color:gray;font-weight:bold;"}).text
+                            soup.find('img', {"alt": "User\'\'s contribution into Codeforces community"}).text
                             s = soup.find_all('span', {"style": "font-weight:bold;"})
                             if len(s) == 0:
                                 s2 = ""
                             else:
                                 s2 = "contest rating: " + s[0].text + "\n" + "max: " + s[1].text + s[2].text + "\n"
-                            s1 = "CODEFORCES\n" + s2 + "contributions: " + soup.find('span',
-                                                                                     {
-                                                                                         "style": "color:gray;font-weight:bold;"}).text
+                            s1 = "CODEFORCES\n" + s2 + "contributions: " + soup.find('img', {"alt": "User\'\'s contribution into Codeforces community"}).nextSibling.nextSibling.text
                             cf = s1
                         except AttributeError:
                             pass
@@ -2029,15 +2024,13 @@ def updasel(bot, update):
                         sauce = opener.open('http://codeforces.com/profile/' + str(row[0]))
                         soup = bs.BeautifulSoup(sauce, 'html5lib')
                         try:
-                            soup.find('span', {"style": "color:gray;font-weight:bold;"}).text
+                            soup.find('img', {"alt": "User\'\'s contribution into Codeforces community"}).text
                             s = soup.find_all('span', {"style": "font-weight:bold;"})
                             if len(s) == 0:
                                 s2 = ""
                             else:
                                 s2 = "contest rating: " + s[0].text + "\n" + "max: " + s[1].text + s[2].text + "\n"
-                            s1 = "CODEFORCES\n" + s2 + "contributions: " + soup.find('span',
-                                                                                     {
-                                                                                         "style": "color:gray;font-weight:bold;"}).text
+                            s1 = "CODEFORCES\n" + s2 + "contributions: " + soup.find('img', {"alt": "User\'\'s contribution into Codeforces community"}).nextSibling.nextSibling.text
                             ans = s1
                         except AttributeError:
                             pass
