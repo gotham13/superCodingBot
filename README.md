@@ -32,13 +32,14 @@ superCodingBot is a telegram bot built in python 3 using python-telegram-bot wra
 ### CONFIGURATION
 * Create your bot and Get your telegram bot token from [BotFather](https://core.telegram.org/bots#botfather)
 * Get your hackerrank api key from [Hackerrank](https://www.hackerrank.com/api)
+* Register to [Clist](https://www.clist.by) and get your username and api key
 * Get your telegram chat id
    * You can get your chat id by first messaging to the bot and then checking the url https://api.telegram.org/botYourBOTToken/getUpdates  
 It will look somewhat like this  
 {"update_id":8393,"message":{"message_id":3,"from":{"id":7474,"first_name":"AAA"},"chat":{"id":,"title":""},"date":25497,"new_chat_participant":{"id":71,"first_name":"NAME","username":"YOUR_BOT_NAME"}}}  
 the id of the chat object is your chat id  
 
-* Edit the config.ini file with your telegram bot token and hackerrank api key. Also put your chat id in admin chat id. You can put multiple admin chat ids seperated by comma. Admins will be notified by the bot whenever data or questions are updated and will have access to admin commands. You can also put your persistent storage point if you will be using OPENSHIFT ONLINE to host the bot (If name of your volume is df then put /df/ in the field) otherwise just leave the field blank 
+* Edit the config.ini file with your telegram bot token, hackerrank api key, clist user name, clist api key. Also put your chat id in admin chat id. You can put multiple admin chat ids seperated by comma. Admins will be notified by the bot whenever data or questions are updated and will have access to admin commands. You can also put your persistent storage point if you will be using OPENSHIFT ONLINE to host the bot (If name of your volume is df then put /df/ in the field) otherwise just leave the field blank 
 
 ### RUNNING ON LOCAL PC
 * pip install requirements.txt in console
