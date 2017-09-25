@@ -38,7 +38,7 @@ mount_point=config.get('openshift','persistent_mount_point')
 compiler = helper.HackerRankAPI(api_key=HACKERRANK_API_KEY)
 adminlist=str(config.get('telegram','admin_chat_id')).split(',')
 # FOR CONVERSATION HANDLERS
-NAME,JUDGE,HANDLE,SELECTION,HOLO,SOLO,POLO,XOLO,REMOVER,UPDA,QSELCC,LANG,CODE,DECODE,TESTCASES,RESULT,OTHER,FILE,FILETEST,GFG1,GFG2,GFG3,DB,CF,SCHED,REMNOTI,QSELCF,SUBSEL,SUBCC,SUBCF,UNSUB=range(31)
+NAME,JUDGE,HANDLE,SELECTION,HOLO,SOLO,POLO,XOLO,REMOVER,UPDA,QSELCC,LANG,CODE,DECODE,TESTCASES,RESULT,OTHER,FILE,FILETEST,GFG1,GFG2,GFG3,DB,CF,SCHED,REMNOTI,QSELCF,SUBSEL,SUBCC,SUBCF,UNSUB,MSG=range(32)
 # CLASS FOR FLOOD PROTECTION
 class Spam_settings:
     def __init__(self):
@@ -100,6 +100,7 @@ conn = sqlite3.connect(mount_point+'coders1.db')
 create_table_request_list = [
     'CREATE TABLE handles(id TEXT PRIMARY KEY,name TEXT,HE TEXT,HR TEXT,CF TEXT,SP TEXT,CC TEXT)',
     'CREATE TABLE  datas(id TEXT PRIMARY KEY,name TEXT,HE TEXT,HR TEXT,CF TEXT,SP TEXT,CC TEXT)',
+    'CREATE TABLE  priority(id TEXT PRIMARY KEY,HE TEXT,HR TEXT,CF TEXT,CC TEXT)',
     'CREATE TABLE subscribers(id TEXT PRIMARY KEY,CC int DEFAULT 0,CF int DEFAULT 0,CCSEL TEXT,CFSEL TEXT)',
 ]
 for create_table_request in create_table_request_list:
@@ -454,35 +455,84 @@ def handle(bot, update, user_data):
     if c.rowcount == 0:
         c.execute("UPDATE datas SET " + code1 + " = (?) , name= (?) WHERE id = (?) ", (vals, name1, user))
         c.execute("UPDATE handles SET " + code1 + " = (?) , name= (?) WHERE id = (?) ", (handle1, name1, user))
+    if code1=='HE':
+        try:
+            rat=vals.split('\n')
+            if(rat[1]=="Rating"):
+                rat2=rat[2].strip(" ").strip("\n")
+                c.execute("INSERT OR IGNORE INTO priority (id, HE) VALUES(?, ?)", (user, rat2))
+                if(c.rowcount==0):
+                    c.execute("UPDATE  priority SET HE = (?) WHERE id = (?) ", (rat2, user))
+        except:
+            pass
+    elif code1=='HR':
+        try:
+            rat=vals.split('\n')
+            rat2=rat[1].split(" ")[1].strip(" ").strip("\n")
+            c.execute("INSERT OR IGNORE INTO priority (id, HR) VALUES(?, ?)", (user, rat2))
+            if (c.rowcount == 0):
+                c.execute("UPDATE  priority SET HR = (?) WHERE id = (?) ", (rat2, user))
+        except:
+            pass
+    elif code1=='CF':
+        try:
+            rat=vals.split("\n")
+            if "contest rating:"in rat[1]:
+                rat2=rat[1].split(" ")[2].strip(" ").strip("\n")
+                c.execute("INSERT OR IGNORE INTO priority (id, CF) VALUES(?, ?)", (user, rat2))
+                if (c.rowcount == 0):
+                    c.execute("UPDATE  priority SET CF = (?) WHERE id = (?) ", (rat2, user))
+        except:
+            pass
+    elif code1=='CC':
+        try:
+            rat=vals.split("\n")
+            if not "rating" in rat[1]:
+                rat2=rat[2].split(" ")[1].strip(" ").strip("\n")
+                c.execute("INSERT OR IGNORE INTO priority (id, CC) VALUES(?, ?)", (user, rat2))
+                if (c.rowcount == 0):
+                    c.execute("UPDATE  priority SET CC = (?) WHERE id = (?) ", (rat2, user))
+        except:
+            pass
+    elif code1=='SP':
+        c.execute("INSERT OR IGNORE INTO priority (id) VALUES(?)", (user,))
+
     conn.commit()
     # BELOW LINES ARE USED TO CREATE XLMX FILES OF ALL SORTS OF RANKLIST
     # SO WHEN USER ASKS FOR RANKLIST THERE IS NO DELAY
-    c.execute("SELECT name, HE, HR, SP, CF, CC FROM datas")
     workbook = Workbook(mount_point+'all.xlsx')
     worksheet = workbook.add_worksheet()
     format = workbook.add_format()
     format.set_align('top')
     format.set_text_wrap()
-    mysel = c.execute("SELECT name, HE, HR, SP, CF, CC FROM datas")
+    mysel = c.execute("SELECT datas.name, datas.HE, datas.HR, datas.SP, datas.CF, datas.CC FROM datas INNER JOIN priority ON datas.id=priority.id ORDER BY CAST(priority.CF AS FLOAT) DESC, CAST(priority.CC AS FLOAT) DESC, CAST(priority.HR AS FLOAT) DESC, CAST(priority.HE AS FLOAT) DESC")
     for i, row in enumerate(mysel):
         for j, value in enumerate(row):
             worksheet.write(i, j, row[j], format)
             worksheet.set_row(i, 170)
     worksheet.set_column(0, 5, 40)
     workbook.close()
-    c.execute("SELECT name, " + code1 + " FROM datas")
     workbook = Workbook(mount_point + code1 + ".xlsx")
     worksheet = workbook.add_worksheet()
     format = workbook.add_format()
     format.set_align('top')
     format.set_text_wrap()
-    mysel = c.execute("SELECT name, " + code1 + " FROM datas")
-    for i, row in enumerate(mysel):
-        for j, value in enumerate(row):
-            worksheet.write(i, j, row[j], format)
-            worksheet.set_row(i, 170)
-    worksheet.set_column(0, 5, 40)
-    workbook.close()
+    if(code1=='SP'):
+        mysel = c.execute("SELECT name, " + code1 + " FROM datas")
+        for i, row in enumerate(mysel):
+            for j, value in enumerate(row):
+                worksheet.write(i, j, row[j], format)
+                worksheet.set_row(i, 170)
+        worksheet.set_column(0, 5, 40)
+        workbook.close()
+    else:
+        mysel = c.execute("SELECT datas.name, datas." + code1 + " FROM datas INNER JOIN priority ON datas.id=priority.id ORDER BY CAST(priority."+code1+" AS FLOAT) DESC")
+        for i, row in enumerate(mysel):
+            for j, value in enumerate(row):
+                worksheet.write(i, j, row[j], format)
+                worksheet.set_row(i, 170)
+        worksheet.set_column(0, 5, 40)
+        workbook.close()
     conn.close()
     update.message.reply_text("Succesfully Registered")
     update.message.reply_text(name1 + "    \n" + vals)
@@ -1119,38 +1169,37 @@ def remover(bot, update):
         # IF USER CHOSE ALL THEN DELETING HIS ENTIRE ROW FROM TABLES
         c.execute("DELETE FROM datas WHERE id = (?)", (a,))
         c.execute("DELETE FROM handles WHERE id = (?)", (a,))
+        c.execute("DELETE FROM priority WHERE id = (?)", (a,))
         conn.commit()
         bot.edit_message_text(text='Unregistering please wait',
                               chat_id=query.message.chat_id,
                               message_id=query.message.message_id)
-        c.execute("SELECT name, HE FROM datas")
         # RECREATING ALL XLSX FILES
         workbook = Workbook(mount_point+"HE.xlsx")
         worksheet = workbook.add_worksheet()
         format = workbook.add_format()
         format.set_align('top')
         format.set_text_wrap()
-        mysel = c.execute("SELECT name, HE FROM datas")
+        mysel = c.execute("SELECT datas.name, datas.HE FROM datas INNER JOIN priority ON datas.id=priority.id ORDER BY CAST(priority.HE AS FLOAT) DESC")
         for i, row in enumerate(mysel):
             for j, value in enumerate(row):
                 worksheet.write(i, j, row[j], format)
                 worksheet.set_row(i, 170)
         worksheet.set_column(0, 5, 40)
         workbook.close()
-        c.execute("SELECT name, HR FROM datas")
         workbook = Workbook(mount_point+"HR.xlsx")
         worksheet = workbook.add_worksheet()
         format = workbook.add_format()
         format.set_align('top')
         format.set_text_wrap()
-        mysel = c.execute("SELECT name, HR FROM datas")
+        mysel = c.execute(
+            "SELECT datas.name, datas.HR FROM datas INNER JOIN priority ON datas.id=priority.id ORDER BY CAST(priority.HR AS FLOAT) DESC")
         for i, row in enumerate(mysel):
             for j, value in enumerate(row):
                 worksheet.write(i, j, row[j], format)
                 worksheet.set_row(i, 170)
         worksheet.set_column(0, 5, 40)
         workbook.close()
-        c.execute("SELECT name, SP FROM datas")
         workbook = Workbook(mount_point+"SP.xlsx")
         worksheet = workbook.add_worksheet()
         format = workbook.add_format()
@@ -1163,26 +1212,26 @@ def remover(bot, update):
                 worksheet.set_row(i, 170)
         worksheet.set_column(0, 5, 40)
         workbook.close()
-        c.execute("SELECT name, CF FROM datas")
         workbook = Workbook(mount_point+"CF.xlsx")
         worksheet = workbook.add_worksheet()
         format = workbook.add_format()
         format.set_align('top')
         format.set_text_wrap()
-        mysel = c.execute("SELECT name, CF FROM datas")
+        mysel = c.execute(
+            "SELECT datas.name, datas.CF FROM datas INNER JOIN priority ON datas.id=priority.id ORDER BY CAST(priority.CF AS FLOAT) DESC")
         for i, row in enumerate(mysel):
             for j, value in enumerate(row):
                 worksheet.write(i, j, row[j], format)
                 worksheet.set_row(i, 170)
         worksheet.set_column(0, 5, 40)
         workbook.close()
-        c.execute("SELECT name, CC FROM datas")
         workbook = Workbook(mount_point+"CC.xlsx")
         worksheet = workbook.add_worksheet()
         format = workbook.add_format()
         format.set_align('top')
         format.set_text_wrap()
-        mysel = c.execute("SELECT name, CC FROM datas")
+        mysel = c.execute(
+            "SELECT datas.name, datas.CC FROM datas INNER JOIN priority ON datas.id=priority.id ORDER BY CAST(priority.CC AS FLOAT) DESC")
         for i, row in enumerate(mysel):
             for j, value in enumerate(row):
                 worksheet.write(i, j, row[j], format)
@@ -1201,6 +1250,8 @@ def remover(bot, update):
         # OTHER WISE REMOVING THE PARTICULAR ENTRY
         c.execute("UPDATE datas SET " + val + " = (?)  WHERE id = (?) ", ("", a))
         c.execute("UPDATE handles SET " + val + " = (?)  WHERE id = (?) ", ("", a))
+        if not val=='SP':
+            c.execute("UPDATE priority SET " + val + " = (?)  WHERE id = (?) ", ("", a))
         conn.commit()
         bot.edit_message_text(text='Unregistering please wait',
                               chat_id=query.message.chat_id,
@@ -1212,7 +1263,8 @@ def remover(bot, update):
         format = workbook.add_format()
         format.set_align('top')
         format.set_text_wrap()
-        mysel = c.execute("SELECT name, " + val + " FROM datas")
+        mysel = c.execute(
+            "SELECT datas.name, datas." +val + " FROM datas INNER JOIN priority ON datas.id=priority.id ORDER BY CAST(priority." + val + " AS FLOAT) DESC")
         for i, row in enumerate(mysel):
             for j, value in enumerate(row):
                 worksheet.write(i, j, row[j], format)
@@ -1228,13 +1280,14 @@ def remover(bot, update):
     if count==5:
         c.execute("DELETE FROM datas WHERE id = (?)", (a,))
         c.execute("DELETE FROM handles WHERE id = (?)", (a,))
+        c.execute("DELETE FROM priority WHERE id = (?)", (a,))
         conn.commit()
     workbook = Workbook(mount_point+'all.xlsx')
     worksheet = workbook.add_worksheet()
     format = workbook.add_format()
     format.set_align('top')
     format.set_text_wrap()
-    mysel = c.execute("SELECT name, HE, HR, SP, CF, CC FROM datas")
+    mysel = c.execute("SELECT datas.name, datas.HE, datas.HR, datas.SP, datas.CF, datas.CC FROM datas INNER JOIN priority ON datas.id=priority.id ORDER BY CAST(priority.CF AS FLOAT) DESC, CAST(priority.CC AS FLOAT) DESC, CAST(priority.HR AS FLOAT) DESC, CAST(priority.HE AS FLOAT) DESC")
     for i, row in enumerate(mysel):
         for j, value in enumerate(row):
             worksheet.write(i, j, row[j], format)
@@ -1415,23 +1468,27 @@ def updaters():
             elif wo == 3 and (row[wo] != '' and row[wo] is not None):
                 opener = urllib.request.build_opener()
                 opener.addheaders = [('User-agent', 'Mozilla/5.0')]
-                try:
-                    sauce = opener.open('https://www.codechef.com/users/' + str(row[wo]))
-                    soup = bs.BeautifulSoup(sauce, 'html5lib')
+                count=0
+                while(count<5):
                     try:
-                        soup.find('a', {"href": "http://www.codechef.com/ratings/all"}).text
+                        sauce = opener.open('https://www.codechef.com/users/' + str(row[wo]))
+                        soup = bs.BeautifulSoup(sauce, 'html5lib')
                         try:
-                            s1 = soup.find('span', {"class": "rating"}).text + "\n"
+                            soup.find('a', {"href": "http://www.codechef.com/ratings/all"}).text
+                            try:
+                                s1 = soup.find('span', {"class": "rating"}).text + "\n"
+                            except AttributeError:
+                                s1 = ""
+                            s = "CODECHEF" + "\n" + s1 + "rating: " + soup.find('a', {
+                                "href": "http://www.codechef.com/ratings/all"}).text + "\n" + soup.find('div', {
+                                "class": "rating-ranks"}).text.replace(" ", "").replace("\n\n", "").strip('\n')
+                            cc = s
+                            break
                         except AttributeError:
-                            s1 = ""
-                        s = "CODECHEF" + "\n" + s1 + "rating: " + soup.find('a', {
-                            "href": "http://www.codechef.com/ratings/all"}).text + "\n" + soup.find('div', {
-                            "class": "rating-ranks"}).text.replace(" ", "").replace("\n\n", "").strip('\n')
-                        cc = s
-                    except AttributeError:
-                        pass
-                except urllib.error.URLError as e:
-                    pass
+                            break
+                    except urllib.error.URLError as e:
+                        count=count+1
+                        continue
             elif wo == 4 and (row[wo] != '' and row[wo] is not None):
                 opener = urllib.request.build_opener()
                 opener.addheaders = [('User-agent', 'Mozilla/5.0')]
@@ -1470,36 +1527,71 @@ def updaters():
                         pass
                 except urllib.error.URLError as e:
                     pass
-        c.execute("UPDATE datas SET HE=(?), HR=(?), CC=(?), SP=(?), CF=(?) WHERE id=(?)", (he, hr, cc, sp, cf, a))
+        if not he == '' or (he == '' and (row[1] == '' or row[1] is None)):
+            c.execute("UPDATE datas SET HE=(?) WHERE id=(?)", (he,str(a)))
+            try:
+                rat = he.split('\n')
+                if (rat[1] == "Rating"):
+                    rat2 = rat[2].strip(" ").strip("\n")
+                    c.execute("UPDATE  priority SET HE = (?) WHERE id = (?) ", (rat2, str(a)))
+            except:
+                pass
+        if not hr == '' or (hr == '' and (row[2] == '' or row[2] is None)):
+            c.execute("UPDATE datas SET HR=(?) WHERE id=(?)", (hr,str(a)))
+            try:
+                rat = hr.split('\n')
+                rat2 = rat[1].split(" ")[1].strip(" ").strip("\n")
+                c.execute("UPDATE  priority SET HR = (?) WHERE id = (?) ", (rat2, str(a)))
+            except:
+                pass
+        if not cf == '' or (cf == '' and (row[5] == '' or row[5] is None)):
+            c.execute("UPDATE datas SET CF=(?) WHERE id=(?)", (cf,str(a)))
+            try:
+                rat = cf.split("\n")
+                if "contest rating:" in rat[1]:
+                    rat2 = rat[1].split(" ")[2].strip(" ").strip("\n")
+                    c.execute("UPDATE  priority SET CF = (?) WHERE id = (?) ", (rat2, str(a)))
+            except:
+                pass
+        if not cc == '' or (cc == '' and (row[3] == '' or row[3] is None)):
+            c.execute("UPDATE datas SET CC=(?) WHERE id=(?)", (cc,str(a)))
+            try:
+                rat = cc.split("\n")
+                if not "rating" in rat[1]:
+                    rat2 = rat[2].split(" ")[1].strip(" ").strip("\n")
+                    c.execute("UPDATE  priority SET CC = (?) WHERE id = (?) ", (rat2, str(a)))
+            except:
+                pass
+        if not sp == '' or (sp == '' and (row[4] == '' or row[4] is None)):
+            c.execute("UPDATE datas SET SP=(?) WHERE id=(?)", (sp,str(a)))
     # RECREATING ALL THE XLSX FILES
-    c.execute("SELECT name, HE FROM datas")
-    workbook = Workbook(mount_point+"HE.xlsx")
+    workbook = Workbook(mount_point + "HE.xlsx")
     worksheet = workbook.add_worksheet()
     format = workbook.add_format()
     format.set_align('top')
     format.set_text_wrap()
-    mysel = c.execute("SELECT name, HE FROM datas")
+    mysel = c.execute(
+        "SELECT datas.name, datas.HE FROM datas INNER JOIN priority ON datas.id=priority.id ORDER BY CAST(priority.HE AS FLOAT) DESC")
     for i, row in enumerate(mysel):
         for j, value in enumerate(row):
             worksheet.write(i, j, row[j], format)
             worksheet.set_row(i, 170)
     worksheet.set_column(0, 5, 40)
     workbook.close()
-    c.execute("SELECT name, HR FROM datas")
-    workbook = Workbook(mount_point+"HR.xlsx")
+    workbook = Workbook(mount_point + "HR.xlsx")
     worksheet = workbook.add_worksheet()
     format = workbook.add_format()
     format.set_align('top')
     format.set_text_wrap()
-    mysel = c.execute("SELECT name, HR FROM datas")
+    mysel = c.execute(
+        "SELECT datas.name, datas.HR FROM datas INNER JOIN priority ON datas.id=priority.id ORDER BY CAST(priority.HR AS FLOAT) DESC")
     for i, row in enumerate(mysel):
         for j, value in enumerate(row):
             worksheet.write(i, j, row[j], format)
             worksheet.set_row(i, 170)
     worksheet.set_column(0, 5, 40)
     workbook.close()
-    c.execute("SELECT name, SP FROM datas")
-    workbook = Workbook(mount_point+"SP.xlsx")
+    workbook = Workbook(mount_point + "SP.xlsx")
     worksheet = workbook.add_worksheet()
     format = workbook.add_format()
     format.set_align('top')
@@ -1511,39 +1603,39 @@ def updaters():
             worksheet.set_row(i, 170)
     worksheet.set_column(0, 5, 40)
     workbook.close()
-    c.execute("SELECT name, CF FROM datas")
-    workbook = Workbook(mount_point+"CF.xlsx")
+    workbook = Workbook(mount_point + "CF.xlsx")
     worksheet = workbook.add_worksheet()
     format = workbook.add_format()
     format.set_align('top')
     format.set_text_wrap()
-    mysel = c.execute("SELECT name, CF FROM datas")
+    mysel = c.execute(
+        "SELECT datas.name, datas.CF FROM datas INNER JOIN priority ON datas.id=priority.id ORDER BY CAST(priority.CF AS FLOAT) DESC")
     for i, row in enumerate(mysel):
         for j, value in enumerate(row):
             worksheet.write(i, j, row[j], format)
             worksheet.set_row(i, 170)
     worksheet.set_column(0, 5, 40)
     workbook.close()
-    c.execute("SELECT name, CC FROM datas")
-    workbook = Workbook(mount_point+"CC.xlsx")
+    workbook = Workbook(mount_point + "CC.xlsx")
     worksheet = workbook.add_worksheet()
     format = workbook.add_format()
     format.set_align('top')
     format.set_text_wrap()
-    mysel = c.execute("SELECT name, CC FROM datas")
+    mysel = c.execute(
+        "SELECT datas.name, datas.CC FROM datas INNER JOIN priority ON datas.id=priority.id ORDER BY CAST(priority.CC AS FLOAT) DESC")
     for i, row in enumerate(mysel):
         for j, value in enumerate(row):
             worksheet.write(i, j, row[j], format)
             worksheet.set_row(i, 170)
     worksheet.set_column(0, 5, 40)
     workbook.close()
-    c.execute("SELECT name, HE, HR, SP, CF, CC FROM datas")
     workbook = Workbook(mount_point+'all.xlsx')
     worksheet = workbook.add_worksheet()
     format = workbook.add_format()
     format.set_align('top')
     format.set_text_wrap()
-    mysel = c.execute("SELECT name, HE, HR, SP, CF, CC FROM datas")
+    mysel = c.execute(
+        "SELECT datas.name, datas.HE, datas.HR, datas.SP, datas.CF, datas.CC FROM datas INNER JOIN priority ON datas.id=priority.id ORDER BY CAST(priority.CF AS FLOAT) DESC, CAST(priority.CC AS FLOAT) DESC, CAST(priority.HR AS FLOAT) DESC, CAST(priority.HE AS FLOAT) DESC")
     for i, row in enumerate(mysel):
         for j, value in enumerate(row):
             worksheet.write(i, j, row[j], format)
@@ -1833,23 +1925,27 @@ def updasel(bot, update):
                 elif wo == 3 and (row[wo] != '' and row[wo] is not None):
                     opener = urllib.request.build_opener()
                     opener.addheaders = [('User-agent', 'Mozilla/5.0')]
-                    try:
-                        sauce = opener.open('https://www.codechef.com/users/' + str(row[wo]))
-                        soup = bs.BeautifulSoup(sauce, 'html5lib')
+                    count=0
+                    while(count<5):
                         try:
-                            soup.find('a', {"href": "http://www.codechef.com/ratings/all"}).text
+                            sauce = opener.open('https://www.codechef.com/users/' + str(row[wo]))
+                            soup = bs.BeautifulSoup(sauce, 'html5lib')
                             try:
-                                s1 = soup.find('span', {"class": "rating"}).text + "\n"
+                                soup.find('a', {"href": "http://www.codechef.com/ratings/all"}).text
+                                try:
+                                    s1 = soup.find('span', {"class": "rating"}).text + "\n"
+                                except AttributeError:
+                                    s1 = ""
+                                s = "CODECHEF" + "\n" + s1 + "rating: " + soup.find('a', {
+                                    "href": "http://www.codechef.com/ratings/all"}).text + "\n" + soup.find('div', {
+                                    "class": "rating-ranks"}).text.replace(" ", "").replace("\n\n", "").strip('\n')
+                                cc = s
+                                break
                             except AttributeError:
-                                s1 = ""
-                            s = "CODECHEF" + "\n" + s1 + "rating: " + soup.find('a', {
-                                "href": "http://www.codechef.com/ratings/all"}).text + "\n" + soup.find('div', {
-                                "class": "rating-ranks"}).text.replace(" ", "").replace("\n\n", "").strip('\n')
-                            cc = s
-                        except AttributeError:
-                            pass
-                    except urllib.error.URLError as e:
-                        pass
+                                break
+                        except urllib.error.URLError as e:
+                            count=count+1
+                            continue
                 elif wo == 4 and (row[wo] != '' and row[wo] is not None):
                     opener = urllib.request.build_opener()
                     opener.addheaders = [('User-agent', 'Mozilla/5.0')]
@@ -1888,37 +1984,71 @@ def updasel(bot, update):
                             pass
                     except urllib.error.URLError as e:
                         pass
-            c.execute("UPDATE datas SET HE=(?), HR=(?), CC=(?), SP=(?), CF=(?) WHERE id=(?)",
-                      (he, hr, cc, sp, cf, str(a)))
+            if not he=='' or (he=='' and (row[1] == '' or row[1] is None)):
+                c.execute("UPDATE datas SET HE=(?) WHERE id=(?)",(he,str(a)))
+                try:
+                    rat = he.split('\n')
+                    if (rat[1] == "Rating"):
+                        rat2 = rat[2].strip(" ").strip("\n")
+                        c.execute("UPDATE  priority SET HE = (?) WHERE id = (?) ", (rat2, str(a)))
+                except:
+                    pass
+            if not hr == '' or (hr=='' and (row[2] == '' or row[2] is None)):
+                c.execute("UPDATE datas SET HR=(?) WHERE id=(?)", (hr,str(a)))
+                try:
+                    rat = hr.split('\n')
+                    rat2 = rat[1].split(" ")[1].strip(" ").strip("\n")
+                    c.execute("UPDATE  priority SET HR = (?) WHERE id = (?) ", (rat2, str(a)))
+                except:
+                    pass
+            if not cf == '' or (cf=='' and (row[5] == '' or row[5] is None)):
+                c.execute("UPDATE datas SET CF=(?) WHERE id=(?)", (cf,str(a)))
+                try:
+                    rat = cf.split("\n")
+                    if "contest rating:" in rat[1]:
+                        rat2 = rat[1].split(" ")[2].strip(" ").strip("\n")
+                        c.execute("UPDATE  priority SET CF = (?) WHERE id = (?) ", (rat2, str(a)))
+                except:
+                    pass
+            if not cc == '' or (cc=='' and (row[3] == '' or row[3] is None)):
+                c.execute("UPDATE datas SET CC=(?) WHERE id=(?)", (cc,str(a)))
+                try:
+                    rat = cc.split("\n")
+                    if not "rating" in rat[1]:
+                        rat2 = rat[2].split(" ")[1].strip(" ").strip("\n")
+                        c.execute("UPDATE  priority SET CC = (?) WHERE id = (?) ", (rat2, str(a)))
+                except:
+                    pass
+            if not sp=='' or (sp=='' and (row[4] == '' or row[4] is None)):
+                c.execute("UPDATE datas SET SP=(?) WHERE id=(?)", (sp,str(a)))
         # RECREATING ALL XLSX FILES
-        c.execute("SELECT name, HE FROM datas")
-        workbook = Workbook(mount_point+"HE.xlsx")
+        workbook = Workbook(mount_point + "HE.xlsx")
         worksheet = workbook.add_worksheet()
         format = workbook.add_format()
         format.set_align('top')
         format.set_text_wrap()
-        mysel = c.execute("SELECT name, HE FROM datas")
+        mysel = c.execute(
+            "SELECT datas.name, datas.HE FROM datas INNER JOIN priority ON datas.id=priority.id ORDER BY CAST(priority.HE AS FLOAT) DESC")
         for i, row in enumerate(mysel):
             for j, value in enumerate(row):
                 worksheet.write(i, j, row[j], format)
                 worksheet.set_row(i, 170)
         worksheet.set_column(0, 5, 40)
         workbook.close()
-        c.execute("SELECT name, HR FROM datas")
-        workbook = Workbook(mount_point+"HR.xlsx")
+        workbook = Workbook(mount_point + "HR.xlsx")
         worksheet = workbook.add_worksheet()
         format = workbook.add_format()
         format.set_align('top')
         format.set_text_wrap()
-        mysel = c.execute("SELECT name, HR FROM datas")
+        mysel = c.execute(
+            "SELECT datas.name, datas.HR FROM datas INNER JOIN priority ON datas.id=priority.id ORDER BY CAST(priority.HR AS FLOAT) DESC")
         for i, row in enumerate(mysel):
             for j, value in enumerate(row):
                 worksheet.write(i, j, row[j], format)
                 worksheet.set_row(i, 170)
         worksheet.set_column(0, 5, 40)
         workbook.close()
-        c.execute("SELECT name, SP FROM datas")
-        workbook = Workbook(mount_point+"SP.xlsx")
+        workbook = Workbook(mount_point + "SP.xlsx")
         worksheet = workbook.add_worksheet()
         format = workbook.add_format()
         format.set_align('top')
@@ -1930,26 +2060,26 @@ def updasel(bot, update):
                 worksheet.set_row(i, 170)
         worksheet.set_column(0, 5, 40)
         workbook.close()
-        c.execute("SELECT name, CF FROM datas")
-        workbook = Workbook(mount_point+"CF.xlsx")
+        workbook = Workbook(mount_point + "CF.xlsx")
         worksheet = workbook.add_worksheet()
         format = workbook.add_format()
         format.set_align('top')
         format.set_text_wrap()
-        mysel = c.execute("SELECT name, CF FROM datas")
+        mysel = c.execute(
+            "SELECT datas.name, datas.CF FROM datas INNER JOIN priority ON datas.id=priority.id ORDER BY CAST(priority.CF AS FLOAT) DESC")
         for i, row in enumerate(mysel):
             for j, value in enumerate(row):
                 worksheet.write(i, j, row[j], format)
                 worksheet.set_row(i, 170)
         worksheet.set_column(0, 5, 40)
         workbook.close()
-        c.execute("SELECT name, CC FROM datas")
-        workbook = Workbook(mount_point+"CC.xlsx")
+        workbook = Workbook(mount_point + "CC.xlsx")
         worksheet = workbook.add_worksheet()
         format = workbook.add_format()
         format.set_align('top')
         format.set_text_wrap()
-        mysel = c.execute("SELECT name, CC FROM datas")
+        mysel = c.execute(
+            "SELECT datas.name, datas.CC FROM datas INNER JOIN priority ON datas.id=priority.id ORDER BY CAST(priority.CC AS FLOAT) DESC")
         for i, row in enumerate(mysel):
             for j, value in enumerate(row):
                 worksheet.write(i, j, row[j], format)
@@ -2012,23 +2142,27 @@ def updasel(bot, update):
                 elif val == "CC":
                     opener = urllib.request.build_opener()
                     opener.addheaders = [('User-agent', 'Mozilla/5.0')]
-                    try:
-                        sauce = opener.open('https://www.codechef.com/users/' + str(row[0]))
-                        soup = bs.BeautifulSoup(sauce, 'html5lib')
+                    count=0
+                    while(count<5):
                         try:
-                            soup.find('a', {"href": "http://www.codechef.com/ratings/all"}).text
+                            sauce = opener.open('https://www.codechef.com/users/' + str(row[0]))
+                            soup = bs.BeautifulSoup(sauce, 'html5lib')
                             try:
-                                s1 = soup.find('span', {"class": "rating"}).text + "\n"
+                                soup.find('a', {"href": "http://www.codechef.com/ratings/all"}).text
+                                try:
+                                    s1 = soup.find('span', {"class": "rating"}).text + "\n"
+                                except AttributeError:
+                                    s1 = ""
+                                s = "CODECHEF" + "\n" + s1 + "rating: " + soup.find('a', {
+                                    "href": "http://www.codechef.com/ratings/all"}).text + "\n" + soup.find('div', {
+                                    "class": "rating-ranks"}).text.replace(" ", "").replace("\n\n", "").strip('\n')
+                                ans = s
+                                break
                             except AttributeError:
-                                s1 = ""
-                            s = "CODECHEF" + "\n" + s1 + "rating: " + soup.find('a', {
-                                "href": "http://www.codechef.com/ratings/all"}).text + "\n" + soup.find('div', {
-                                "class": "rating-ranks"}).text.replace(" ", "").replace("\n\n", "").strip('\n')
-                            ans = s
-                        except AttributeError:
-                            pass
-                    except urllib.error.URLError as e:
-                        pass
+                                break
+                        except urllib.error.URLError as e:
+                            count=count+1
+                            continue
                 elif val == "SP":
                     opener = urllib.request.build_opener()
                     opener.addheaders = [('User-agent', 'Mozilla/5.0')]
@@ -2068,28 +2202,69 @@ def updasel(bot, update):
                     except urllib.error.URLError as e:
                         pass
                 c.execute("UPDATE datas SET " + val + " = (?)  WHERE id = (?) ", (ans, a))
+                if val == 'HE':
+                    try:
+                        rat = ans.split('\n')
+                        if (rat[1] == "Rating"):
+                            rat2 = rat[2].strip(" ").strip("\n")
+                            c.execute("UPDATE  priority SET HE = (?) WHERE id = (?) ", (rat2, a))
+                    except:
+                        pass
+                elif val == 'HR':
+                    try:
+                        rat = ans.split('\n')
+                        rat2 = rat[1].split(" ")[1].strip(" ").strip("\n")
+                        c.execute("UPDATE  priority SET HR = (?) WHERE id = (?) ", (rat2, a))
+                    except:
+                        pass
+                elif val == 'CF':
+                    try:
+                        rat = ans.split("\n")
+                        if "contest rating:" in rat[1]:
+                            rat2 = rat[1].split(" ")[2].strip(" ").strip("\n")
+                            c.execute("UPDATE  priority SET CF = (?) WHERE id = (?) ", (rat2, a))
+                    except:
+                        pass
+                elif val == 'CC':
+                    try:
+                        rat = ans.split("\n")
+                        if not "rating" in rat[1]:
+                            rat2 = rat[2].split(" ")[1].strip(" ").strip("\n")
+                            c.execute("UPDATE  priority SET CC = (?) WHERE id = (?) ", (rat2, a))
+                    except:
+                        pass
             bot.edit_message_text(text=""+ans, chat_id=query.message.chat_id, message_id=query.message.message_id)
         # RECREATING ALL THE XLMX FILES
-        c.execute("SELECT name, " + val + " FROM datas")
         workbook = Workbook(mount_point + val + ".xlsx")
         worksheet = workbook.add_worksheet()
         format = workbook.add_format()
         format.set_align('top')
         format.set_text_wrap()
-        mysel = c.execute("SELECT name, " + val + " FROM datas")
-        for i, row in enumerate(mysel):
-            for j, value in enumerate(row):
-                worksheet.write(i, j, row[j], format)
-                worksheet.set_row(i, 170)
-        worksheet.set_column(0, 5, 40)
-        workbook.close()
-    c.execute("SELECT name, HE, HR, SP, CF, CC FROM datas")
+        if not val=="SP":
+            mysel = c.execute(
+                "SELECT datas.name, datas." + val + " FROM datas INNER JOIN priority ON datas.id=priority.id ORDER BY CAST(priority." + val + " AS FLOAT) DESC")
+            for i, row in enumerate(mysel):
+                for j, value in enumerate(row):
+                    worksheet.write(i, j, row[j], format)
+                    worksheet.set_row(i, 170)
+            worksheet.set_column(0, 5, 40)
+            workbook.close()
+        else:
+            mysel = c.execute(
+                "SELECT name, " + val + " FROM datas")
+            for i, row in enumerate(mysel):
+                for j, value in enumerate(row):
+                    worksheet.write(i, j, row[j], format)
+                    worksheet.set_row(i, 170)
+            worksheet.set_column(0, 5, 40)
+            workbook.close()
     workbook = Workbook(mount_point+'all.xlsx')
     worksheet = workbook.add_worksheet()
     format = workbook.add_format()
     format.set_align('top')
     format.set_text_wrap()
-    mysel = c.execute("SELECT name, HE, HR, SP, CF, CC FROM datas")
+    mysel = c.execute(
+        "SELECT datas.name, datas.HE, datas.HR, datas.SP, datas.CF, datas.CC FROM datas INNER JOIN priority ON datas.id=priority.id ORDER BY CAST(priority.CF AS FLOAT) DESC, CAST(priority.CC AS FLOAT) DESC, CAST(priority.HR AS FLOAT) DESC, CAST(priority.HE AS FLOAT) DESC")
     for i, row in enumerate(mysel):
         for j, value in enumerate(row):
             worksheet.write(i, j, row[j], format)
