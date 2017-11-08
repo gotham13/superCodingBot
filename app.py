@@ -1,4 +1,5 @@
 import logging
+import ssl
 import helper
 import json
 from datetime import datetime, timedelta
@@ -934,10 +935,9 @@ def ongoing(bot, update):
                'username': CLIST_USER_NAME, 'api_key': CLIST_API_KEY, 'format': 'json', 'order_by': 'end'}
     url = "https://clist.by/api/v1/contest/?"
     url = url + urllib.parse.urlencode(payload)
-    opener = urllib.request.build_opener()
-    opener.addheaders = [('Content-Type', 'application/json')]
-    opener.addheaders = [('User-agent', 'Mozilla/5.0')]
-    rawData = opener.open(url).read().decode('utf-8')
+    gcontext = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
+    url1 = urllib.request.Request(url=url, headers={'Content-Type': 'application/json', 'User-agent': 'Mozilla/5.0'})
+    rawData = urllib.request.urlopen(url=url1, context=gcontext).read().decode('utf-8')
     try:
         jsonData = json.loads(rawData)
         searchResults = jsonData['objects']
@@ -980,10 +980,9 @@ def upcoming(bot, update):
     payload={'limit':'15','start__gt':str(date1),'order_by':'start','username':CLIST_USER_NAME,'api_key':CLIST_API_KEY,'format':'json'}
     url="https://clist.by/api/v1/contest/?"
     url=url+urllib.parse.urlencode(payload)
-    opener = urllib.request.build_opener()
-    opener.addheaders = [('Content-Type', 'application/json')]
-    opener.addheaders = [('User-agent', 'Mozilla/5.0')]
-    rawData = opener.open(url).read().decode('utf-8')
+    gcontext = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
+    url1 = urllib.request.Request(url=url, headers={'Content-Type': 'application/json', 'User-agent': 'Mozilla/5.0'})
+    rawData = urllib.request.urlopen(url=url1, context=gcontext).read().decode('utf-8')
     try:
         jsonData = json.loads(rawData)
         searchResults = jsonData['objects']
