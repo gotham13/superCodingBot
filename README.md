@@ -1,6 +1,8 @@
 [![Telegram](https://img.shields.io/badge/Telegram-Bot-blue.svg)](https://t.me/SuperCodeBot) [![releases](https://img.shields.io/github/release/Gotham13121997/superCodingBot.svg)](https://github.com/Gotham13121997/superCodingBot/releases/tag/v2) [![license](https://img.shields.io/cocoapods/l/AFNetworking.svg)](https://github.com/Gotham13121997/superCodingBot/blob/master/LICENSE)
 # superCodingBot  
 
+[![Join the chat at https://gitter.im/superCodingBot/Lobby](https://badges.gitter.im/superCodingBot/Lobby.svg)](https://gitter.im/superCodingBot/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 THE TELEGRAM BOT FOR COMPETITIVE PROGRAMMERS  
  
 ## ABOUT
