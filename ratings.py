@@ -107,7 +107,7 @@ class Rating():
             return None
 
     @staticmethod
-    def rating_hackerearth(self, all_data):
+    def rating_hackerearth(all_data):
         try:
             rat = all_data.split('\n')
             if (rat[1] == "Rating"):
@@ -118,7 +118,7 @@ class Rating():
             return None
 
     @staticmethod
-    def rating_hackerrank(self, all_data):
+    def rating_hackerrank(all_data):
         try:
             rat = all_data.split('\n')
             rat2 = rat[1].split(" ")[1].strip(" ").strip("\n")
@@ -127,7 +127,7 @@ class Rating():
             return None
 
     @staticmethod
-    def rating_codeforces(self, all_data):
+    def rating_codeforces(all_data):
         try:
             rat = all_data.split("\n")
             if "contest rating:" in rat[1]:
@@ -138,7 +138,7 @@ class Rating():
             return None
 
     @staticmethod
-    def rating_codechef(self, all_data):
+    def rating_codechef(all_data):
         try:
             rat = all_data.split("\n")
             if not "rating" in rat[1]:
