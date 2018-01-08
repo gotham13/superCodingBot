@@ -6,10 +6,11 @@ import json
 import shutil
 from datetime import datetime, timedelta
 import os
-import sys
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.error import (TelegramError, Unauthorized, BadRequest,
+                            TimedOut, ChatMigrated, NetworkError)
 from queue import Queue
 from telegram import ReplyKeyboardRemove
 from telegram import ReplyKeyboardMarkup
@@ -20,10 +21,7 @@ from telegram import Bot
 from telegram.ext import Dispatcher, CommandHandler, ConversationHandler, MessageHandler, Updater, Filters, \
     CallbackQueryHandler
 from configparser import ConfigParser
-from urllib import parse
-from telegram.ext.dispatcher import run_async
 import bs4 as bs
-import html5lib
 import time
 import urllib.error
 import urllib.request
@@ -46,6 +44,7 @@ adminlist = str(config.get('telegram', 'admin_chat_id')).split(',')
 # FOR CONVERSATION HANDLERS
 NAME, JUDGE, HANDLE, SELECTION, HOLO, SOLO, POLO, XOLO, REMOVER, UPDA, QSELCC, LANG, CODE, DECODE, TESTCASES, RESULT, OTHER, FILE, FILETEST, GFG1, GFG2, GFG3, DB, CF, SCHED, REMNOTI, QSELCF, SUBSEL, SUB, UNSUB, MSG, BDC = range(
     32)
+s1cce, s1cch, s1ccm, s1ccs, s1ccc, s1ccp = [None, None, None, None, None, None]
 
 
 # CLASS FOR FLOOD PROTECTION
@@ -1569,7 +1568,7 @@ def sender():
                             text="Random " + names[i] + " question from " + site + "\n\n" + questions[i],
                             chat_id=chat_id)
                 time.sleep(1)
-        except error.Unauthorized:
+        except Unauthorized:
             c.execute("DELETE FROM subscribers WHERE id = (?)", (chat_id,))
         except:
             pass

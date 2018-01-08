@@ -1,14 +1,15 @@
 import bs4 as bs
-import html5lib
 import urllib.error
 import urllib.request
 from urllib import parse
+
+
 class Rating():
     def __init__(self):
-        self.opener=urllib.request.build_opener()
+        self.opener = urllib.request.build_opener()
         self.opener.addheaders = [('User-agent', 'Mozilla/5.0')]
-        
-    def hackerearth(self,handle):
+
+    def hackerearth(self, handle):
         try:
             sauce = self.opener.open('https://www.hackerearth.com/@' + handle)
             soup = bs.BeautifulSoup(sauce, 'html5lib')
@@ -23,8 +24,8 @@ class Rating():
         except urllib.error.URLError as e:
             print(e)
             return None
-    
-    def hackerrank(self,handle):
+
+    def hackerrank(self, handle):
         try:
             sauce = self.opener.open('https://www.hackerrank.com/' + handle + '?hr_r=1')
             soup = bs.BeautifulSoup(sauce, 'html5lib')
@@ -46,8 +47,8 @@ class Rating():
         except urllib.error.URLError as e:
             print(e)
             return None
-    
-    def codechef(self,handle):
+
+    def codechef(self, handle):
         try:
             sauce = self.opener.open('https://www.codechef.com/users/' + handle)
             soup = bs.BeautifulSoup(sauce, 'html5lib')
@@ -66,8 +67,8 @@ class Rating():
         except urllib.error.URLError as e:
             print(e)
             return None
-        
-    def spoj(self,handle):
+
+    def spoj(self, handle):
         try:
             sauce = self.opener.open('http://www.spoj.com/users/' + handle + '/')
             soup = bs.BeautifulSoup(sauce, 'html5lib')
@@ -85,7 +86,7 @@ class Rating():
             print(e)
             return None
 
-    def codeforces(self,handle):
+    def codeforces(self, handle):
         try:
             sauce = self.opener.open('http://codeforces.com/profile/' + handle)
             soup = bs.BeautifulSoup(sauce, 'html5lib')
@@ -98,51 +99,56 @@ class Rating():
                 s2 = ""
             else:
                 s2 = "contest rating: " + s[0].text + "\n" + "max: " + s[1].text + s[2].text + "\n"
-            s1 = "CODEFORCES\n" + s2 + "contributions: " + soup.find('img', {"alt": "User\'\'s contribution into Codeforces community"}).nextSibling.nextSibling.text
+            s1 = "CODEFORCES\n" + s2 + "contributions: " + soup.find('img', {
+                "alt": "User\'\'s contribution into Codeforces community"}).nextSibling.nextSibling.text
             return s1
         except urllib.error.URLError as e:
             print(e)
             return None
 
-    def rating_hackerearth(self,all_data):
+    @staticmethod
+    def rating_hackerearth(self, all_data):
         try:
             rat = all_data.split('\n')
             if (rat[1] == "Rating"):
                 rat2 = rat[2].strip(" ").strip("\n")
                 return rat2
             return None
-        except:
+        except Exception:
             return None
 
-    def rating_hackerrank(self,all_data):
+    @staticmethod
+    def rating_hackerrank(self, all_data):
         try:
             rat = all_data.split('\n')
             rat2 = rat[1].split(" ")[1].strip(" ").strip("\n")
             return rat2
-        except:
+        except Exception:
             return None
 
-    def rating_codeforces(self,all_data):
+    @staticmethod
+    def rating_codeforces(self, all_data):
         try:
             rat = all_data.split("\n")
             if "contest rating:" in rat[1]:
                 rat2 = rat[1].split(" ")[2].strip(" ").strip("\n")
                 return rat2
             return None
-        except:
+        except Exception:
             return None
 
-    def rating_codechef(self,all_data):
+    @staticmethod
+    def rating_codechef(self, all_data):
         try:
             rat = all_data.split("\n")
             if not "rating" in rat[1]:
                 rat2 = rat[2].split(" ")[1].strip(" ").strip("\n")
                 return rat2
             return None
-        except:
+        except Exception:
             return None
 
-    def parse_rating(self,code,all_data):
+    def parse_rating(self, code, all_data):
         if code == 'HE':
             return self.rating_hackerearth(all_data)
         elif code == 'HR':
@@ -154,7 +160,7 @@ class Rating():
         elif code == 'SP':
             return None
 
-    def getAllData(self,code,handle):
+    def getAllData(self, code, handle):
         if code == 'HE':
             return self.hackerearth(handle)
         if code == 'HR':
