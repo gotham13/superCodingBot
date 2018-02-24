@@ -507,14 +507,13 @@ def handle(bot, update, user_data):
     if c.rowcount == 0:
         c.execute("UPDATE datas SET " + code1 + " = (?) , name= (?) WHERE id = (?) ", (all_data, name1, user))
         c.execute("UPDATE handles SET " + code1 + " = (?) , name= (?) WHERE id = (?) ", (handle1, name1, user))
-    if code1 is 'SP':
+    if code1 == 'SP':
         c.execute("INSERT OR IGNORE INTO priority (id) VALUES(?)", (user,))
     else:
         rating = rating_obj.parse_rating(code1, all_data)
-        if not rating is None:
-            c.execute("INSERT OR IGNORE INTO priority (id, HE) VALUES(?, ?)", (user, rating))
-            if (c.rowcount == 0):
-                c.execute("UPDATE  priority SET HE = (?) WHERE id = (?) ", (rating, user))
+        c.execute("INSERT OR IGNORE INTO priority (id,"+code1+") VALUES(?, ?)", (user, rating))
+        if (c.rowcount == 0):
+            c.execute("UPDATE  priority SET "+code1+" = (?) WHERE id = (?) ", (rating, user))
     conn.commit()
     # BELOW LINES ARE USED TO CREATE XLMX FILES OF ALL SORTS OF RANKLIST
     # SO WHEN USER ASKS FOR RANKLIST THERE IS NO DELAY
@@ -1454,12 +1453,16 @@ def updasel(bot, update):
                 return ConversationHandler.END
             else:
                 print(row[0])
-                ans=rating_obj.getAllData(val,str(row[0]))
+                i=0
+                while (i < 5):
+                    ans = rating_obj.getAllData(val, str(row[0]))
+                    if ans is not None:
+                        break
+                    i=i+1
                 c.execute("UPDATE datas SET " + val + " = (?)  WHERE id = (?) ", (ans, a))
-                if not val is 'SP':
+                if not val == 'SP':
                     rating = rating_obj.parse_rating(val, ans)
-                    if not rating is None:
-                        c.execute("UPDATE  priority SET "+val+" = (?) WHERE id = (?) ", (rating, a))
+                    c.execute("UPDATE priority SET "+val+" = (?) WHERE id = (?) ", (rating, a))
             bot.edit_message_text(text=""+ans, chat_id=query.message.chat_id, message_id=query.message.message_id)
         # RECREATING ALL THE XLMX FILES
         if (val == 'SP'):
