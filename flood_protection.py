@@ -50,3 +50,20 @@ class Spam_settings:
                     bot.send_message(chat_id=update.effective_chat.id, text=timeout)
 
         return func_wrapper
+
+    def wrapper_for_class_methods(self, func):  # only works on functions, not on instancemethods
+        def func_wrapper(class_obj, bot, update, *args2):
+            timeout = self.new_message(update.effective_chat.id)
+            if not timeout:
+               return func(class_obj, bot, update, *args2)
+            elif isinstance(timeout, str):
+                print("timeout")
+                # Only works for messages (+Commands) and callback_queries (Inline Buttons)
+                if update.callback_query:
+                    bot.edit_message_text(chat_id=update.effective_chat.id,
+                                          message_id=update.effective_message.message_id,
+                                          text=timeout)
+                elif update.message:
+                    bot.send_message(chat_id=update.effective_chat.id, text=timeout)
+
+        return func_wrapper

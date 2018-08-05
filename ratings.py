@@ -1,18 +1,36 @@
 import bs4 as bs
-import urllib.error
-import urllib.request
+import requests
 from urllib import parse
+from configparser import ConfigParser
 
 
-class Rating():
+class Rating:
     def __init__(self):
-        self.opener = urllib.request.build_opener()
-        self.opener.addheaders = [('User-agent', 'Mozilla/5.0')]
+        self.config = ConfigParser()
+        self.config.read("config.ini")
+        self.he_login = self.config.get('hackerearth', 'username')
+        self.he_password = self.config.get('hackerearth', 'password')
+        self.headers = {'User-agent': 'Mozilla/5.0'}
 
     def hackerearth(self, handle):
         try:
-            sauce = self.opener.open('https://www.hackerearth.com/@' + handle)
-            soup = bs.BeautifulSoup(sauce, 'html5lib')
+            url = "https://www.hackerearth.com/AJAX/login/"
+            session = requests.Session()
+            payload = {"login": self.he_login, "password": self.he_password, "submit": "True"}
+            headers = {
+                'accept': "*/*",
+                'origin': "https://www.hackerearth.com",
+                'x-requested-with': "XMLHttpRequest",
+                'user-agent': "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.183 Safari/537.36 Vivaldi/1.96.1147.55",
+                'content-type': "application/x-www-form-urlencoded; boundary=----WebKitFormBoundary",
+                'referer': "https://www.hackerearth.com/@gotham13121997",
+                'accept-encoding': "gzip, deflate, br",
+                'accept-language': "en-US,en;q=0.9",
+                'cache-control': "no-cache",
+            }
+            session.post(url, data=payload, headers=headers)
+            response = session.get('https://www.hackerearth.com/@' + handle, headers=self.headers)
+            soup = bs.BeautifulSoup(response.text, 'html5lib')
             stri = "HACKEREARTH\n"
             for i in soup.find_all('a', {"href": "/users/" + handle + "/activity/hackerearth/#user-rating-graph"}):
                 stri = stri + i.text + "\n"
@@ -21,14 +39,14 @@ class Rating():
             for i in soup.find_all('a', {"href": "/@" + handle + "/following/"}):
                 stri = stri + i.text + "\n"
             return stri
-        except urllib.error.URLError as e:
+        except Exception as e:
             print(e)
             return None
-
+    
     def hackerrank(self, handle):
         try:
-            sauce = self.opener.open('https://www.hackerrank.com/' + handle + '?hr_r=1')
-            soup = bs.BeautifulSoup(sauce, 'html5lib')
+            response = requests.get('https://www.hackerrank.com/' + handle + '?hr_r=1', headers=self.headers)
+            soup = bs.BeautifulSoup(response.text, 'html5lib')
             try:
                 soup.find('script', {"id": "initialData"}).text
             except AttributeError:
@@ -44,14 +62,14 @@ class Rating():
             for j in range(1, 10):
                 s1 = s1 + i[j] + "\n"
             return s1
-        except urllib.error.URLError as e:
+        except Exception as e:
             print(e)
             return None
-
+    
     def codechef(self, handle):
         try:
-            sauce = self.opener.open('https://www.codechef.com/users/' + handle)
-            soup = bs.BeautifulSoup(sauce, 'html5lib')
+            response = requests.get('https://www.codechef.com/users/' + handle, headers=self.headers)
+            soup = bs.BeautifulSoup(response.text, 'html5lib')
             try:
                 soup.find('a', {"href": "http://www.codechef.com/ratings/all"}).text
             except AttributeError:
@@ -64,14 +82,14 @@ class Rating():
                 "href": "http://www.codechef.com/ratings/all"}).text + "\n" + soup.find('div', {
                 "class": "rating-ranks"}).text.replace(" ", "").replace("\n\n", "").strip('\n')
             return s
-        except urllib.error.URLError as e:
+        except Exception as e:
             print(e)
             return None
-
+        
     def spoj(self, handle):
         try:
-            sauce = self.opener.open('http://www.spoj.com/users/' + handle + '/')
-            soup = bs.BeautifulSoup(sauce, 'html5lib')
+            response = requests.get('http://www.spoj.com/users/' + handle + '/', headers=self.headers)
+            soup = bs.BeautifulSoup(response.text, 'html5lib')
             try:
                 soup.find('div', {"class": "col-md-3"}).text
             except AttributeError:
@@ -82,14 +100,14 @@ class Rating():
                 "class": "dl-horizontal profile-info-data profile-info-data-stats"}).text.replace("\t", "").replace(
                 "\xa0", "").strip('\n')
             return s
-        except urllib.error.URLError as e:
+        except Exception as e:
             print(e)
             return None
 
     def codeforces(self, handle):
         try:
-            sauce = self.opener.open('http://codeforces.com/profile/' + handle)
-            soup = bs.BeautifulSoup(sauce, 'html5lib')
+            response = requests.get('http://codeforces.com/profile/' + handle, headers=self.headers)
+            soup = bs.BeautifulSoup(response.text, 'html5lib')
             try:
                 soup.find('img', {"alt": "User\'\'s contribution into Codeforces community"}).text
             except AttributeError:
@@ -99,10 +117,9 @@ class Rating():
                 s2 = ""
             else:
                 s2 = "contest rating: " + s[0].text + "\n" + "max: " + s[1].text + s[2].text + "\n"
-            s1 = "CODEFORCES\n" + s2 + "contributions: " + soup.find('img', {
-                "alt": "User\'\'s contribution into Codeforces community"}).nextSibling.nextSibling.text
+            s1 = "CODEFORCES\n" + s2 + "contributions: " + soup.find('img', {"alt": "User\'\'s contribution into Codeforces community"}).nextSibling.nextSibling.text
             return s1
-        except urllib.error.URLError as e:
+        except Exception as e:
             print(e)
             return None
 
@@ -110,7 +127,7 @@ class Rating():
     def rating_hackerearth(all_data):
         try:
             rat = all_data.split('\n')
-            if (rat[1] == "Rating"):
+            if rat[1] == "Rating":
                 rat2 = rat[2].strip(" ").strip("\n")
                 return rat2
             return None
@@ -148,7 +165,7 @@ class Rating():
         except Exception:
             return None
 
-    def parse_rating(self, code, all_data):
+    def parse_rating(self,code,all_data):
         if code == 'HE':
             return self.rating_hackerearth(all_data)
         elif code == 'HR':

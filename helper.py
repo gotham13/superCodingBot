@@ -1,6 +1,6 @@
 import requests
 import json
-from requests.adapters import HTTPAdapter
+
 # Hackerrank API endpoint
 RUN_API_ENDPOINT = 'http://api.hackerrank.com/checker/submission.json'
 
@@ -33,16 +33,14 @@ class HackerRankAPI():
         self.params_dict['lang'] = self.getLangCode(code['lang'])
         if 'testcases' in code:
             self.params_dict['testcases'] = json.dumps(code['testcases'])
+            print(self.params_dict)
         else:
             self.params_dict['testcases'] = json.dumps([""])  # empty testcase
 
     # send API request
     def __request(self, url, params):
         try:
-            s=requests.Session()
-            a=HTTPAdapter(max_retries=20)
-            s.mount('http://',a)
-            response = s.post(url, data=params)
+            response = requests.post(url, data=params)
             return response
         except Exception as e:
             print(e)
