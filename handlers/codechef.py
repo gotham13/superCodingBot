@@ -5,8 +5,6 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ConversationHandler, CommandHandler, CallbackQueryHandler
 import flood_protection
 import random
-import requests
-import bs4 as bs
 timeouts = flood_protection.Spam_settings()
 QSELCC = 2000
 

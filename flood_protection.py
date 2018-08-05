@@ -1,5 +1,7 @@
 import time
 # CLASS FOR FLOOD PROTECTION
+
+
 class Spam_settings:
     def __init__(self):
         self.limits = {1: 3, 5: 7, 10: 10, 15: 13, 30: 20}  # max: 3 updates in 1 second, 7 updates in 5 seconds etc

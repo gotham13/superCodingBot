@@ -1,16 +1,11 @@
 """
 Created by Gotham on 04-08-2018.
 """
-from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
-from apscheduler.schedulers.background import BackgroundScheduler
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ConversationHandler, CommandHandler, CallbackQueryHandler
 import flood_protection
 from utility import Utility
-from datetime import datetime, timedelta
-import requests
 import urllib3
-import json
 import sqlite3
 import ratings
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)

@@ -1,9 +1,9 @@
-'''
+"""
 Created by Gotham on 31-07-2018.
-'''
+"""
 from datetime import datetime, timedelta
 from xlsxwriter.workbook import Workbook
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup,ReplyKeyboardMarkup,ReplyKeyboardRemove
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardRemove
 import os
 import ratings
 
@@ -174,4 +174,3 @@ class Utility:
         time_zone = float(time_zone[:3] + ('.5' if time_zone[3] == '3' else '.0'))
         str_time = datetime.strptime(old_time, "%Y-%m-%dT%H:%M:%S")
         return (str_time + timedelta(hours=time_zone)).strftime("%Y-%m-%dT%H:%M:%S")
-

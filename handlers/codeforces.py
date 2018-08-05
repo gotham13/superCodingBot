@@ -1,9 +1,8 @@
 """
 Created by Gotham on 31-07-2018.
 """
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup,ReplyKeyboardMarkup,ReplyKeyboardRemove
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ConversationHandler, CommandHandler, CallbackQueryHandler
-from apscheduler.schedulers.background import BackgroundScheduler
 import flood_protection
 import random
 import os
