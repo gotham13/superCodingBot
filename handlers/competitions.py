@@ -6,8 +6,8 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ConversationHandler, CommandHandler, CallbackQueryHandler
 import flood_protection
-from utility import Utility
-from datetime import datetime, timedelta
+from contest_utility import ContestUtility
+from datetime import datetime
 import requests
 import urllib3
 import json
@@ -25,7 +25,7 @@ class Competitions:
         self.ong = None
         self.upc = None
         self.mount_point = mount_point
-        self.utility = Utility(mount_point)
+        self.utility = ContestUtility(mount_point)
         self.jobstores = {
             'default': SQLAlchemyJobStore(url='sqlite:///' + mount_point + 'coders1.db')
         }
@@ -70,7 +70,7 @@ class Competitions:
             self.utility.ongoing_sender(update=update, contest_list=search_results)
             self.ong = search_results
         except:
-            self.utility.upcoming_sender(update, self.ong)
+            self.utility.ongoing_sender(update, self.ong)
 
     @timeouts.wrapper_for_class_methods
     def upcoming(self, bot, update):
@@ -95,7 +95,7 @@ class Competitions:
         msg = query.data
         if str(msg).isdigit():
             msg = int(msg) - 1
-            start1 = Utility.time_converter(self.upc[msg]['start'], '-0030')
+            start1 = ContestUtility.time_converter(self.upc[msg]['start'], '-0030')
             dateT = str(self.upc[msg]['start']).replace("T", " ").split(" ")
             start1 = start1.replace("T", " ").split(" ")
             date = dateT[0].split("-")
