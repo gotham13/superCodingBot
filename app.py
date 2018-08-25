@@ -11,7 +11,7 @@ from telegram.error import Unauthorized
 from queue import Queue
 from threading import Thread
 from telegram import Bot
-from telegram.ext import Dispatcher, CommandHandler, ConversationHandler,Updater
+from telegram.ext import Dispatcher, CommandHandler, ConversationHandler, Updater, MessageHandler, Filters
 from configparser import ConfigParser
 import bs4 as bs
 import time
@@ -32,6 +32,7 @@ class SuperCodingBot:
     def __init__(self):
         logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                             level=logging.INFO)
+        self.CF = 20000
         self.db = "coders1.db"
         self.logger = logging.getLogger(__name__)
         self.config = ConfigParser()
@@ -69,6 +70,15 @@ class SuperCodingBot:
         self.admin = admin.AdminHandle(mount_point=self.mount_point, admin_list=self.admin_list, fallback=self.fallback)
         self.update_fun()
         self.update_fun("codechef")
+        self.conv_handler = ConversationHandler(
+            entry_points=[CommandHandler('sendcf', self.getCf)],
+            allow_reentry=True,
+            states={
+                self.CF: [MessageHandler(Filters.document, self.cf)]
+            },
+            fallbacks=[self.fallback]
+        )
+
 
     def init_db(self):
         conn = sqlite3.connect(self.mount_point + self.db)
@@ -283,6 +293,26 @@ class SuperCodingBot:
             time.sleep(1)
         self.update_fun("codeforces")
 
+    # START OF ADMIN CONVERSATION HANDLER TO REPLACE THE CODEFORCES JSON
+    @timeouts.wrapper_for_class_methods
+    def getCf(self, bot, update):
+        if not str(update.message.chat_id) in self.admin_list:
+            update.message.reply_text("sorry you are not an admin")
+            return ConversationHandler.END
+        update.message.reply_text("send your json file")
+        return self.CF
+
+    def cf(self, bot, update):
+        file_id = update.message.document.file_id
+        newFile = bot.get_file(file_id)
+        newFile.download(self.mount_point + 'codeforces.json')
+        update.message.reply_text("saved")
+        with open(self.mount_point + 'codeforces.json', 'r') as codeforces:
+            self.cf.change_cf(json.load(codeforces))
+        return ConversationHandler.END
+
+    # END OF ADMIN CONVERSATION HANDLER TO REPLACE THE CODEFORCES JSON
+
     def setup(self, webhook_url=None):
         """If webhook_url is not passed, run with long-polling."""
         logging.basicConfig(level=logging.WARNING)
@@ -314,9 +344,9 @@ class SuperCodingBot:
             dp.add_handler(self.ranklist.conv_handler)
             dp.add_handler(self.update.conv_handler)
             dp.add_handler(self.geeks_for_geeks.conv_handler)
-            dp.add_handler(self.admin.conv_handler)
             dp.add_handler(self.admin.conv_handler1)
             dp.add_handler(self.admin.conv_handler2)
+            dp.add_handler(self.conv_handler)
             # log all errors
             dp.add_error_handler(self.error_handler)
         if webhook_url:

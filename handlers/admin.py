@@ -17,14 +17,6 @@ class AdminHandle:
         self.admin_list = admin_list
         self.mount_point = mount_point
         self.utility = Utility(mount_point)
-        self.conv_handler = ConversationHandler(
-            entry_points=[CommandHandler('sendcf', self.getCf)],
-            allow_reentry=True,
-            states={
-                CF: [MessageHandler(Filters.document, self.cf)]
-            },
-            fallbacks=[fallback]
-        )
         self.conv_handler1 = ConversationHandler(
             entry_points=[CommandHandler('broadcast', self.broadcast)],
             allow_reentry=True,
@@ -86,26 +78,7 @@ class AdminHandle:
 
     # END OF ADMIN CONVERSATION HANDLER TO REPLACE THE DATABASE
 
-    # START OF ADMIN CONVERSATION HANDLER TO REPLACE THE CODEFORCES JSON
-    @timeouts.wrapper_for_class_methods
-    def getCf(self, bot, update):
-        if not str(update.message.chat_id) in self.admin_list:
-            update.message.reply_text("sorry you are not an admin")
-            return ConversationHandler.END
-        update.message.reply_text("send your json file")
-        return CF
 
-    def cf(self, bot, update):
-        global qcf
-        file_id = update.message.document.file_id
-        newFile = bot.get_file(file_id)
-        newFile.download(self.mount_point + 'codeforces.json')
-        update.message.reply_text("saved")
-        with open(self.mount_point + 'codeforces.json', 'r') as codeforces:
-            qcf = json.load(codeforces)
-        return ConversationHandler.END
-
-    # END OF ADMIN CONVERSATION HANDLER TO REPLACE THE CODEFORCES JSON
 
     # ADMIN COMMAND HANDLER FOR GETTING THE DATABASE
     @timeouts.wrapper_for_class_methods
