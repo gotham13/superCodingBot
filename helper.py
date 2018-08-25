@@ -13,7 +13,7 @@ LANG_CODE = {'fsharp': 33, 'javascript': 20, 'whitespace': 41, 'python': 5, 'lol
              'clojure': 13, 'python3': 30, 'rust': 50}
 
 
-class HackerRankAPI():
+class HackerRankAPI:
     # initialize the API object
     def __init__(self, api_key):
         self.params_dict = {}
@@ -38,7 +38,8 @@ class HackerRankAPI():
             self.params_dict['testcases'] = json.dumps([""])  # empty testcase
 
     # send API request
-    def __request(self, url, params):
+    @staticmethod
+    def __request(url, params):
         try:
             response = requests.post(url, data=params)
             return response
@@ -46,7 +47,8 @@ class HackerRankAPI():
             print(e)
 
     # utility function to get language code to be passed as parameter to API
-    def getLangCode(self, lang):
+    @staticmethod
+    def getLangCode(lang):
         try:
             return LANG_CODE[lang]
         except KeyError:
@@ -55,7 +57,8 @@ class HackerRankAPI():
             return -1
 
     # get list of all supported languages
-    def supportedlanguages(self):
+    @staticmethod
+    def supportedlanguages():
         return LANG_CODE.keys()
 
 
