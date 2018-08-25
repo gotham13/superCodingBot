@@ -8,6 +8,7 @@ from utility import Utility
 import urllib3
 import sqlite3
 import ratings
+from handlers import not_registered
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 timeouts = flood_protection.Spam_settings()
 UPDA = 10000
@@ -51,10 +52,7 @@ class UpdateHandler:
         conn = sqlite3.connect(self.mount_point + 'coders1.db')
         c = conn.cursor()
         c.execute("SELECT id FROM handles WHERE id=(?)", (a,))
-        if not c.fetchone():
-            bot.edit_message_text(text='You are not registered to the bot. Please register using /register command',
-                                  chat_id=query.message.chat_id,
-                                  message_id=query.message.message_id)
+        if not not_registered.NotRegistered.fetchone(c, query, bot):
             conn.close()
             return ConversationHandler.END
         if val == "ALL":

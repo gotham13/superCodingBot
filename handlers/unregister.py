@@ -5,12 +5,13 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ConversationHandler, CommandHandler, CallbackQueryHandler
 import flood_protection
 import sqlite3
+from handlers import not_registered
 from utility import Utility
 timeouts = flood_protection.Spam_settings()
 REMOVER = 6000
 
 
-class UnregHandler:
+class UnregHandler():
     def __init__(self, mount_point, fallback):
         self.utility = Utility(mount_point)
         self.mount_point = mount_point
@@ -45,10 +46,7 @@ class UnregHandler:
         c = conn.cursor()
         a = str(query.from_user.id)
         c.execute("SELECT id FROM handles WHERE id=(?)", (a,))
-        if not c.fetchone():
-            bot.edit_message_text(text='You are not registered to the bot. Please register using /register command',
-                                  chat_id=query.message.chat_id,
-                                  message_id=query.message.message_id)
+        if not not_registered.NotRegistered.fetchone(c, query, bot):
             conn.close()
             return ConversationHandler.END
         if val == "ALL":
