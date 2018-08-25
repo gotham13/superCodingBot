@@ -37,8 +37,7 @@ class AdminHandle:
     # START OF ADMIN CONVERSATION HANDLER TO BROADCAST MESSAGE
     @timeouts.wrapper_for_class_methods
     def broadcast(self, bot, update):
-        if not str(update.message.chat_id) in self.admin_list:
-            update.message.reply_text("sorry you are not an admin")
+        if self.not_admin(update):
             return ConversationHandler.END
         update.message.reply_text("Send your message")
         return BDC
@@ -63,8 +62,7 @@ class AdminHandle:
     # START OF ADMIN CONVERSATION HANDLER TO REPLACE THE DATABASE
     @timeouts.wrapper_for_class_methods
     def getDb(self, bot, update):
-        if not str(update.message.chat_id) in self.admin_list:
-            update.message.reply_text("sorry you are not an admin")
+        if self.not_admin(update):
             return ConversationHandler.END
         update.message.reply_text("send your sqlite database")
         return DB
@@ -77,30 +75,31 @@ class AdminHandle:
         return ConversationHandler.END
 
     # END OF ADMIN CONVERSATION HANDLER TO REPLACE THE DATABASE
-
-
+    def not_admin(self, update):
+        if not str(update.message.chat_id) in self.admin_list:
+            update.message.reply_text("sorry you are not an admin")
+            return True
+        else:
+            return False
 
     # ADMIN COMMAND HANDLER FOR GETTING THE DATABASE
     @timeouts.wrapper_for_class_methods
     def givememydb(self, bot, update):
-        if not str(update.message.chat_id) in self.admin_list:
-            update.message.reply_text("sorry you are not an admin")
+        if self.not_admin(update):
             return
         bot.send_document(chat_id=update.message.chat_id, document=open(self.mount_point + 'coders1.db', 'rb'))
 
     # ADMIN COMMAND HANDLER FOR GETTING THE CODEFORCES JSON
     @timeouts.wrapper_for_class_methods
     def getcfjson(self, bot, update):
-        if not str(update.message.chat_id) in self.admin_list:
-            update.message.reply_text("sorry you are not an admin")
+        if self.not_admin(update):
             return
         bot.send_document(chat_id=update.message.chat_id, document=open(self.mount_point + 'codeforces.json', 'rb'))
 
     # ADMIN COMMAND HANDLER FUNCTION TO GET THE DETAILS OF HANDLES OF ALL THE USERS IN DATABASE
     @timeouts.wrapper_for_class_methods
     def adminhandle(self, bot, update):
-        if not str(update.message.chat_id) in self.admin_list:
-            update.message.reply_text("sorry you are not an admin")
+        if self.not_admin(update):
             return
         conn = sqlite3.connect(self.mount_point + 'coders1.db')
         c = conn.cursor()
