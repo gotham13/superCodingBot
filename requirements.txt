@@ -1,7 +1,7 @@
 python-telegram-bot
 beautifulsoup4
 html5lib
-apscheduler
+apscheduler==3.5.1
 xlsxwriter
 requests
 SQLAlchemy
