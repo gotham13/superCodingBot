@@ -12,6 +12,32 @@ class Utility:
     def __init__(self, mount_point):
         self.mount_point = mount_point
 
+    def contest_parser(self, contest):
+        title = contest['event']
+        start = contest['start']
+        sec = timedelta(seconds=int(contest['duration']))
+        d = datetime(1, 1, 1) + sec
+        duration = ("%d days %d hours %d min" % (d.day - 1, d.hour, d.minute))
+        host = contest['resource']['name']
+        contest1 = contest['href']
+        start1 = self.time_converter(start, '+0530')
+        return {"title": title, "start": start, "duration": duration,
+                "host": host, "contest": contest1, "start1": start1}
+
+    def ongoing_sender(self, update, contest_list):
+        i = 0
+        s = ""
+        for er in contest_list:
+            i = i + 1
+            if i == 16:
+                break
+            parsed_contest = self.contest_parser(er)
+            s = s + parsed_contest["title"] + "\n" + "Start:\n" + parsed_contest["start"].replace("T", " ") + \
+                " GMT\n" + str(parsed_contest["start1"]).replace("T", " ") + \
+                " IST\n" + "Duration:" + parsed_contest["duration"] + "\n" \
+                + parsed_contest["host"] + "\n" + parsed_contest["contest"] + "\n\n"
+        update.message.reply_text(s)
+
     def upcoming_sender(self, update, contest_list):
         i = 0
         s = ""
@@ -22,19 +48,13 @@ class Utility:
             # LIMITING NO OF EVENTS TO 20
             if i == 16:
                 break
-            title = er['event']
-            start = er['start']
-            sec = timedelta(seconds=int(er['duration']))
-            d = datetime(1, 1, 1) + sec
-            duration = ("%d days %d hours %d min" % (d.day - 1, d.hour, d.minute))
-            host = er['resource']['name']
-            contest = er['href']
-            start1 = self.time_converter(start, '+0530')
+            parsed_contest = self.contest_parser(er)
+            s = s + str(i) + ". " + parsed_contest["title"] + "\n" + "Start:\n" + \
+                parsed_contest["start"].replace("T", " ")\
+                + " GMT\n" + str(parsed_contest["start1"]).replace("T", " ") + " IST\n" + \
+                "Duration: " + str(parsed_contest["duration"]) + "\n" + \
+                parsed_contest["host"] + "\n" + parsed_contest["contest"] + "\n\n"
             keyboard1.append(InlineKeyboardButton(str(i), callback_data=str(i)))
-            s = s + str(i) + ". " + title + "\n" + "Start:\n" + start.replace("T", " ") + " GMT\n" + str(
-                start1).replace("T",
-                                " ") + " IST\n" + "Duration: " + str(
-                duration) + "\n" + host + "\n" + contest + "\n\n"
             if i % 5 == 0:
                 keyboard.append(keyboard1)
                 keyboard1 = []

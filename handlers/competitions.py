@@ -49,55 +49,42 @@ class Competitions:
             fallbacks=[fallback]
         )
 
+    @staticmethod
+    def clist_requester(url, payload):
+        response = requests.get(url, headers={'Content-Type': 'application/json', 'User-agent': 'Mozilla/5.0'},
+                                params=payload, verify=False)
+        return response.text
+
     # COMMAND HANDLER FUNCTION TO SHOW LIST OF ONGOING COMPETITIONS
     @timeouts.wrapper_for_class_methods
     def ongoing(self, bot, update):
         # PARSING JSON
         date1 = update.message.date
         payload = {'limit': '15', 'start__lt': str(date1), 'end__gt': str(date1),
-                   'username': self.clist_user_name, 'api_key': self.clist_api_key, 'format': 'json', 'order_by': 'end'}
-        url = "https://clist.by/api/v1/contest/"
-        response = requests.get(url, headers={'Content-Type': 'application/json', 'User-agent': 'Mozilla/5.0'}, params=payload, verify=False)
-        rawData = response.text
+                   'username': self.clist_user_name, 'api_key': self.clist_api_key,
+                   'format': 'json', 'order_by': 'end'}
+        raw_data = self.clist_requester(url="https://clist.by/api/v1/contest/", payload=payload)
         try:
-            jsonData = json.loads(rawData)
-            searchResults = jsonData['objects']
-            s = ""
-            i = 0
-            for er in searchResults:
-                i = i + 1
-                if i == 16:
-                    break
-                title = er['event']
-                start = er['start']
-                sec = timedelta(seconds=int(er['duration']))
-                d = datetime(1, 1, 1) + sec
-                duration = ("%d days %d hours %d min" % (d.day - 1, d.hour, d.minute))
-                host = er['resource']['name']
-                contest = er['href']
-                start1 = Utility.time_converter(start, '+0530')
-                s = s + title + "\n" + "Start:\n" + start.replace("T", " ") + " GMT\n" + str(
-                    start1).replace("T",
-                                    " ") + " IST\n" + "Duration:" + duration + "\n" + host + "\n" + contest + "\n\n"
-            self.ong = s
-            update.message.reply_text(s)
+            json_data = json.loads(raw_data)
+            search_results = json_data['objects']
+            self.utility.ongoing_sender(update=update, contest_list=search_results)
+            self.ong = search_results
         except:
-            update.message.reply_text(self.ong)
+            self.utility.upcoming_sender(update, self.ong)
 
     @timeouts.wrapper_for_class_methods
     def upcoming(self, bot, update):
         # PARSING JSON
         date1 = update.message.date
-        payload = {'limit': '15', 'start__gt': str(date1), 'order_by': 'start', 'username': self.clist_user_name, 'api_key': self.clist_api_key, 'format': 'json'}
-        url = "https://clist.by/api/v1/contest/"
-        response = requests.get(url, headers={'Content-Type': 'application/json', 'User-agent': 'Mozilla/5.0'},
-                                params=payload, verify=False)
-        rawData = response.text
+        payload = {'limit': '15', 'start__gt': str(date1), 'order_by': 'start',
+                   'username': self.clist_user_name,
+                   'api_key': self.clist_api_key, 'format': 'json'}
+        raw_data = self.clist_requester(url="https://clist.by/api/v1/contest/", payload=payload)
         try:
-            jsonData = json.loads(rawData)
-            searchResults = jsonData['objects']
-            self.utility.upcoming_sender(update=update, contest_list=searchResults)
-            self.upc = searchResults
+            json_data = json.loads(raw_data)
+            search_results = json_data['objects']
+            self.utility.upcoming_sender(update=update, contest_list=search_results)
+            self.upc = search_results
         except:
             self.utility.upcoming_sender(update, self.upc)
         return SCHED
