@@ -31,6 +31,9 @@ class Rating:
             session.post(url, data=payload, headers=headers)
             response = session.get('https://www.hackerearth.com/@' + handle, headers=self.headers)
             soup = bs.BeautifulSoup(response.text, 'html5lib')
+            e404 = soup.find("meta", {"content": "404 error "})
+            if e404 is not None:
+                return None
             stri = "HACKEREARTH\n"
             for i in soup.find_all('a', {"href": "/users/" + handle + "/activity/hackerearth/#user-rating-graph"}):
                 stri = stri + i.text + "\n"
@@ -165,7 +168,7 @@ class Rating:
         except Exception:
             return None
 
-    def parse_rating(self,code,all_data):
+    def parse_rating(self, code, all_data):
         if code == 'HE':
             return self.rating_hackerearth(all_data)
         elif code == 'HR':
