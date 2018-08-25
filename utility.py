@@ -47,7 +47,8 @@ class Utility:
         format_of_workbook.set_align('top')
         format_of_workbook.set_text_wrap()
         for i, row in enumerate(mysel):
-            for j in enumerate(row):
+            for j, l in enumerate(row):
+                print(l)
                 worksheet.write(i, j, row[j], format_of_workbook)
                 worksheet.set_row(i, 170)
         worksheet.set_column(0, 5, 40)
