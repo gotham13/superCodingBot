@@ -87,9 +87,7 @@ class ComHandler:
     # FUNCTION TO GET TESTCASE FILE
     def filetest(self, bot, update, user_data):
         file_id = update.message.document.file_id
-        file_size = update.message.document.file_size
-        if file_size > 2097152:
-            update.message.reply_text("FILE SIZE GREATER THAN 2 MB")
+        if ComHandler.check_file_size(update):
             return ConversationHandler.END
         newFile = bot.get_file(file_id)
         newFile.download('test.txt')
@@ -105,13 +103,19 @@ class ComHandler:
         os.remove('test.txt')
         return ConversationHandler.END
 
+    @staticmethod
+    def check_file_size(update):
+        file_size = update.message.document.file_size
+        if file_size > 2097152:
+            update.message.reply_text("FILE SIZE GREATER THAN 2 MB")
+            return True
+        return False
+
     # FUNCTION TO DOWNLOAD THE FILE SENT AND EXTRACT ITS CONTENTS
     @staticmethod
     def filer(bot, update, user_data):
         file_id = update.message.document.file_id
-        file_size = update.message.document.file_size
-        if file_size > 2097152:
-            update.message.reply_text("FILE SIZE GREATER THAN 2 MB")
+        if ComHandler.check_file_size(update):
             return ConversationHandler.END
         newFile = bot.get_file(file_id)
         newFile.download('abcd.txt')
