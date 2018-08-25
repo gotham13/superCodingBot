@@ -1,7 +1,7 @@
 """
 Created by Gotham on 03-08-2018.
 """
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardRemove
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ForceReply
 from telegram.ext import ConversationHandler, CommandHandler, MessageHandler, Filters, CallbackQueryHandler
 import flood_protection
 import sqlite3
@@ -32,8 +32,7 @@ class RegHandler:
     @staticmethod
     @timeouts.wrapper
     def register(bot, update):
-        markup = ReplyKeyboardRemove()
-        update.message.reply_text('Hi,please enter your name ', reply_markup=markup)
+        update.message.reply_text('Hi,please enter your name ', reply_markup=ForceReply(True))
         return NAME
 
     @staticmethod
@@ -56,11 +55,11 @@ class RegHandler:
         if query.data not in choices:
             return ConversationHandler.END
         user_data['code'] = str(query.data).replace("reg1", "")
-        bot.edit_message_text(text='please enter your handle',
+        bot.edit_message_text(text='selected',
                               chat_id=query.message.chat_id,
                               message_id=query.message.message_id)
+        bot.send_message(chat_id=query.message.chat_id, text="please enter your handle",reply_markup=ForceReply(True))
         return HANDLE
-
 
     def handle(self, bot, update, user_data):
         user = str(update.message.from_user.id)

@@ -1,7 +1,7 @@
 """
 Created by Gotham on 04-08-2018.
 """
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ForceReply
 from telegram.ext import ConversationHandler, CommandHandler, CallbackQueryHandler, MessageHandler, Filters
 import flood_protection
 import sqlite3
@@ -86,9 +86,10 @@ class RankListHandler:
                 return ConversationHandler.END
 
         elif val == "getName":
-            bot.edit_message_text(text='please enter the name',
+            bot.edit_message_text(text='selected',
                                   chat_id=query.message.chat_id,
                                   message_id=query.message.message_id)
+            bot.send_message(text="please enter the name", chat_id=query.message.chat_id, reply_markup=ForceReply(True))
             return POLO
         else:
             return ConversationHandler.END

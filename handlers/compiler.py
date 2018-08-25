@@ -1,7 +1,7 @@
 """
 Created by Gotham on 03-08-2018.
 """
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup, ReplyKeyboardRemove, ForceReply
 from telegram.ext import ConversationHandler, CommandHandler, MessageHandler, Filters, CallbackQueryHandler
 import flood_protection
 from helper import HackerRankAPI
@@ -53,8 +53,11 @@ class ComHandler:
             s1 = ""
             for language in self.compiler.supportedlanguages():
                 s1 = s1 + language + ", "
-            bot.edit_message_text(text="enter the name of language\n" + s1[:-2], chat_id=query.message.chat_id,
+            bot.edit_message_text(text="" + s1[:-2], chat_id=query.message.chat_id,
                                   message_id=query.message.message_id)
+            bot.send_message(chat_id=query.message.chat_id,
+                             text="Enter the name of a language from the above list",
+                             reply_markup=ForceReply(True))
             return OTHER
         else:
             # ELSE ASKING WETHER HE WANTS TO SEND SOURCE CODE OR A .TXT FILE
@@ -74,8 +77,12 @@ class ComHandler:
         val = str(val).replace("so1", "")
         if val == "code":
             bot.edit_message_text(
-                text="please enter your code\nPlease make sure that the first line is not a comment line",
+                text="selected",
                 chat_id=query.message.chat_id, message_id=query.message.message_id)
+            bot.send_message(chat_id=query.message.chat_id, text="please enter your code\n"
+                                                                  "Please make sure that "
+                                                                  "the first line is not a comment line",
+                             reply_markup=ForceReply(True))
             return DECODE
         elif val == "file":
             bot.edit_message_text(text="please send your .txt file\nMaximum size 2mb", chat_id=query.message.chat_id,
@@ -175,8 +182,8 @@ class ComHandler:
     def other(bot, update, user_data):
         s = update.message.text
         user_data['lang'] = s
-        keyboard = [[InlineKeyboardButton("Enter Source Code", callback_data='code'),
-                     InlineKeyboardButton("Send a file", callback_data='file')]]
+        keyboard = [[InlineKeyboardButton("Enter Source Code", callback_data='codeso1'),
+                     InlineKeyboardButton("Send a file", callback_data='fileso1')]]
         reply_markup = InlineKeyboardMarkup(keyboard)
         update.message.reply_text("please select", reply_markup=reply_markup)
         return CODE
