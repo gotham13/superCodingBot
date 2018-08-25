@@ -18,7 +18,7 @@ import time
 import sqlite3
 from handlers import codeforces, codechef, register, compiler, \
     competitions, unregister, ques_of_the_day, ranklist, \
-    update, geeks_for_geeks, admin
+    update_rank_list, geeks_for_geeks, admin
 import random
 import flood_protection
 from utility import Utility
@@ -65,7 +65,7 @@ class SuperCodingBot:
         self.unregister = unregister.UnregHandler(mount_point=self.mount_point, fallback=self.fallback)
         self.ques_of_the_day = ques_of_the_day.QuesHandler(mount_point=self.mount_point, fallback=self.fallback)
         self.ranklist = ranklist.RankListHandler(mount_point=self.mount_point, fallback=self.fallback)
-        self.update = update.UpdateHandler(mount_point=self.mount_point, fallback=self.fallback)
+        self.update = update_rank_list.UpdateHandler(mount_point=self.mount_point, fallback=self.fallback)
         self.geeks_for_geeks = geeks_for_geeks.GeeksForGeeksHandler(fallback=self.fallback)
         self.admin = admin.AdminHandle(mount_point=self.mount_point, admin_list=self.admin_list, fallback=self.fallback)
         self.update_fun()
@@ -74,11 +74,10 @@ class SuperCodingBot:
             entry_points=[CommandHandler('sendcf', self.getCf)],
             allow_reentry=True,
             states={
-                self.CF: [MessageHandler(Filters.document, self.cf)]
+                self.CF: [MessageHandler(Filters.document, self.receive_cf)]
             },
             fallbacks=[self.fallback]
         )
-
 
     def init_db(self):
         conn = sqlite3.connect(self.mount_point + self.db)
@@ -86,7 +85,8 @@ class SuperCodingBot:
             'CREATE TABLE handles(id TEXT PRIMARY KEY,name TEXT,HE TEXT,HR TEXT,CF TEXT,SP TEXT,CC TEXT)',
             'CREATE TABLE  datas(id TEXT PRIMARY KEY,name TEXT,HE TEXT,HR TEXT,CF TEXT,SP TEXT,CC TEXT)',
             'CREATE TABLE  priority(id TEXT PRIMARY KEY,HE TEXT,HR TEXT,CF TEXT,CC TEXT)',
-            'CREATE TABLE subscribers(id TEXT PRIMARY KEY,BEGINNER int DEFAULT 0,EASY int DEFAULT 0,MEDIUM int DEFAULT 0,'
+            'CREATE TABLE subscribers(id TEXT PRIMARY KEY,BEGINNER int DEFAULT 0,'
+            'EASY int DEFAULT 0,MEDIUM int DEFAULT 0,'
             'HARD int DEFAULT 0,CHALLENGE int DEFAULT 0,PEER int DEFAULT 0,A int DEFAULT 0,B int DEFAULT 0,'
             'C int DEFAULT 0,D int DEFAULT 0,E int DEFAULT 0,F int DEFAULT 0,OTHERS int DEFAULT 0)',
         ]
@@ -170,8 +170,8 @@ class SuperCodingBot:
             soup1 = bs.BeautifulSoup(response.text, 'html5lib')
             endpage = int(soup1.findAll('span', {"class": "page-index"})[-1].getText())
             latest = soup1.find('td', {"class": "id"}).text
-            with open(self.mount_point + 'codeforces.json', 'r') as codeforces:
-                data = json.load(codeforces)
+            with open(self.mount_point + 'codeforces.json', 'r') as code_json:
+                data = json.load(code_json)
                 latest1 = data['latest']
                 if latest1 == latest:
                     for chat_id in self.admin_list:
@@ -211,10 +211,10 @@ class SuperCodingBot:
                                 else:
                                     data['OTHERS'].append(save)
             os.remove(self.mount_point + 'codeforces.json')
-            with open(self.mount_point + 'codeforces.json', 'w') as codeforces:
-                json.dump(data, codeforces)
-            with open(self.mount_point + 'codeforces.json', 'r') as codeforces:
-                self.cf.change_cf(json.load(codeforces))
+            with open(self.mount_point + 'codeforces.json', 'w') as code_json:
+                json.dump(data, code_json)
+            with open(self.mount_point + 'codeforces.json', 'r') as code_json:
+                self.cf.change_cf(json.load(code_json))
             for chat_id in self.admin_list:
                 self.bot.send_message(chat_id=chat_id, text="Questions updated codeforces")
                 time.sleep(1)
@@ -302,13 +302,13 @@ class SuperCodingBot:
         update.message.reply_text("send your json file")
         return self.CF
 
-    def cf(self, bot, update):
+    def receive_cf(self, bot, update):
         file_id = update.message.document.file_id
         newFile = bot.get_file(file_id)
         newFile.download(self.mount_point + 'codeforces.json')
         update.message.reply_text("saved")
-        with open(self.mount_point + 'codeforces.json', 'r') as codeforces:
-            self.cf.change_cf(json.load(codeforces))
+        with open(self.mount_point + 'codeforces.json', 'r') as code_json:
+            self.cf.change_cf(json.load(code_json))
         return ConversationHandler.END
 
     # END OF ADMIN CONVERSATION HANDLER TO REPLACE THE CODEFORCES JSON
