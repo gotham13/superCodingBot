@@ -8,6 +8,8 @@ THE TELEGRAM BOT FOR COMPETITIVE PROGRAMMERS
 ## ABOUT
 superCodingBot is a telegram bot built in python 3 using python-telegram-bot wrapper.
 
+## [BOT LINK](https://t.me/superCodeBot)
+
 ## FEATURES
 * Getting ratings from hackerrank,hackerearth,codeforces,spoj and codechef in the form of ranklist  
 * Automatic updation of ratings
